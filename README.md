@@ -1,13 +1,12 @@
 # Modeling and Simulation of Social Systems Fall 2018 – Research Plan (Template)
 (text between brackets to be removed)
 
-> * Group Name:  
+> * Group Name:  PlaneBoarding
 > * Group participants names: Nils Blach, Anton Schäfer 
 > * Project Title: Airplane Boarding
 > * Programming language: Python
 
 ## General Introduction
-In our current time there are more than 100'000 flights day.
 (States your motivation clearly: why is it important / interesting to solve this problem?)
 (Add real-world examples, if any)
 (Put the problem into a historical context, from what does it originate? Are there already some proposed solutions?)
