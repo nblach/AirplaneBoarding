@@ -8,3 +8,9 @@ class Actor:
         self.seat = seat
         self.action = starting_action
         self.position = starting_position
+
+
+    def act(self):
+        return
+
+
