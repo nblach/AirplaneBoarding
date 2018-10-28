@@ -3,6 +3,7 @@ from compartment import Compartment
 
 class Plane:
 
+    #here compartment_size is how many bags fit in one compartment
     def __init__(self, seatsLeft, seatsRight, rows, units_per_row, row_entry_size, compartment_size, compartment_length):
 
         self.seatsLeft = seatsLeft

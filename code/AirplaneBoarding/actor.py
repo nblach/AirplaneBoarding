@@ -2,10 +2,9 @@ from seat import Seat
 from passenger_type import Passenger_Type
 
 class Actor:
-    def __init__(self, actor_id, number_of_bags, passenger_size, passenger_moving_speed, row_number, col_number,
-                 starting_action, starting_position):
+    def __init__(self, actor_id, passenger_type, seat, starting_action, starting_position):
         self.id = actor_id;
-        self.passenger_type = Passenger_Type(self, number_of_bags, passenger_size, passenger_moving_speed)
-        self.seat = Seat(self, row_number, col_number)
+        self.passenger_type = passenger_type
+        self.seat = seat
         self.action = starting_action
         self.position = starting_position
