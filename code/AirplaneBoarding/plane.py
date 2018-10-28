@@ -3,15 +3,14 @@ from compartment import Compartment
 
 class Plane:
 
-    #here compartment_size is how many bags fit in one compartment
-    def __init__(self, seatsLeft, seatsRight, rows, units_per_row, row_entry_size, compartment_size, compartment_length):
+    def __init__(self, seatsLeft, seatsRight, rows, length_of_row, row_entry_size, compartment_size, compartment_length):
 
         self.seatsLeft = seatsLeft
         self.seatsRight = seatsRight
         self.rows = rows
-        self.aisle = Aisle(self, units_per_row, row_entry_size)
+        self.aisle = Aisle(self, length_of_row, row_entry_size)
         self.compartments = []
-        self.length = rows*units_per_row
+        self.length = rows * length_of_row
 
         #initialize compartments
         self.nr_compartments = self.length/compartment_length
