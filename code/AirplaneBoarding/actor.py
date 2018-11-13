@@ -12,7 +12,7 @@ All possible states an actor can be in:
 
 class Actor:
     def __init__(self, actor_id, passenger_type, seat, starting_action, starting_aisle_position):
-        self.id = actor_id;
+        self.id = actor_id
         self.passenger_type = passenger_type
         self.seat = seat
         self.action = starting_action
@@ -29,5 +29,3 @@ class Actor:
 
     def act(self):
         return
-
-

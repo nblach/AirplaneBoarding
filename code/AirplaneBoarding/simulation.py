@@ -1,11 +1,18 @@
 class Simulation:
+    NUMBER_OF_ACTORS = 256
 
     def __init__(self):
         self.actors = []
+        for i in range(0,256):
+            actor = actor()
+            actor.id = i
+            self.actors.append(actor)
         self.simulation = []
         # TODO
 
 
+    def get_random_passenger(self):
+        new_passenger = passengertypt
 
     def simulate(self):
         done = 0;
