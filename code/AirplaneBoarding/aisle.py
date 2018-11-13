@@ -7,3 +7,9 @@ class Aisle:
         self.occupance = []
         for i in range(0, plane.length):
             self.occupance[i] = 0;
+
+    """
+    plane := ???????
+    units_per_row := The length of a row in terms of our specified unit
+    row_entry_size := The size of the entry to a row in terms of our unit 
+    """

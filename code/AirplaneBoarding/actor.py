@@ -5,8 +5,11 @@ All possible states an actor can be in:
     3. looking for luggage storage room (no space at seating position), currently stationary/currently moving towards 
     the back/front of the airplane -> waiting/moving
     4. placing luggage -> stationary + moving luggage
-    
+    5. Seated
+    6. Moving out of the seat in order to allow another actor to take their seat
 """
+
+
 class Actor:
     def __init__(self, actor_id, passenger_type, seat, starting_action, starting_aisle_position):
         self.id = actor_id;
