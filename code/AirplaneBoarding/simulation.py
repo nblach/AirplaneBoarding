@@ -19,7 +19,7 @@ class Simulation:
 
         #fill actors[] with random actors
         for i in range(0, self.number_of_actors):
-            actor = Actor(i, self.get_random_passenger(), seat_assignment[i], 0, 0)
+            actor = Actor(i, self.get_random_passenger(), seat_assignment[i], 0, plane)
             self.actors.append(actor)
 
 
