@@ -1,16 +1,29 @@
 import numpy
 from passenger_type import Passenger_Type
+from actor import Actor
+
+
+PASSENGER_SIZE = 10;
 
 class Simulation:
 
-    def __init__(self, number_of_actors, plane):
+
+    def __init__(self, number_of_actors, plane, seat_assignment_id):
+
+        #TODO
+        #generate seat_assingment
+
         self.actors = []
         self.plane = plane
         self.number_of_actors = number_of_actors
-        for i in range(0,self.number_of_actors):
-            actor = actor(i, self.get_random_passenger())
-            actor.id = i
+
+        #fill actors[] with random actors
+        for i in range(0, self.number_of_actors):
+            actor = Actor(i, self.get_random_passenger(), seat_assignment[i], 0, 0)
             self.actors.append(actor)
+
+
+        #simulation[] will contain all states observed during simulation (in order)
         self.simulation = []
         # TODO
 
@@ -30,7 +43,7 @@ class Simulation:
         number_of_bags_possibilities = [1, 2, 3]
         load_probabilities = [[0.6, 0.3, 0.1], [0.2, 0.6, 0.2]]
         number_of_bags = numpy.random.choice(number_of_bags_possibilities, p=load_probabilities[0])
-        return Passenger_Type(number_of_bags, moving_speed)
+        return Passenger_Type(number_of_bags, moving_speed, PASSENGER_SIZE)
 
     def get_seat(self):
         return

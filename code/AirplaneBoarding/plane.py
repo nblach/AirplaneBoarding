@@ -3,10 +3,10 @@ from compartment import Compartment
 
 class Plane:
 
-    def __init__(self, seatsLeft, seatsRight, rows, length_of_row, row_entry_size, compartment_size, compartment_length):
+    def __init__(self, seats_left, seats_right, rows, length_of_row, row_entry_size, compartment_size, compartment_length):
 
-        self.seatsLeft = seatsLeft
-        self.seatsRight = seatsRight
+        self.seatsLeft = seats_left
+        self.seatsRight = seats_right
         self.rows = rows
         self.aisle = Aisle(self, length_of_row, row_entry_size)
         self.compartments = []
