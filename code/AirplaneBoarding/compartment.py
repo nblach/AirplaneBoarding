@@ -6,4 +6,6 @@ class Compartment:
         self.size = size
         self.start = start
         self.end = end
-        self.occupance = 0
+        self.free_space = size
+
+

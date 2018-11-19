@@ -2,7 +2,7 @@
 All possible states (actions) an actor can be in:
     0. Not yet in plane
     1. looking for free compartment: a. near seat
-                                     b. further back (if nothing free by seat)
+                                     b. first free towards the back (if nothing free by seat)
                                      c. towards front of plane (if nothing free near or behind seat)
     2. storing luggage
     3. moving to seat (without luggage)
@@ -30,6 +30,10 @@ class Actor:
         self.switch_timer = 0
         self.position_after_switch
 
+        # fields needed for storing
+        self.storing = False
+        self.store_timer = 0
+
     """
     id := a unique ID (Integer) give to this actor upon initialization
     passenger_type := An object, which contains information on the size of the actor, the moving speed and information 
@@ -48,22 +52,25 @@ class Actor:
 
             # treat switch separately
             if self.switching:
-                if(self.switch_timer > 0):
-                    self.switch_timer -= 1
-                else:
+                # we stop switching at 1 because mathematically speaking we already completed all required cycles.
+                if self.switch_timer <= 1:
                     self.set_position(self.position_after_switch)
                     self.switching = False
+
+                self.switch_timer -= 1
                 return 0
 
             else:
 
+                position_seat = self.plane.get_start_of_row(self.seat.row_number)
+                compartment_current_position = self.plane.get_compartment_at_pos(self.position)
                 # if because python does not have proper switch statements
                 if self.action == 0:
 
                     # for action = 0, act is only called when self (this actor) is next in order to board plane
                     for i in range(0, self.size):
                         if self.plane.aisle.occupance[i] != 0:
-                            return 1 #cannot enter plane yet
+                            return 1 # cannot enter plane yet
 
                     # can enter plane
                     self.set_position(0)
@@ -75,6 +82,86 @@ class Actor:
 
                 if self.action == 1:
                     if self.action_1 == 0:
+                        # Can we see our seat?
+                        if  position_seat > (self.passenger_type.field_of_view + self.position):
+                            # We cannot see our seat, move forward
+                            self.move_forward(position_seat)
+                            return 0
+                        else:
+                            # We can see our seat
+                            compartment_at_seat = self.plane.get_compartment_at_pos(position_seat)
+                            # can we store all our luggage in the compartment at our seat?
+                            if compartment_at_seat.free_space < self.luggage:
+                                # no space, therefore store in next free compartment (fall through to next case)
+                                self.action_1 = 1;
+                            else:
+                                # try to store luggage at seat
+                                if compartment_at_seat == compartment_current_position:
+                                    # we are at the compartment at our seat, fall through to store
+                                    self.action = 2
+                                else:
+                                    # we are not yet at the compartment at our seat
+                                    self.move_forward(position_seat)
+                                    return 0
+
+                    if self.action_1 == 1:
+                        if compartment_current_position.free_space > 0:
+                            # we are at a free compartment, fall through to store
+                            self.action = 2
+                        else:
+                            # if at last compartment of plane
+                            if compartment_current_position == self.plane.compartments[-1]:
+                                # turn around
+                                self.action_1 = 2
+                            else:
+                                self.move_forward(None)
+                                return 0
+
+                    if self.action_1 == 2:
+                        if compartment_current_position.free_space > 0:
+                            # we are at a free compartment, fall through to store
+                            self.action = 2
+                        else:
+                            # if at first compartment of plane
+                            if compartment_current_position == self.plane.compartments[0]:
+                                # should not happen because the hand luggage exceeds storage room (not covered)
+                                raise ValueError('ERROR: The amount of hand luggage exceeds the amount of storage room')
+                            else:
+                                self.move_backward(None)
+                                return 0
+
+                if self.action == 2:
+                    # did we already start storing
+                    if not self.storing:
+                        # start storing
+                        self.storing = True
+                        # how many items can we store in this compartment
+                        items_to_store = min(compartment_current_position.free_space, self.luggage)
+                        # how long do we take to store
+                        self.store_timer = self.storing_time(compartment_current_position, items_to_store)
+                        # update capacities
+                        self.luggage -= items_to_store
+                        compartment_current_position.free_space -= items_to_store
+
+                    # continue storing
+                    if self.store_timer <= 1:
+                        # finish storing
+                        self.storing = False
+                        if self.luggage > 0:
+                            self.action = 1
+                        else:
+                            self.action = 3
+                    self.store_timer -= 1
+                    return 0
+
+                if self.action == 3:
+                    # TODO
+
+
+
+
+
+
 
 
 

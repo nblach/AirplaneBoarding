@@ -11,8 +11,15 @@ class Plane:
         self.aisle = Aisle(self, length_of_row, row_entry_size)
         self.compartments = []
         self.length = rows * length_of_row
+        self.compartment_length = compartment_length
 
         # initialize compartments
         self.nr_compartments = self.length/compartment_length
         for i in range(0, self.nr_compartments):
             self.compartments[i] = Compartment(compartment_size*2, i*compartment_size, (i+1)*compartment_size)
+
+    def get_start_of_row(self, row_number):
+        return row_number * self.length_of_row
+
+    def get_compartment_at_pos(self, position):
+        return self.compartments[math.floor(position/self.compartment_length)]
