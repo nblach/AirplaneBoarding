@@ -16,5 +16,3 @@ class Plane:
         self.nr_compartments = self.length/compartment_length
         for i in range(0, self.nr_compartments):
             self.compartments[i] = Compartment(compartment_size*2, i*compartment_size, (i+1)*compartment_size)
-
-
