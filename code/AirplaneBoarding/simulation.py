@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 from passenger_type import Passenger_Type
 from actor import Actor
 
@@ -18,7 +18,7 @@ class Simulation:
         self.number_of_actors = number_of_actors
 
         #fill actors[] with random actors
-        for i in range(0, self.number_of_actors):
+        for i in range(1, self.number_of_actors+1):
             actor = Actor(i, self.get_random_passenger(), seat_assignment[i], 0, plane)
             self.actors.append(actor)
 
@@ -38,11 +38,11 @@ class Simulation:
 
     @staticmethod
     def get_random_passenger():
-        moving_speed = [numpy.random.triangular(1.8, 2.4, 3.0), numpy.random.triangular(6.0, 9.0, 30.0),
-                        numpy.random.triangular(3.0, 3.6, 4.2)]
+        moving_speed = [np.random.triangular(1.8, 2.4, 3.0), np.random.triangular(6.0, 9.0, 30.0),
+                        np.random.triangular(3.0, 3.6, 4.2)]
         number_of_bags_possibilities = [1, 2, 3]
         load_probabilities = [[0.6, 0.3, 0.1], [0.2, 0.6, 0.2]]
-        number_of_bags = numpy.random.choice(number_of_bags_possibilities, p=load_probabilities[0])
+        number_of_bags = np.random.choice(number_of_bags_possibilities, p=load_probabilities[0])
         return Passenger_Type(number_of_bags, moving_speed, PASSENGER_SIZE)
 
     def get_seat(self):

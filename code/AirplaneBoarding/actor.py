@@ -34,6 +34,10 @@ class Actor:
         self.storing = False
         self.store_timer = 0
 
+        # fields needed to move into seat
+        self.seat_waiting = False
+        self.seat_wait_counter = 0
+
     """
     id := a unique ID (Integer) give to this actor upon initialization
     passenger_type := An object, which contains information on the size of the actor, the moving speed and information 
@@ -155,7 +159,52 @@ class Actor:
                     return 0
 
                 if self.action == 3:
-                    # TODO
+                    if self.can_enter_seat():
+                        # falling through to state moving into seat
+                        self.action = 4
+                    else:
+                        # move in direction of seat
+                        if self.position < position_seat:
+                            self.move_forward(position_seat)
+                        else:
+                            self.move_backward(position_seat + self.plane.aisle.row_entry_size - self.passenger_type.size)
+                        return 0
+
+                if self.action == 4:
+                    # currently waiting?
+                    if not self.seat_waiting:
+                        self.set_seat_wait_counter()
+                        self.seat_waiting = True
+
+                    if self.seat_wait_counter <= 1:
+                        self.action = 5
+                        self.seat_waiting = False
+                        self.reset_position()
+                        self.plane.seat_occupance[self.seat.row_number][self.seat.col_numbner] = \
+                            self.passenger_type.moving_speed[2] + self.passenger_type.moving_speed[1]
+
+                    self.seat_wait_counter -= 1
+                    return 0
+                if self.action == 5:
+                    raise ValueError('ERROR: Actor is in state 5, but was called to act, '
+                                     'which means he is still in the aisle (impossible)')
+
+    def move_forward(self, limit):
+        if not limit:
+            limit = len(self.plane.aisle.occupance)
+        limit = max(limit, self.passenger_type.moving_speed[0]+self.position)
+        if self.plane.aisle.occupance[self.position+1]!= 0:
+            # TODO Request switch
+        else:
+            # we can move forward
+            for i in range(self.position+1, limit+1):
+
+
+
+
+
+
+    def move_backward(self, limit):
 
 
 
@@ -165,7 +214,19 @@ class Actor:
 
 
 
+    def set_seat_wait_counter(self):
+        self.seat_wait_counter = self.passenger_type.moving_speed[1]
+        # we count from left to right, are we sitting on the left?
+        if self.seat.col_numbner <= self.plane.seatsLeft - 1:
+            for i in range(0, self.seat.col_numbner):
+                self.seat_wait_counter += self.plane.seat_occupance[self.seat.row_number][i]
+        else:
+            for i in range(self.seat.col_numbner + 1, self.plane.seatsLeft + self.plane.seatsRight):
+                self.seat_wait_counter += self.plane.seat_occupance[self.seat.row_number][i]
 
+
+    def can_enter_seat(self, seat_pos):
+        return (self.position >= seat_pos) and ((self.position + self.passenger_type.size) <= (seat_pos + self.plane.aisle.row_entry_size))
 
     def set_position(self, position):
         self.position = position
@@ -173,3 +234,7 @@ class Actor:
         for i in range(self.position, self.position + self.size):
             self.plane.aisle.occupance[i] = self.id
 
+    def reset_position(self):
+        # unmark occupied space in aisle
+        for i in range(self.position, self.position + self.size):
+            self.plane.aisle.occupance[i] = 0
