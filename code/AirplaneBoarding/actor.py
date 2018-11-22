@@ -1,9 +1,9 @@
 """
 All possible states (actions) an actor can be in:
     0. Not yet in plane
-    1. looking for free compartment: a. near seat
-                                     b. first free towards the back (if nothing free by seat)
-                                     c. towards front of plane (if nothing free near or behind seat)
+    1. looking for free compartment: 0. near seat
+                                     1. first free towards the back (if nothing free by seat)
+                                     2. towards front of plane (if nothing free near or behind seat)
     2. storing luggage
     3. moving to seat (without luggage)
     4. moving into seat
@@ -96,7 +96,7 @@ class Actor:
                             compartment_at_seat = self.plane.get_compartment_at_pos(position_seat)
                             # can we store all our luggage in the compartment at our seat?
                             if compartment_at_seat.free_space < self.luggage:
-                                # no space, therefore store in next free compartment (fall through to next case)
+                                # not enough space, therefore store in next free compartment (fall through to next case)
                                 self.action_1 = 1;
                             else:
                                 # try to store luggage at seat
@@ -190,28 +190,49 @@ class Actor:
                                      'which means he is still in the aisle (impossible)')
 
     def move_forward(self, limit):
+        # limit is inclusive
+        # limit might equal None
         if not limit:
-            limit = len(self.plane.aisle.occupance)
-        limit = max(limit, self.passenger_type.moving_speed[0]+self.position)
-        if self.plane.aisle.occupance[self.position+1]!= 0:
+            limit = len(self.plane.aisle.occupance)- self.passenger_type.size
+        limit = min(limit, self.passenger_type.moving_speed[0]+self.position)
+
+        if self.plane.aisle.occupance[self.position+self.passenger_type.size]!= 0:
             # TODO Request switch
         else:
-            # we can move forward
-            for i in range(self.position+1, limit+1):
+            # we can move forward at least 1 spot
+            furthest_free_pos = self.position + 1
+            # calculate the furthest position we can get to
+            while self.plane.aisle.occupance[furthest_free_pos + self.passenger_type.size] == 0 \
+                    and furthest_free_pos < limit:
+                furthest_free_pos += 1
 
-
-
-
+            # set new position
+            self.reset_position()
+            self.set_position(furthest_free_pos)
+            return 0
 
 
     def move_backward(self, limit):
+        # limit is inclusive
+        # limit might equal None
+        if not limit:
+            limit = 0
+        limit = max(limit, self.position - self.passenger_type.moving_speed[0])
 
+        if self.plane.aisle.occupance[self.position - 1] != 0:
+        # TODO Request switch
+        else:
+            # we can move backwards at least 1 spot
+            furthest_free_pos = self.position - 1
+            # calculate the furthest position we can get to
+            while self.plane.aisle.occupance[furthest_free_pos - 1] == 0 \
+                    and furthest_free_pos > limit:
+                furthest_free_pos -= 1
 
-
-
-
-
-
+            # set new position
+            self.reset_position()
+            self.set_position(furthest_free_pos)
+            return 0
 
 
     def set_seat_wait_counter(self):
@@ -226,15 +247,15 @@ class Actor:
 
 
     def can_enter_seat(self, seat_pos):
-        return (self.position >= seat_pos) and ((self.position + self.passenger_type.size) <= (seat_pos + self.plane.aisle.row_entry_size))
+        return (self.position >= seat_pos) and ((self.position + self.passenger_type.size-1) <= (seat_pos + self.plane.aisle.row_entry_size-1))
 
     def set_position(self, position):
         self.position = position
         # mark occupied space in aisle
-        for i in range(self.position, self.position + self.size):
+        for i in range(self.position, self.position + self.passenger_type.size):
             self.plane.aisle.occupance[i] = self.id
 
     def reset_position(self):
         # unmark occupied space in aisle
-        for i in range(self.position, self.position + self.size):
+        for i in range(self.position, self.position + self.passenger_type.size):
             self.plane.aisle.occupance[i] = 0
