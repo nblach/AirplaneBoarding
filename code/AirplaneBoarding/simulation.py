@@ -35,12 +35,15 @@ class Simulation:
 
     @staticmethod
     def get_random_passenger():
+        # TODO make coherent with units
         moving_speed = [np.random.triangular(1.8, 2.4, 3.0), np.random.triangular(6.0, 9.0, 30.0),
                         np.random.triangular(3.0, 3.6, 4.2)]
         number_of_bags_possibilities = [1, 2, 3]
         load_probabilities = [[0.6, 0.3, 0.1], [0.2, 0.6, 0.2]]
         number_of_bags = np.random.choice(number_of_bags_possibilities, p=load_probabilities[0])
-        return Passenger_Type(number_of_bags, moving_speed, PASSENGER_SIZE)
+        # TODO calculate storing_time
+        storing_time = 1
+        return Passenger_Type(number_of_bags, moving_speed, storing_time,  PASSENGER_SIZE)
 
     def get_seat(self):
         return
@@ -51,13 +54,24 @@ class Simulation:
 
         while (not done):
             j = 0;
+            actors_seated = 0
             for a in self.actors:
                 a.act()
                 self.simulation[i][j] = [a.position, a.action]
+                if a.action == 5:
+                    actors_seated += 1
                 j += 1
 
             i += 1
+            if actors_seated == self.number_of_actors:
+                done = True
 
 
 
+    def sec_to_timeunit(self, seconds):
+        return
+
+
+    def meter_to_spaceunit(selfs, meters):
+        return
 
