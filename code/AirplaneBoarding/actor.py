@@ -27,8 +27,12 @@ class Actor:
 
         # fields needed for switching
         self.switching = False
-        self.switch_timer = 0
-        self.position_after_switch
+        self.switch_forward_request = False
+        self.switch_backwards_request = False
+        self.switch_front_limit = -1
+        self.switch_back_limit = -1
+        self.switch_partner = None
+        self.switch_done = False
 
         # fields needed for storing
         self.storing = False
@@ -89,7 +93,8 @@ class Actor:
                         # Can we see our seat?
                         if  position_seat > (self.passenger_type.field_of_view + self.position):
                             # We cannot see our seat, move forward
-                            self.move_forward(position_seat)
+                            self.move_forward(None)  # limit would be position_seat, but in this case, the limit can
+                                                     # be dropped due to constraints speed<row_length<fov
                             return 0
                         else:
                             # We can see our seat
@@ -179,9 +184,7 @@ class Actor:
                     if self.seat_wait_counter <= 1:
                         self.action = 5
                         self.seat_waiting = False
-                        self.reset_position()
-                        self.plane.seat_occupance[self.seat.row_number][self.seat.col_numbner] = \
-                            self.passenger_type.moving_speed[2] + self.passenger_type.moving_speed[1]
+                        self.sit_down()
 
                     self.seat_wait_counter -= 1
                     return 0
@@ -189,27 +192,90 @@ class Actor:
                     raise ValueError('ERROR: Actor is in state 5, but was called to act, '
                                      'which means he is still in the aisle (impossible)')
 
+    def sit_down(self):
+        # in our seat we store the sum of the times we need to leaf and enter that seat again
+        self.plane.seat_occupance[self.seat.row_number][self.seat.col_numbner] = \
+            self.passenger_type.moving_speed[2] + self.passenger_type.moving_speed[1]
+        # TODO
+
     def move_forward(self, limit):
         # limit is inclusive
         # limit might equal None
         if not limit:
             limit = len(self.plane.aisle.occupance)- self.passenger_type.size
-        limit = min(limit, self.passenger_type.moving_speed[0]+self.position)
 
-        if self.plane.aisle.occupance[self.position+self.passenger_type.size]!= 0:
-            # TODO Request switch
-        else:
-            # we can move forward at least 1 spot
-            furthest_free_pos = self.position + 1
-            # calculate the furthest position we can get to
-            while self.plane.aisle.occupance[furthest_free_pos + self.passenger_type.size] == 0 \
-                    and furthest_free_pos < limit:
-                furthest_free_pos += 1
+        if not self.switching:
+            # can i move forward
+            if self.plane.aisle.occupance[self.position+self.passenger_type.size]!= 0:
+                # is the actor in front of me requesting to switch with me?
+                next_field_actor = self.plane.actors[self.plane.aisle.occupance[self.position+self.passenger_type.size]-1]
+                if next_field_actor.switch_backwards_request:
+                    # Lets switch, set both actors to switching
+                    self.switching = True
+                    next_field_actor.switching = True
+                    next_field_actor.switch_backwards_request = False
+                    # set limits
+                    self.switch_front_limit = next_field_actor.position + next_field_actor.passenger_type.size - self.passenger_type.size
+                    next_field_actor.switch_front_limit = next_field_actor.position
+                    self.switch_back_limit = self.position
+                    next_field_actor.switch_back_limit = self.position
+                    # set switching partners
+                    self.switch_partner = next_field_actor
+                    next_field_actor.switch_partner = self
+                    # reset switch done variables
+                    self.switch_done = False
+                    next_field_actor.switch_done = False
 
-            # set new position
-            self.reset_position()
-            self.set_position(furthest_free_pos)
+                else:
+                    # request switch
+                    self.switch_forward_request = True
+            else:
+                # move forward
+                limit = min(limit, self.passenger_type.moving_speed[0] + self.position)
+                # we can move forward at least 1 spot
+                furthest_free_pos = self.position + 1
+                # calculate the furthest position we can get to
+                while self.plane.aisle.occupance[furthest_free_pos + self.passenger_type.size] == 0 \
+                        and furthest_free_pos < limit:
+                    furthest_free_pos += 1
+
+                # reset possible switch request
+                self.switch_forward_request = False
+                self.switch_backwards_request = False
+                # set new position
+                self.reset_position()
+                self.set_position(furthest_free_pos)
             return 0
+
+        else:
+            # can we finish switching
+            if self.position == self.switch_front_limit:
+                self.switch_done = True
+                if self.switch_partner.switch_done:
+                    # we can finish switching
+                    self.switching = False
+                    self.switch_partner.switching = False
+                    self.switch_done = False
+                    self.switch_partner.switch_done = False
+                    # is our partner at the other end
+                    if self.switch_partner.position == self.switch_partner.switch_back_limit:
+                        # at other end
+                        self.set_position(self.position)
+                        self.switch_partner.set_position(self.switch_partner.position)
+
+                    else:
+                        # at the same limit
+                        # the other actor was first, so we move ourselves back
+                        self.switch_partner.set_position(self.switch_partner.position)
+                        self.set_position(self.switch_back_limit)
+
+                    self.switch_partner.switch_partner = None
+                    self.switch_partner = None
+                return 0
+            else:
+                # move to new position
+                limit = min(limit, self.switch_front_limit)
+                self.position = min(limit, self.position + self.switch_speed())
 
 
     def move_backward(self, limit):
@@ -217,23 +283,85 @@ class Actor:
         # limit might equal None
         if not limit:
             limit = 0
-        limit = max(limit, self.position - self.passenger_type.moving_speed[0])
 
-        if self.plane.aisle.occupance[self.position - 1] != 0:
-        # TODO Request switch
-        else:
-            # we can move backwards at least 1 spot
-            furthest_free_pos = self.position - 1
-            # calculate the furthest position we can get to
-            while self.plane.aisle.occupance[furthest_free_pos - 1] == 0 \
-                    and furthest_free_pos > limit:
-                furthest_free_pos -= 1
+        if not self.switching:
+            # can I move forward
+            if self.plane.aisle.occupance[self.position -1] != 0:
+                # is the actor in front of me requesting to switch with me?
+                prev_field_actor = self.plane.actors[self.plane.aisle.occupance[self.position -1] - 1]
+                if prev_field_actor.switch_forward_request:
+                    # Lets switch, set both actors to switching
+                    self.switching = True
+                    prev_field_actor.switching = True
+                    prev_field_actor.switch_forward_request = False
+                    # set limits
+                    self.switch_front_limit = self.position
+                    prev_field_actor.switch_front_limit = self.position - prev_field_actor.passenger_type.size + self.passenger_type.size
+                    self.switch_back_limit = prev_field_actor.position
+                    prev_field_actor.switch_back_limit = prev_field_actor.position
+                    # set switching partners
+                    self.switch_partner = prev_field_actor
+                    prev_field_actor.switch_partner = self
+                    # reset switch done variables
+                    self.switch_done = False
+                    prev_field_actor.switch_done = False
 
-            # set new position
-            self.reset_position()
-            self.set_position(furthest_free_pos)
+                else:
+                    # request switch
+                    self.switch_backwards_request = True
+            else:
+                # move backwards
+                limit = max(limit, self.position - self.passenger_type.moving_speed[0])
+                # we can move backwards at least 1 spot
+                furthest_free_pos = self.position - 1
+                # calculate the furthest position we can get to
+                while self.plane.aisle.occupance[furthest_free_pos - 1] == 0 \
+                        and furthest_free_pos > limit:
+                    furthest_free_pos -= 1
+
+                # reset possible switch request
+                self.switch_forward_request = False
+                self.switch_backwards_request = False
+                # set new position
+                self.reset_position()
+                self.set_position(furthest_free_pos)
             return 0
 
+        else:
+            # can we finish switching
+            if self.position == self.switch_back_limit:
+                self.switch_done = True
+                if self.switch_partner.switch_done:
+                    # we can finish switching
+                    self.switching = False
+                    self.switch_partner.switching = False
+                    self.switch_done = False
+                    self.switch_partner.switch_done = False
+                    # is our partner at the other end
+                    if self.switch_partner.position == self.switch_partner.switch_front_limit:
+                        # at other end
+                        self.set_position(self.position)
+                        self.switch_partner.set_position(self.switch_partner.position)
+
+                    else:
+                        # at the same limit
+                        # the other actor was first, so we move ourselves forward
+                        self.switch_partner.set_position(self.switch_partner.position)
+                        self.set_position(self.switch_front_limit)
+
+                    self.switch_partner.switch_partner = None
+                    self.switch_partner = None
+                return 0
+            else:
+                # move to new position
+                limit = max(limit, self.switch_back_limit)
+                self.position = max(limit, self.position - self.switch_speed())
+
+
+
+    def switch_speed(self, other_actor):
+        # TODO
+        return
 
     def set_seat_wait_counter(self):
         self.seat_wait_counter = self.passenger_type.moving_speed[1]
