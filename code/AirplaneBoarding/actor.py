@@ -1,3 +1,4 @@
+import math
 """
 All possible states (actions) an actor can be in:
     0. Not yet in plane
@@ -358,10 +359,10 @@ class Actor:
                 self.position = max(limit, self.position - self.switch_speed())
 
 
-
     def switch_speed(self, other_actor):
         # TODO
-        return
+        return math.ceil(self.passenger_type.moving_speed[0]/2)
+
 
     def set_seat_wait_counter(self):
         self.seat_wait_counter = self.passenger_type.moving_speed[1]
@@ -377,11 +378,13 @@ class Actor:
     def can_enter_seat(self, seat_pos):
         return (self.position >= seat_pos) and ((self.position + self.passenger_type.size-1) <= (seat_pos + self.plane.aisle.row_entry_size-1))
 
+
     def set_position(self, position):
         self.position = position
         # mark occupied space in aisle
         for i in range(self.position, self.position + self.passenger_type.size):
             self.plane.aisle.occupance[i] = self.id
+
 
     def reset_position(self):
         # unmark occupied space in aisle
