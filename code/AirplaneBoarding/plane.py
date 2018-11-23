@@ -4,7 +4,7 @@ import numpy as np
 
 class Plane:
 
-    def __init__(self, seats_left, seats_right, rows, length_of_row, row_entry_size, compartment_size, compartment_length, actors):
+    def __init__(self, seats_left, seats_right, rows, length_of_row, row_entry_size, compartment_size, compartment_length):
 
         self.seatsLeft = seats_left
         self.seatsRight = seats_right
@@ -14,7 +14,7 @@ class Plane:
         self.compartments = []
         self.length = rows * length_of_row
         self.compartment_length = compartment_length
-        self.actors = actors
+        self.actors = None
 
         # initialize compartments
         self.nr_compartments = self.length/compartment_length
