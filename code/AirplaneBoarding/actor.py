@@ -390,3 +390,8 @@ class Actor:
         # unmark occupied space in aisle
         for i in range(self.position, self.position + self.passenger_type.size):
             self.plane.aisle.occupance[i] = 0
+
+
+    def storing_time(self, compartment, items):
+        # TODO
+        return items*self.passenger_type.storing_time
