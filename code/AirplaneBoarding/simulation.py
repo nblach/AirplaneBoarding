@@ -1,25 +1,22 @@
 import numpy as np
 from passenger_type import Passenger_Type
 from actor import Actor
+from seat_assignments import Assignments
 
+PASSENGER_SIZE = 10
 
-PASSENGER_SIZE = 10;
 
 class Simulation:
 
-
     def __init__(self, number_of_actors, plane, seat_assignment_id):
-
-        #TODO
-        #generate seat_assingment
-
+        self.seat_assignment = Assignments.generate_assignment(plane, number_of_actors, seat_assignment_id)
         self.actors = []
         self.plane = plane
         self.number_of_actors = number_of_actors
 
         #fill actors[] with random actors
         for i in range(1, self.number_of_actors+1):
-            actor = Actor(i, self.get_random_passenger(), seat_assignment[i], 0, plane)
+            actor = Actor(i, self.get_random_passenger(), self.seat_assignment[i], 0, plane)
             self.actors.append(actor)
 
 
@@ -55,9 +52,9 @@ class Simulation:
         while (not done):
             j = 0;
             for a in self.actors:
-               a.act()
-               self.simulation[i][j] = [a.position, a.action]
-               j += 1
+                a.act()
+                self.simulation[i][j] = [a.position, a.action]
+                j += 1
 
             i += 1
 
