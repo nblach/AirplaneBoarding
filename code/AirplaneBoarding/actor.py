@@ -64,7 +64,7 @@ class Actor:
             if self.action == 0:
 
                 # for action = 0, act is only called when self (this actor) is next in order to board plane
-                for i in range(0, self.size):
+                for i in range(0, self.passenger_type.size):
                     if self.plane.aisle.occupance[i] != 0:
                         return 1 # cannot enter plane yet
 
@@ -152,7 +152,7 @@ class Actor:
                 return 0
 
             if self.action == 3:
-                if self.can_enter_seat():
+                if self.can_enter_seat(position_seat):
                     # falling through to state moving into seat
                     self.action = 4
                 else:
@@ -181,10 +181,24 @@ class Actor:
                                  'which means he is still in the aisle (impossible)')
 
     def sit_down(self):
+        if self.switching:
+            # stop switching and clear aisle
+            self.switching = False
+            self.switch_partner.switching = False
+            self.switch_done = False
+            self.switch_partner.switch_done = False
+
+            # set aisle to only switch partner
+            self.reset_switch_area()
+            self.switch_partner.set_position(self.switch_partner.position)
+
+            self.switch_partner.switch_partner = None
+            self.switch_partner = None
+        else:
+            self.reset_position()
         # in our seat we store the sum of the times we need to leaf and enter that seat again
         self.plane.seat_occupance[self.seat.row_number][self.seat.col_numbner] = \
             self.passenger_type.moving_speed[2] + self.passenger_type.moving_speed[1]
-        # TODO
 
     def move_forward(self, limit):
         # limit is inclusive
@@ -263,7 +277,7 @@ class Actor:
             else:
                 # move to new position
                 limit = min(limit, self.switch_front_limit)
-                self.position = min(limit, self.position + self.switch_speed())
+                self.position = min(limit, self.position + self.switch_speed(self.switch_partner))
 
 
     def move_backward(self, limit):
@@ -343,11 +357,11 @@ class Actor:
             else:
                 # move to new position
                 limit = max(limit, self.switch_back_limit)
-                self.position = max(limit, self.position - self.switch_speed())
+                self.position = max(limit, self.position - self.switch_speed(self.switch_partner))
 
 
     def switch_speed(self, other_actor):
-        # TODO
+        # kleines TODO
         return math.ceil(self.passenger_type.moving_speed[0]/2)
 
 
@@ -372,6 +386,10 @@ class Actor:
         for i in range(self.position, self.position + self.passenger_type.size):
             self.plane.aisle.occupance[i] = self.id
 
+    def reset_switch_area(self):
+        # reset the total area that was reserved for switching
+        for i in range(self.switch_back_limit, self.switch_front_limit + self.passenger_type.size):
+            self.plane.aisle.occupance[i] = 0
 
     def reset_position(self):
         # unmark occupied space in aisle
@@ -380,5 +398,5 @@ class Actor:
 
 
     def storing_time(self, compartment, items):
-        # TODO
+        # kleines TODO
         return items*self.passenger_type.storing_time

@@ -6,7 +6,7 @@ class Aisle:
         self.row_entry_size = row_entry_size
         self.occupance = []
         for i in range(0, plane.length):
-            self.occupance[i] = 0;
+            self.occupance.append(0)
 
     """
     plane := ???????

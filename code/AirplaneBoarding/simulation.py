@@ -4,7 +4,7 @@ from passenger_type import Passenger_Type
 from actor import Actor
 from seat_assignments import Assignments
 
-PASSENGER_SIZE = 10
+PASSENGER_SIZE = 0.4
 UNIT_LENGTH = 0.001  # meter
 UNIT_TIME = 0.1  # seconds
 
@@ -59,32 +59,36 @@ class Simulation:
         # test data
         moving_speed = [Simulation.m_per_s_to_speed_unit(np.random.triangular(MINIMUM_MOVING_SPEED, MODE_MOVING_SPEED, MAXIMUM_MOVING_SPEED)), Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_ROW_ENTER_TIME, MODE_ROW_ENTER_TIME, MAXIMUM_ROW_ENTER_TIME)),
                         Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_EXIT_ROW_TIME, MODE_EXIT_ROW_TIME, MAXIMUM_EXIT_ROW_TIME))]
-        number_of_bags_possibilities = [1, 2, 3]
+        number_of_bags_possibilities = [0, 1, 1]
         load_probabilities = [[0.6, 0.3, 0.1], [0.2, 0.6, 0.2]]
         number_of_bags = np.random.choice(number_of_bags_possibilities, p=load_probabilities[0])
         storing_time = Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_STORE_TIME, MODE_STORING_TIME, MAXIMUM_STORE_TIME))
-        return Passenger_Type(number_of_bags, moving_speed, storing_time,  PASSENGER_SIZE)
+        return Passenger_Type(number_of_bags, moving_speed, storing_time,  Simulation.meter_to_space_unit(PASSENGER_SIZE))
 
     def simulate(self):
         done = False
         i = 0
+        next_actor_in = 0
 
         while not done:
+            if i%100 == 0:
+                print('still going strong ', i)
             j = 0
             actors_seated = 0
-            next_actor_in = 0
             prev_actor = -1
             # loop backwards through aisle and store order of actors in list
             acting_order = list()
             for x in reversed(range(0, self.plane.length)):
-                if self.plane.aisle.occupance[x] != prev_actor:
+                if self.plane.aisle.occupance[x] != prev_actor and self.plane.aisle.occupance[x] > 0:
+                    #print(self.plane.aisle.occupance[x])
                     acting_order.append(self.actors[self.plane.aisle.occupance[x]-1])
                     prev_actor = self.plane.aisle.occupance[x]
             # let the actors do their magic
             for a in acting_order:
                 a.act()
             # try letting the next actor enter the plane
-            if self.actors[next_actor_in].act() != 1:
+            if next_actor_in < len(self.actors) and self.actors[next_actor_in].act() != 1:
+                #print('actor just entered the plane: ' , next_actor_in)
                 next_actor_in += 1
 
             frame = np.zeros((self.number_of_actors,4), dtype=int)
@@ -103,13 +107,13 @@ class Simulation:
 
     @staticmethod
     def m_per_s_to_speed_unit(speed):
-        return math.round(speed * (UNIT_LENGTH/UNIT_TIME))
+        return round(speed / (UNIT_LENGTH/UNIT_TIME))
 
     @staticmethod
     def sec_to_time_unit(seconds):
-        return math.round(seconds * UNIT_TIME)
+        return round(seconds / UNIT_TIME)
 
     @staticmethod
     def meter_to_space_unit(meters):
-        return math.round(meters * UNIT_LENGTH)
+        return round(meters / UNIT_LENGTH)
 
