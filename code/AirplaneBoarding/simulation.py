@@ -5,6 +5,8 @@ from actor import Actor
 from seat_assignments import Assignments
 
 PASSENGER_SIZE = 0.4
+PASSENGER_PERSONAL_SPACE = 0.2
+
 UNIT_LENGTH = 0.001  # meter
 UNIT_TIME = 0.1  # seconds
 
@@ -29,20 +31,20 @@ MODE_STORING_TIME = 4
 
 class Simulation:
 
-    def __init__(self, number_of_actors, plane, seat_assignment_id):
+    def __init__(self, number_of_actors, plane, seat_assignment_id, luggage_distribution_index):
         self.seat_assignment = Assignments.generate_assignment(plane, number_of_actors, seat_assignment_id)
         self.actors = []
         self.plane = plane
         self.number_of_actors = number_of_actors
+        self.luggage_distribution_index = luggage_distribution_index
 
-        #fill actors[] with random actors
+        # fill actors[] with random actors
+        luggage_distribution = self.get_luggage_distribution()
         for i in range(1, self.number_of_actors+1):
-            actor = Actor(i, self.get_random_passenger(), self.seat_assignment[i], 0, plane)
+            actor = Actor(i, self.get_random_passenger(luggage_distribution[i-1]), self.seat_assignment[i-1], 0, plane)
             self.actors.append(actor)
         self.plane.actors = self.actors
-
-
-        #simulation[] will contain all states observed during simulation (in order)
+        # simulation[] will contain all states observed during simulation (in order)
         self.simulation = list()
 
     """
@@ -54,14 +56,44 @@ class Simulation:
     In the paper they had two options normal and high load. 
     """
 
+    def get_luggage_distribution(self):
+        load_distribution = [[0.6, 0.3, 0.1], [0.2, 0.6, 0.2]]
+        total_number_of_pieces = 0
+        maximum_luggage_capacity = self.plane.nr_compartments * self.plane.compartment_size * 2
+        luggage_distribution = np.zeros(self.number_of_actors, dtype=int)
+        count = 0
+        j = 0
+        i = 0
+        for i in range(0, self.number_of_actors):
+            if j < len(load_distribution[self.luggage_distribution_index]):
+                if count < int(load_distribution[self.luggage_distribution_index][j] * self.number_of_actors):
+                    luggage_distribution[i] = j
+                    count += 1
+                    total_number_of_pieces += j
+                elif count == int(load_distribution[self.luggage_distribution_index][j] * self.number_of_actors):
+                    count = 0
+                    j += 1
+                    total_number_of_pieces += j
+                    luggage_distribution[i] = j
+            else:
+                luggage_distribution[i] = 0
+
+        if total_number_of_pieces > maximum_luggage_capacity:
+            raise ValueError('ERROR: The luggage distribution, number of passengers and plane specifications '
+                             'will result in more hand luggage than available space in the compartments. '
+                             'This is not allowed. The total number of pieces amounts to: ', total_number_of_pieces,
+                             ' and the available space is: ', maximum_luggage_capacity)
+        np.random.shuffle(luggage_distribution)
+        return luggage_distribution
+
+
+
+
     @staticmethod
-    def get_random_passenger():
+    def get_random_passenger(number_of_bags):
         # test data
         moving_speed = [Simulation.m_per_s_to_speed_unit(np.random.triangular(MINIMUM_MOVING_SPEED, MODE_MOVING_SPEED, MAXIMUM_MOVING_SPEED)), Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_ROW_ENTER_TIME, MODE_ROW_ENTER_TIME, MAXIMUM_ROW_ENTER_TIME)),
                         Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_EXIT_ROW_TIME, MODE_EXIT_ROW_TIME, MAXIMUM_EXIT_ROW_TIME))]
-        number_of_bags_possibilities = [0, 1, 1]
-        load_probabilities = [[0.6, 0.3, 0.1], [0.2, 0.6, 0.2]]
-        number_of_bags = np.random.choice(number_of_bags_possibilities, p=load_probabilities[0])
         storing_time = Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_STORE_TIME, MODE_STORING_TIME, MAXIMUM_STORE_TIME))
         return Passenger_Type(number_of_bags, moving_speed, storing_time,  Simulation.meter_to_space_unit(PASSENGER_SIZE))
 
@@ -80,7 +112,6 @@ class Simulation:
             acting_order = list()
             for x in reversed(range(0, self.plane.length)):
                 if self.plane.aisle.occupance[x] != prev_actor and self.plane.aisle.occupance[x] > 0:
-                    #print(self.plane.aisle.occupance[x])
                     acting_order.append(self.actors[self.plane.aisle.occupance[x]-1])
                     prev_actor = self.plane.aisle.occupance[x]
             # let the actors do their magic
@@ -88,10 +119,10 @@ class Simulation:
                 a.act()
             # try letting the next actor enter the plane
             if next_actor_in < len(self.actors) and self.actors[next_actor_in].act() != 1:
-                #print('actor just entered the plane: ' , next_actor_in)
                 next_actor_in += 1
 
             frame = np.zeros((self.number_of_actors,4), dtype=int)
+            # TODO change shit what anton wants
             for a in self.actors:
                 frame[j, 0] = a.position
                 frame[j, 1] = a.action
