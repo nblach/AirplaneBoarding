@@ -21,6 +21,7 @@ class Plane:
         self.compartment_length = compartment_length
         self.actors = None
         self.length_of_row = length_of_row
+        self.compartment_size = compartment_size
 
         # initialize compartments
         self.nr_compartments = int(self.length/compartment_length)

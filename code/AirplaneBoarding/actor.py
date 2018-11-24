@@ -82,7 +82,7 @@ class Actor:
                     if  position_seat > (self.passenger_type.field_of_view + self.position):
                         # We cannot see our seat, move forward
                         self.move_forward(None)  # limit would be position_seat, but in this case, the limit can
-                                                 # be dropped due to constraints speed<row_length<fov
+                        # be dropped due to constraints speed<row_length<fov
                         return 0
                     else:
                         # We can see our seat
@@ -208,7 +208,7 @@ class Actor:
 
         if not self.switching:
             # can i move forward
-            if self.plane.aisle.occupance[self.position+self.passenger_type.size]!= 0:
+            if self.plane.aisle.occupance[self.position+self.passenger_type.size] != 0:
                 # is the actor in front of me requesting to switch with me?
                 next_field_actor = self.plane.actors[self.plane.aisle.occupance[self.position+self.passenger_type.size]-1]
                 if next_field_actor.switch_backwards_request:
