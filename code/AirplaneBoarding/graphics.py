@@ -30,30 +30,30 @@ class Animation:
 
         # initialize window and load images
         pygame.init()
-        self.nose = pygame.image.load('nose.png')
-        self.tail = pygame.image.load('tail.png')
-        self.seat_empty = pygame.image.load('seat_empty.png')
-        self.seat_occupied = pygame.image.load('seat_occupied.png')
-        self.aisle = pygame.image.load('aisle.png')
-        self.passenger_walk = pygame.image.load('passenger_walk.png')
-        self.passenger_store = pygame.image.load('passenger_store.png')
-        self.passenger_wait = pygame.image.load('passenger_wait.png')
-        self.wall = pygame.image.load('wall.png')
-        self.luggage_1 = pygame.image.load('luggage_1.png')
-        self.luggage_2 = pygame.image.load('luggage_2.png')
-        self.luggage_3 = pygame.image.load('luggage_3.png')
-        self.switch_overlay = pygame.image.load('switch_overlay.png')
-        self.compartment_0 = pygame.image.load('compartment_0.png')
-        self.compartment_1 = pygame.image.load('compartment_1.png')
-        self.compartment_2 = pygame.image.load('compartment_2.png')
-        self.compartment_3 = pygame.image.load('compartment_3.png')
-        self.compartment_4 = pygame.image.load('compartment_4.png')
-        self.compartment_5 = pygame.image.load('compartment_5.png')
-        self.compartment_6 = pygame.image.load('compartment_6.png')
-        self.compartment_7 = pygame.image.load('compartment_7.png')
-        self.compartment_8 = pygame.image.load('compartment_8.png')
-        self.compartment_9 = pygame.image.load('compartment_9.png')
-        self.compartment_10 = pygame.image.load('compartment_10.png')
+        self.nose = pygame.image.load('img/nose.png')
+        self.tail = pygame.image.load('img/tail.png')
+        self.seat_empty = pygame.image.load('img/seat_empty.png')
+        self.seat_occupied = pygame.image.load('img/seat_occupied.png')
+        self.aisle = pygame.image.load('img/aisle.png')
+        self.passenger_walk = pygame.image.load('img/passenger_walk.png')
+        self.passenger_store = pygame.image.load('img/passenger_store.png')
+        self.passenger_wait = pygame.image.load('img/passenger_wait.png')
+        self.wall = pygame.image.load('img/wall.png')
+        self.luggage_1 = pygame.image.load('img/luggage_1.png')
+        self.luggage_2 = pygame.image.load('img/luggage_2.png')
+        self.luggage_3 = pygame.image.load('img/luggage_3.png')
+        self.switch_overlay = pygame.image.load('img/switch_overlay.png')
+        self.compartment_0 = pygame.image.load('img/compartment_0.png')
+        self.compartment_1 = pygame.image.load('img/compartment_1.png')
+        self.compartment_2 = pygame.image.load('img/compartment_2.png')
+        self.compartment_3 = pygame.image.load('img/compartment_3.png')
+        self.compartment_4 = pygame.image.load('img/compartment_4.png')
+        self.compartment_5 = pygame.image.load('img/compartment_5.png')
+        self.compartment_6 = pygame.image.load('img/compartment_6.png')
+        self.compartment_7 = pygame.image.load('img/compartment_7.png')
+        self.compartment_8 = pygame.image.load('img/compartment_8.png')
+        self.compartment_9 = pygame.image.load('img/compartment_9.png')
+        self.compartment_10 = pygame.image.load('img/compartment_10.png')
 
         # adjust image sizes
         self.wall = pygame.transform.scale(self.wall, (sim.plane.rows * self.LENGTH_ROW, self.WIDTH_WALL))
@@ -62,14 +62,25 @@ class Animation:
         self.seat_empty = pygame.transform.scale(self.seat_empty, (self.LENGTH_SEAT, self.WIDTH_SEAT))
         self.seat_occupied = pygame.transform.scale(self.seat_occupied, (self.LENGTH_SEAT, self.WIDTH_SEAT))
         self.aisle = pygame.transform.scale(self.aisle, (self.LENGTH_ROW, self.WIDTH_AISLE))
+        self.compartment_0 = pygame.transform.scale(self.compartment_0, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_1 = pygame.transform.scale(self.compartment_1, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_2 = pygame.transform.scale(self.compartment_2, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_3 = pygame.transform.scale(self.compartment_3, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_4 = pygame.transform.scale(self.compartment_4, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_5 = pygame.transform.scale(self.compartment_5, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_6 = pygame.transform.scale(self.compartment_6, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_7 = pygame.transform.scale(self.compartment_7, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_8 = pygame.transform.scale(self.compartment_8, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_9 = pygame.transform.scale(self.compartment_9, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
+        self.compartment_10 = pygame.transform.scale(self.compartment_10, (self.WIDTH_COMPARTMENT, self.LENGTH_COMPARTMENT))
 
 
         # initialize window
         self.size = (self.H_OFFSET_FIRST_ROW+self.LENGTH_TAIL+self.SPACE_HORIZONTAL*2 + sim.plane.rows * self.LENGTH_ROW, 2*self.SPACE_VERTICAL + self.WIDTH_PLANE + self.WIDTH_COMPARTMENT)
         self.screen = pygame.display.set_mode(self.size)
         pygame.display.set_caption("Airplane Boarding Model")
-
         self.print_empty_plane()
+        pygame.display.flip()
 
 
 
@@ -82,19 +93,53 @@ class Animation:
 
         clock = pygame.time.Clock()
 
-        # TODO wait for signal to start
+        # wait for signal to start
+        start = False
+        while(not start):
+            for e in pygame.event.get():
+                if e.type == pygame.KEYDOWN:
+                    if e.key == pygame.K_SPACE:
+                        start = True
+                if e.type == pygame.QUIT:
+                    self.exit()
+                    return
 
         for i in range(0, int(len(simulation.simulation)/speed)):
-            # TODO display every actor
-            # TODO display every compartment
+
+            clock.tick(10)
+            index = i*speed
+
+            # display all actors
+            for a in range(0, self.simulation.number_of_actors):
+                arr = self.simulation.simulation[i][0][a]
+                # if actor not in plane, do not display them
+                if arr[0] == -1:
+                    continue
+                self.display_passenger(arr[0], arr[1], arr[2], self.simulation.plane.actors[a].passenger_type.size ,arr[3])
 
 
-        # TODO wait for signal to end
+
+            for c in range(0, self.simulation.plane.nr_compartments):
+                self.display_compartment(self.simulation.simulation[i][1][c], c)
+
+            pygame.display.flip()
+
+        # wait for signal to end
+        end = False
+        while(not end):
+            for e in pygame.event.get():
+                if e.type == pygame.QUIT:
+                    self.exit()
+                    return
+                if e.type == pygame.KEYDOWN and e.key == pygame.K_SPACE:
+                    end = True
 
 
 
 
-
+    def exit(self):
+        pygame.display.quit()
+        pygame.quit()
 
 
 
@@ -117,8 +162,8 @@ class Animation:
                 self.screen.blit(self.seat_empty, (x, y_top + (j+self.simulation.plane.seatsRight)*self.WIDTH_SEAT + self.WIDTH_AISLE))
 
         #display compartments
-        # TODO
-
+        for c in range(0, self.simulation.plane.nr_compartments):
+                self.display_compartment(self.simulation.simulation[0][1][c], c)
 
 
 
@@ -137,6 +182,18 @@ class Animation:
             p = pygame.transform.scale(self.passenger_walk, size)
 
         self.screen.blit(p, (self.H_OFFSET_FIRST_ROW + self.units_to_pixels(position), self.V_OFFSET_AISLE))
+
+        if luggage > 0:
+            if luggage == 1:
+                l = pygame.transform.scale(self.luggage_1, size)
+            elif luggage == 2:
+                l = pygame.transform.scale(self.luggage_2, size)
+            elif luggage == 3:
+                l = pygame.transform.scale(self.luggage_3, size)
+            self.screen.blit(l, (self.H_OFFSET_FIRST_ROW + self.units_to_pixels(position), self.V_OFFSET_AISLE))
+        if switching:
+            s = pygame.transform.scale(self.switch_overlay, size)
+            self.screen.blit(s, (self.H_OFFSET_FIRST_ROW + self.units_to_pixels(position), self.V_OFFSET_AISLE))
 
 
     def display_compartment(self, capacity, i):
