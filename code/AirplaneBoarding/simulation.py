@@ -33,7 +33,7 @@ class Simulation:
 
     def __init__(self, number_of_actors, plane, seat_assignment_id, luggage_distribution_index):
         #TODO automate seat_assignment using seat_assignment_id
-        self.seat_assignment = Assignments.generate_full_row_block_assignment(plane, 6, 0)
+        self.seat_assignment = Assignments.generate_by_row_assignment(plane, 1)
         self.actors = []
         self.plane = plane
         self.number_of_actors = number_of_actors
@@ -64,7 +64,6 @@ class Simulation:
         luggage_distribution = np.zeros(self.number_of_actors, dtype=int)
         count = 0
         j = 0
-        i = 0
         for i in range(0, self.number_of_actors):
             if j < len(load_distribution[self.luggage_distribution_index]):
                 if count < int(load_distribution[self.luggage_distribution_index][j] * self.number_of_actors):
