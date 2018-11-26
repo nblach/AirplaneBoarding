@@ -32,7 +32,8 @@ MODE_STORING_TIME = 4
 class Simulation:
 
     def __init__(self, number_of_actors, plane, seat_assignment_id, luggage_distribution_index):
-        self.seat_assignment = Assignments.generate_assignment(plane, number_of_actors, seat_assignment_id)
+        #TODO automate seat_assignment using seat_assignment_id
+        self.seat_assignment = Assignments.generate_full_row_block_assignment(plane, 6, 0)
         self.actors = []
         self.plane = plane
         self.number_of_actors = number_of_actors
@@ -121,16 +122,20 @@ class Simulation:
             if next_actor_in < len(self.actors) and self.actors[next_actor_in].act() != 1:
                 next_actor_in += 1
 
-            frame = np.zeros((self.number_of_actors,4), dtype=int)
+            frame = (np.zeros((self.number_of_actors,4), dtype=int), np.zeros(self.plane.nr_compartments, dtype=int))
             # TODO change shit what anton wants
             for a in self.actors:
-                frame[j, 0] = a.position
-                frame[j, 1] = a.action
-                frame[j, 2] = a.seat.row_number
-                frame[j, 3] = a.seat.col_numbner
+                frame[0][j, 0] = a.position
+                frame[0][j, 1] = a.action
+                frame[0][j, 2] = a.luggage
+                frame[0][j, 3] = a.switching
                 if a.action == 5:
                     actors_seated += 1
                 j += 1
+            n = 0
+            for c in self.plane.compartments:
+                frame[1][n] = c.free_space
+                n += 1
             self.simulation.append(frame)
             i += 1
             if actors_seated == self.number_of_actors:
