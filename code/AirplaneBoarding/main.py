@@ -1,13 +1,9 @@
 from simulation import Simulation
 from plane import Plane
+from graphics import Animation
 
-p = Plane(3,3,30,0.8,0.5,3,1.6)
-sim = Simulation(175,p,1,0)
-#try:
-
+p = Plane(4, 3, 30, 0.8, 0.5, 3, 1.6)
+sim = Simulation(100, p, 1, 0)
 sim.simulate()
-#except ValueError:
-
-    #print(sim.plane.aisle.occupance)
-    #print(sim.simulation)
-print(len(sim.simulation))
+animation = Animation(sim)
+animation.animate(4)
