@@ -1,6 +1,8 @@
 from seat import Seat
 import numpy as np
 from random import shuffle
+from math import gcd
+from math import ceil
 
 
 class Assignments:
@@ -87,3 +89,110 @@ class Assignments:
                         index -= 1
                 j += 1
         return seats
+
+
+
+    @staticmethod
+    def generate_by_letter_assignment(plane, alternating, back_to_front):
+        seats = np.empty(plane.rows*(plane.seatsRight + plane.seatsLeft), dtype = Seat)
+        cols = list()
+        for i in range(0, plane.seatsLeft + plane.seatsRight):
+            new_col = np.empty(plane.rows, dtype = Seat)
+            for j in range(0, plane.rows):
+                new_col[j] = Seat(j, i)
+            if not back_to_front:
+                np.random.shuffle(new_col)
+            cols.append(new_col)
+
+        if alternating:
+            #From window to aisle alternating
+            if plane.seatsLeft > plane.seatsRight:
+                #start from left
+                side_1 = plane.seatsRight+plane.seatsLeft-1
+                side_2 = 0
+                side_1_inc = -1
+                side_2_inc = 1
+                side_1_limit = plane.seatsRight-1
+                side_2_limit = plane.seatsRight
+            else:
+                side_1 = 0
+                side_2 = plane.seatsRight+plane.seatsLeft-1
+                side_1_inc = 1
+                side_2_inc = -1
+                side_1_limit = plane.seatsRight
+                side_2_limit = plane.seatsRight-1
+
+
+            index = 0
+            for j in range(0, len(cols)):
+                if j % 2 == 0:
+                    if side_1 != side_1_limit:
+                        col = cols[side_1]
+                        side_1 += side_1_inc
+                else:
+                    if side_2 != side_2_limit:
+                        col = cols[side_2]
+                        side_2 += side_2_inc
+                for i in range(0, plane.rows):
+                    seats[index] = col[i]
+                    index += 1
+        else:
+            #From A to ...
+            index = 0
+            for col in cols:
+                for i in range(0, plane.rows):
+                    seats[index] = col[i]
+                    index += 1
+        return seats
+
+
+    @staticmethod
+    def generate_steffen_assignment(plane):
+        return Assignments.generate_by_seat_assignment(plane, 1, 1, 1)
+
+
+    @staticmethod
+    def generate_by_seat_assignment(plane, overall_alternate, letter_alternate, row_alternation):
+        # overall alternate = True /False:   GO A... B... C... or A... F... B...
+        # letter alternate = True / False    GO AAAAAA ..... or AFAFAF .....
+        # row alternation integer
+
+
+        row_alternation += 1
+        seats = np.empty(plane.rows*(plane.seatsRight + plane.seatsLeft), dtype = Seat)
+
+        index = 0
+        for i in range(0, row_alternation):
+            for j in range(0, plane.seatsLeft + plane.seatsRight):
+                if overall_alternate:
+                        if j % 2 == 1:
+                            j = plane.seatsRight+plane.seatsLeft -1 - int(j/2)
+                        else:
+                            j = int(j/2)
+                for k in range(0, ceil((plane.rows - i)/row_alternation)):
+                    row = plane.rows-1-i-k*row_alternation
+
+                    if letter_alternate:
+                        if k % 2 == 0:
+                            col = j
+                        else:
+                            col = plane.seatsRight+plane.seatsLeft -1 - j
+                    else:
+                        col = j
+
+                    seats[index] = Seat(row,col)
+                    index += 1
+
+
+        return seats
+
+
+
+
+
+
+
+
+
+
+
