@@ -191,7 +191,7 @@ class Assignments:
         return Assignments.generate_by_seat_assignment(plane, 1, 1, 1)
 
     @staticmethod
-    def generate_by_half_row_assignment(plane, row_alternation):
+    def generate_by_half_row_assignment(plane, row_alternation, alternate_sides):
         row_alternation += 1
         seats = np.empty(plane.rows*(plane.seatsRight + plane.seatsLeft), dtype = Seat)
 
@@ -200,16 +200,22 @@ class Assignments:
         for h in range(0, 2):
             for i in range(0, row_alternation):
                 for j in range(0, ceil((plane.rows - i)/row_alternation)):
+                    if alternate_sides:
+                        h_temp = (h+j)%2
+                    if h_temp == 0:
+                        seats_on_side = plane.seatsLeft
+                    else:
+                        seats_on_side = plane.seatsRight
                     half_row = np.empty(seats_on_side, dtype = int)
                     for k in range(0, seats_on_side):
-                        half_row[k] = k+h*plane.seatsLeft
+                        half_row[k] = k+h_temp*plane.seatsLeft
                     np.random.shuffle(half_row)
                     for k in range(0, seats_on_side):
                         seats[index] = Seat(plane.rows-1 - (i+j*row_alternation),half_row[k])
+                        print('assigned seat ', seats[index].row_number,  ' ', seats[index].col_numbner)
                         index += 1
 
 
-            seats_on_side = plane.seatsRight
 
         return seats
 
