@@ -107,7 +107,30 @@ class Animation:
                     self.exit()
                     return
 
+        pause = False
         for i in range(0, int(len(self.simulation.simulation)/speed)):
+            # check if quit/pause
+            for e in pygame.event.get():
+                    if e.type == pygame.KEYDOWN:
+                        if e.key == pygame.K_SPACE:
+                            pause = not pause
+                        if e.key == pygame.K_ESCAPE:
+                            self.exit()
+                            return
+                    if e.type == pygame.QUIT:
+                        self.exit()
+                        return
+            while pause:
+                for e in pygame.event.get():
+                    if e.type == pygame.KEYDOWN:
+                        if e.key == pygame.K_SPACE:
+                            pause = not pause
+                        if e.key == pygame.K_ESCAPE:
+                            self.exit()
+                            return
+                    if e.type == pygame.QUIT:
+                        self.exit()
+                        return
 
             clock.tick(10)
             index = i*speed
