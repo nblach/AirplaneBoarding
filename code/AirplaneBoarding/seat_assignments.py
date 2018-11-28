@@ -92,48 +92,49 @@ class Assignments:
         if sequence_index == 0:
             # Descending order first right side then left side
             index = len(seats) - 1
-            for i in blocks_left:
-                for j in range(0, len(i)):
-                    seats[index] = i[j]
-                    index -= 1
             for i in blocks_right:
                 for j in range(0, len(i)):
                     seats[index] = i[j]
                     index -= 1
+            for i in blocks_left:
+                for j in range(0, len(i)):
+                    seats[index] = i[j]
+                    index -= 1
         elif sequence_index == 1:
-            index = len(seats) - 1
-            for i in range(0, alternation):
-                j = 1
-                for k in blocks_left:
-                    if j % alternation == i:
-                        for m in range(0, len(k)):
-                            seats[index] = k[m]
-                            index -= 1
-                    j += 1
-            for i in range(0, alternation):
-                j = 1
-                for k in blocks_right:
-                    if j % alternation == i:
-                        for m in range(0, len(k)):
-                            seats[index] = k[m]
-                            index -= 1
-                    j += 1
+            index = 0
+            for start in reversed(range(len(blocks_left)-1-alternation, len(blocks_left))):
+                i = start
+                while i >= 0:
+                    for k in range(0, len(blocks_left[i])):
+                        seats[index] = blocks_left[i][k]
+                        index += 1
+                    i -= (alternation + 1)
+            for start in reversed(range(len(blocks_right)-1-alternation, len(blocks_right))):
+                i = start
+                while i >= 0:
+                    for k in range(0, len(blocks_right[i])):
+                        seats[index] = blocks_right[i][k]
+                        index += 1
+                    i -= (alternation + 1)
 
         else:
             index = 0
-            for n in range(0, 2):
-                side = n
-                for i, j in zip(reversed(blocks_right), reversed(blocks_left)):
-                    if side:
-                        for k in range(0, len(j)):
-                            seats[index] = j[k]
+            i = len(blocks_left)-1
+            j = len(blocks_right)-2
+            for x in range(0, 2):
+                while i >= 0 or j >= 0:
+                    if i >= 0:
+                        for k in range(0, len(blocks_left[i])):
+                            seats[index] = blocks_left[i][k]
                             index += 1
-                    else:
-                        for k in range(0, len(i)):
-                            seats[index] = i[k]
+                        i -= 2
+                    if j >= 0:
+                        for k in range(0, len(blocks_right[j])):
+                            seats[index] = blocks_right[j][k]
                             index += 1
-        for a in seats:
-            print(a.row_number, '  ', a.col_numbner)
+                        j -= 2
+                i = len(blocks_left) - 2
+                j = len(blocks_right) - 1
         return seats
 
     @staticmethod
