@@ -12,14 +12,16 @@ Nils:   seat assignments:
 Anton
 			1. by letter go A first instead of F
 			2. by letter fix back to fronto
+			3. implement by half row
 
+assignment by luggage?
 
 model: 
 			1. check seat wait time
  			2. personal space
 			3. remove random seats when not full
 			4. col nr variable
-			5. seatsRight seatsLeft variablea
+			5. seatsRight seatsLeft variables
 
 test:			1. Test 2 airplanes
 			2. fix times (find data)
