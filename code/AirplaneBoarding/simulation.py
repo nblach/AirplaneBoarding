@@ -1,5 +1,4 @@
 import numpy as np
-import math
 from passenger_type import Passenger_Type
 from actor import Actor
 from seat_assignments import Assignments

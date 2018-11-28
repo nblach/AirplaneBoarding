@@ -197,7 +197,7 @@ class Actor:
         else:
             self.reset_position()
         # in our seat we store the sum of the times we need to leaf and enter that seat again
-        self.plane.seat_occupance[self.seat.row_number][self.seat.col_numbner] = \
+        self.plane.seat_occupance[self.seat.row_number][self.seat.col_number] = \
             self.passenger_type.moving_speed[2] + self.passenger_type.moving_speed[1]
 
     def move_forward(self, limit):
@@ -368,12 +368,20 @@ class Actor:
     def set_seat_wait_counter(self):
         self.seat_wait_counter = self.passenger_type.moving_speed[1]
         # we count from left to right, are we sitting on the left?
-        if self.seat.col_numbner <= self.plane.seatsLeft - 1:
-            for i in range(0, self.seat.col_numbner):
+        count = 0
+        if self.seat.col_number <= self.plane.seatsLeft - 1:
+            for i in range(0, self.seat.col_number):
+                if self.plane.seat_occupance[self.seat.row_number][i]:
+                    count += 1
                 self.seat_wait_counter += self.plane.seat_occupance[self.seat.row_number][i]
         else:
-            for i in range(self.seat.col_numbner + 1, self.plane.seatsLeft + self.plane.seatsRight):
+            for i in range(self.seat.col_number + 1, self.plane.seatsLeft + self.plane.seatsRight):
+                if self.plane.seat_occupance[self.seat.row_number][i]:
+                    count += 1
                 self.seat_wait_counter += self.plane.seat_occupance[self.seat.row_number][i]
+        if count > 1:
+            print('Counter = ', self.seat_wait_counter, ' My moving speed: ', self.passenger_type.moving_speed[1],
+                  ' Anzahl blockierter Sitze: ', count, ' row number: ', self.seat.row_number, 'col number: ', self.seat.col_number)
 
 
     def can_enter_seat(self, seat_pos):

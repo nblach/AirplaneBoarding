@@ -198,6 +198,7 @@ class Assignments:
 
     @staticmethod
     def generate_steffen_assignment(plane):
+
         return Assignments.generate_by_seat_assignment(plane, 1, 1, 1)
 
     @staticmethod

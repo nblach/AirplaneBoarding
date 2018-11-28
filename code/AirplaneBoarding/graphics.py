@@ -1,7 +1,4 @@
-from simulation import Simulation
-import simulation
 import pygame
-import numpy as np
 
 
 class Animation:
@@ -282,7 +279,7 @@ class Animation:
     def display_occ_seat(self, id):
         x = self.H_OFFSET_FIRST_ROW + self.simulation.actors[id].seat.row_number*self.LENGTH_ROW
 
-        col_nr = self.simulation.actors[id].seat.col_numbner
+        col_nr = self.simulation.actors[id].seat.col_number
 
         if col_nr < self.simulation.plane.seatsLeft:
             y = self.V_OFFSET_AISLE + self.WIDTH_AISLE + (self.simulation.plane.seatsLeft-1-col_nr) * self.WIDTH_SEAT
