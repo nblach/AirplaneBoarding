@@ -146,15 +146,14 @@ class Assignments:
                 new_row[j] = Seat(i, j)
             np.random.shuffle(new_row)
             rows.append(new_row)
-        index = len(seats) - 1
-        for i in range(0, alternation):
-            j = 1
-            for k in rows:
-                if j % alternation == i:
-                    for m in range(0, plane.seatsRight + plane.seatsLeft):
-                        seats[index] = k[m]
-                        index -= 1
-                j += 1
+        index = 0
+        for start in reversed(range(len(rows)-1-alternation, len(rows))):
+            i = start
+            while i >= 0:
+                for k in range(0, len(rows[i])):
+                    seats[index] = rows[i][k]
+                    index += 1
+                i -= (alternation + 1)
         return seats
 
 
