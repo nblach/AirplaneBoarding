@@ -140,7 +140,7 @@ class Assignments:
                         seats[index] = blocks_right[j][k]
                         index += 1
                     j -= 2
-                if j >= 0:
+                if i >= 0:
                     for k in range(0, len(blocks_left[i])):
                         seats[index] = blocks_left[i][k]
                         index += 1
