@@ -37,7 +37,7 @@ class Simulation:
         if random_seat_deletion:
             adapted_seat_assignment = list(self.seat_assignment)
             for i in range(0, len(self.seat_assignment) - number_of_actors):
-                index = random.randint(0, len(self.seat_assignment)-i)
+                index = random.randint(0, len(self.seat_assignment)-i-1)
                 del adapted_seat_assignment[index]
             self.seat_assignment = adapted_seat_assignment
         self.actors = []
