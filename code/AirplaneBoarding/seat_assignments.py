@@ -171,24 +171,6 @@ class Assignments:
                 np.random.shuffle(new_col)
             cols.append(new_col)
 
-        if alternating:
-            #From window to aisle alternating
-            if plane.seatsLeft > plane.seatsRight:
-                #start from left
-                side_1 = plane.seatsRight+plane.seatsLeft-1
-                side_2 = 0
-                side_1_inc = -1
-                side_2_inc = 1
-                side_1_limit = plane.seatsRight-1
-                side_2_limit = plane.seatsRight
-            else:
-                side_1 = 0
-                side_2 = plane.seatsRight+plane.seatsLeft-1
-                side_1_inc = 1
-                side_2_inc = -1
-                side_1_limit = plane.seatsRight
-                side_2_limit = plane.seatsRight-1
-
 
 
         #From A to ...
