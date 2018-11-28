@@ -24,12 +24,12 @@ class Plane:
         self.compartment_size = compartment_size
 
         # initialize compartments
-        self.nr_compartments = int(self.length/compartment_length)
+        self.nr_compartments = math.ceil(self.length/compartment_length)
         for i in range(0, self.nr_compartments):
-            self.compartments.append(Compartment(compartment_size*2, i*compartment_length, (i+1)*compartment_length))
+            self.compartments.append(Compartment(compartment_size*2, i*compartment_length, min(self.length -1,(i+1)*compartment_length)))
 
     def get_start_of_row(self, row_number):
         return row_number * self.length_of_row
 
     def get_compartment_at_pos(self, position):
-        return self.compartments[math.floor(position/self.compartment_length)]
+        return self.compartments[int(position/self.compartment_length)]

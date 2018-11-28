@@ -33,7 +33,7 @@ class Simulation:
 
     def __init__(self, number_of_actors, plane, seat_assignment_id, luggage_distribution_index, random_seat_deletion):
         #TODO automate seat_assignment using seat_assignment_id
-        self.seat_assignment = Assignments.generate_full_row_block_assignment(plane, 5, 1)
+        self.seat_assignment = Assignments.generate_full_row_block_assignment(plane, 6, 1, 1)
         if random_seat_deletion:
             adapted_seat_assignment = list(self.seat_assignment)
             for i in range(0, len(self.seat_assignment) - number_of_actors):

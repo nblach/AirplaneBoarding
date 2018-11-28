@@ -1,15 +1,15 @@
 Nils:   seat assignments:
 
 Anton
-
-assignment by luggage?
+			1. Implement steffen method
+			(2.assignment by luggage?)
+			3. improve graphics a little bit
+			4. Improve graphics in terms of personal space and maybe row identification (start, end)
 
 model: 
-			1. check seat wait time
- 			2. personal space
-			3. remove random seats when not full
-			4. col nr variable
-			5. seatsRight seatsLeft variables
+ 			2. new constraints?
+			3. check out of bounce of aisle and compartments
+			4. check reducing personal size 
 
 test:			1. Test 2 airplanes
 			2. fix times (find data)

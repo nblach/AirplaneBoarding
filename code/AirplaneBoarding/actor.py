@@ -204,7 +204,13 @@ class Actor:
         self.plane.seat_occupance[self.seat.row_number][self.seat.col_number] = \
             self.passenger_type.moving_speed[2] + self.passenger_type.moving_speed[1]
 
+    def reset_size(self):
+        if self.passenger_type.size == self.passenger_type.physical_size:
+            self.passenger_type.size += self.passenger_type.personal_space
+
     def move_forward(self, limit):
+        if self.position + self.size >= self.plane.length:
+            self.passenger_type.size = self.passenger_type.physical_size
         # limit is inclusive
         # limit might equal None
         if not limit:
@@ -241,8 +247,7 @@ class Actor:
                 # we can move forward at least 1 spot
                 furthest_free_pos = self.position + 1
                 # calculate the furthest position we can get to
-                while self.plane.aisle.occupance[furthest_free_pos + self.passenger_type.size] == 0 \
-                        and furthest_free_pos < limit:
+                while furthest_free_pos < limit and self.plane.aisle.occupance[furthest_free_pos + self.passenger_type.size] == 0:
                     furthest_free_pos += 1
 
                 # reset possible switch request
@@ -251,6 +256,7 @@ class Actor:
                 # set new position
                 self.reset_position()
                 self.set_position(furthest_free_pos)
+            self.reset_size()
             return 0
 
         else:
@@ -277,11 +283,13 @@ class Actor:
 
                     self.switch_partner.switch_partner = None
                     self.switch_partner = None
+                self.reset_size()
                 return 0
             else:
                 # move to new position
                 limit = min(limit, self.switch_front_limit)
                 self.position = min(limit, self.position + self.switch_speed(self.switch_partner))
+        self.reset_size()
 
 
     def move_backward(self, limit):
@@ -321,8 +329,7 @@ class Actor:
                 # we can move backwards at least 1 spot
                 furthest_free_pos = self.position - 1
                 # calculate the furthest position we can get to
-                while self.plane.aisle.occupance[furthest_free_pos - 1] == 0 \
-                        and furthest_free_pos > limit:
+                while furthest_free_pos > limit and self.plane.aisle.occupance[furthest_free_pos - 1] == 0:
                     furthest_free_pos -= 1
 
                 # reset possible switch request
