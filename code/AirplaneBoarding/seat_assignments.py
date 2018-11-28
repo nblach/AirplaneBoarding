@@ -189,6 +189,30 @@ class Assignments:
     def generate_steffen_assignment(plane):
         return Assignments.generate_by_seat_assignment(plane, 1, 1, 1)
 
+    @staticmethod
+    def generate_by_half_row_assignment(plane, row_alternation):
+        row_alternation += 1
+        seats = np.empty(plane.rows*(plane.seatsRight + plane.seatsLeft), dtype = Seat)
+
+        index = 0
+        seats_on_side = plane.seatsLeft
+        for h in range(0, 2):
+            for i in range(0, row_alternation):
+                for j in range(0, ceil((plane.rows - i)/row_alternation)):
+                    half_row = np.empty(seats_on_side, dtype = int)
+                    for k in range(0, seats_on_side):
+                        half_row[k] = k+h*plane.seatsLeft
+                    np.random.shuffle(half_row)
+                    for k in range(0, seats_on_side):
+                        seats[index] = Seat(plane.rows-1 - (i+j*row_alternation),half_row[k])
+                        index += 1
+
+
+            seats_on_side = plane.seatsRight
+
+        return seats
+
+
 
     @staticmethod
     def generate_by_seat_assignment(plane, overall_alternate, letter_alternate, row_alternation):
