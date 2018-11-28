@@ -172,7 +172,6 @@ class Assignments:
 
 
 
-        #From A to ...
         index = 0
         for j in range(0, len(cols)):
             if alternating:

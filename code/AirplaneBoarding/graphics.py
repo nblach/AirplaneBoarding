@@ -251,7 +251,6 @@ class Animation:
 
 
     def display_compartment(self, capacity, i):
-        print('displaying compartment ', i, ' with left space ', capacity)
         y  = self.V_OFFSET_AISLE + self.WIDTH_AISLE + self.simulation.plane.seatsLeft * self.WIDTH_SEAT + self.WIDTH_WALL
         x = self.H_OFFSET_FIRST_ROW + i*self.LENGTH_COMPARTMENT
         self.screen.blit(self.compartment_delete, (x,y))
