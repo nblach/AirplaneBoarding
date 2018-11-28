@@ -173,9 +173,9 @@ class Assignments:
         seats = np.empty(plane.rows*(plane.seatsRight + plane.seatsLeft), dtype = Seat)
         cols = list()
         for i in range(0, plane.seatsLeft + plane.seatsRight):
-            new_col = np.empty(plane.rows, dtype = Seat)
+            new_col = np.empty(plane.rows, dtype = int)
             for j in range(0, plane.rows):
-                new_col[j] = Seat(j, i)
+                new_col[plane.rows-j-1] = j
             if not back_to_front:
                 np.random.shuffle(new_col)
             cols.append(new_col)
@@ -199,26 +199,18 @@ class Assignments:
                 side_2_limit = plane.seatsRight-1
 
 
-            index = 0
-            for j in range(0, len(cols)):
-                if j % 2 == 0:
-                    if side_1 != side_1_limit:
-                        col = cols[side_1]
-                        side_1 += side_1_inc
+
+        #From A to ...
+        index = 0
+        for j in range(0, len(cols)):
+            if alternating:
+                if j%2 == 0:
+                    j = int(j/2)
                 else:
-                    if side_2 != side_2_limit:
-                        col = cols[side_2]
-                        side_2 += side_2_inc
-                for i in range(0, plane.rows):
-                    seats[index] = col[i]
-                    index += 1
-        else:
-            #From A to ...
-            index = 0
-            for col in cols:
-                for i in range(0, plane.rows):
-                    seats[index] = col[i]
-                    index += 1
+                    j = plane.seatsLeft + plane.seatsRight - 1 - int(j/2)
+            for i in range(0, plane.rows):
+                seats[index] = Seat(cols[j][i], j)
+                index += 1
         return seats
 
 
