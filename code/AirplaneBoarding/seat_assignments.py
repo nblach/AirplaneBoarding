@@ -17,7 +17,7 @@ class Assignments:
         return seats
 
     @staticmethod
-    def generate_full_row_block_assignment(plane, number_of_blocks, sequence_index):
+    def generate_full_row_block_assignment(plane, number_of_blocks, sequence_index, alternation):
         seats = np.empty(plane.rows * (plane.seatsRight + plane.seatsLeft), dtype=Seat)
         blocks = list()
         for i in range(0, number_of_blocks-1):
@@ -43,23 +43,14 @@ class Assignments:
                     seats[index] = i[j]
                     index -= 1
         elif sequence_index == 1:  # blocks in alternating, decreasing order
-            # (first all odd index, then even index) (zero based)
-            index = len(seats) - 1
-            j = 1
-            for i in blocks:
-                if j % 2 == 1:
-                    for k in range(0, len(i)):
-                        seats[index] = i[k]
-                        index -= 1
-                j += 1
-
-            j = 1
-            for i in blocks:
-                if j % 2 == 0:
-                    for k in range(0, len(i)):
-                        seats[index] = i[k]
-                        index -= 1
-                j += 1
+            index = 0
+            for start in reversed(range(len(blocks)-1-alternation, len(blocks))):
+                i = start
+                while i >= 0:
+                    for k in range(0, len(blocks[i])):
+                        seats[index] = blocks[i][k]
+                        index += 1
+                    i -= (alternation + 1)
         else:  # blocks in random order
             shuffle(blocks)
             index = 0
