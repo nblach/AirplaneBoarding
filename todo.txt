@@ -1,13 +1,5 @@
 Nils:   seat assignments:
-			1. make by full bock alternation dynamic
-			2. make by full block alternating start from very back
 			3. finish by half block
-			4. fix alternation: 0 = no, x = skip x 
-			5. make by row start at very back
-			
-			6. make alternation work for every number
-
-
 
 Anton
 			1. by letter go A first instead of F
