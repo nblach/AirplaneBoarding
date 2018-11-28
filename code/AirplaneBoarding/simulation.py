@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from passenger_type import Passenger_Type
 from actor import Actor
 from seat_assignments import Assignments
@@ -30,9 +31,15 @@ MODE_STORING_TIME = 4
 
 class Simulation:
 
-    def __init__(self, number_of_actors, plane, seat_assignment_id, luggage_distribution_index):
+    def __init__(self, number_of_actors, plane, seat_assignment_id, luggage_distribution_index, random_seat_deletion):
         #TODO automate seat_assignment using seat_assignment_id
         self.seat_assignment = Assignments.generate_full_row_block_assignment(plane, 5, 1)
+        if random_seat_deletion:
+            adapted_seat_assignment = list(self.seat_assignment)
+            for i in range(0, len(self.seat_assignment) - number_of_actors):
+                index = random.randint(0, len(self.seat_assignment)-i)
+                del adapted_seat_assignment[index]
+            self.seat_assignment = adapted_seat_assignment
         self.actors = []
         self.plane = plane
         self.number_of_actors = number_of_actors
