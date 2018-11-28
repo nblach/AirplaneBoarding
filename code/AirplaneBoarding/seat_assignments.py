@@ -121,20 +121,30 @@ class Assignments:
             index = 0
             i = len(blocks_left)-1
             j = len(blocks_right)-2
-            for x in range(0, 2):
-                while i >= 0 or j >= 0:
-                    if i >= 0:
-                        for k in range(0, len(blocks_left[i])):
-                            seats[index] = blocks_left[i][k]
-                            index += 1
-                        i -= 2
-                    if j >= 0:
-                        for k in range(0, len(blocks_right[j])):
-                            seats[index] = blocks_right[j][k]
-                            index += 1
-                        j -= 2
-                i = len(blocks_left) - 2
-                j = len(blocks_right) - 1
+            while i >= 0 or j >= 0:
+                if i >= 0:
+                    for k in range(0, len(blocks_left[i])):
+                        seats[index] = blocks_left[i][k]
+                        index += 1
+                    i -= 2
+                if j >= 0:
+                    for k in range(0, len(blocks_right[j])):
+                        seats[index] = blocks_right[j][k]
+                        index += 1
+                    j -= 2
+            i = len(blocks_left) - 2
+            j = len(blocks_right) - 1
+            while i >= 0 or j >= 0:
+                if j >= 0:
+                    for k in range(0, len(blocks_right[j])):
+                        seats[index] = blocks_right[j][k]
+                        index += 1
+                    j -= 2
+                if i >= 0:
+                    for k in range(0, len(blocks_left[i])):
+                        seats[index] = blocks_left[i][k]
+                        index += 1
+                    i -= 2
         return seats
 
     @staticmethod
