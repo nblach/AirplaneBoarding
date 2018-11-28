@@ -136,7 +136,6 @@ class Animation:
 
 
     def display_frame(self, index):
-        print('freeing aisle')
         #free aisle
         for i in range(0, self.simulation.plane.rows):
             x = self.H_OFFSET_FIRST_ROW+i*self.LENGTH_ROW
@@ -150,13 +149,11 @@ class Animation:
             if arr[0] == -1:
                 continue
             self.display_passenger(arr[0], arr[1], arr[2], self.units_to_pixels(self.simulation.plane.actors[a].passenger_type.size) ,arr[3], a)
-            # print('displaying passenger ', a, ' in state ', arr[1], ' at pos ', arr[0])
 
 
 
         for c in range(0, self.simulation.plane.nr_compartments):
             self.display_compartment(self.simulation.simulation[index][1][c], c)
-            print(self.simulation.simulation[index][1][c], ' space left in compartment ', c)
 
         pygame.display.flip()
 
@@ -264,9 +261,10 @@ class Animation:
         x = self.H_OFFSET_FIRST_ROW + self.simulation.actors[id].seat.row_number*self.LENGTH_ROW
 
         col_nr = self.simulation.actors[id].seat.col_numbner
-        if col_nr < self.simulation.plane.seatsRight:
-            y = self.V_OFFSET_AISLE - (self.simulation.plane.seatsRight-col_nr)*self.WIDTH_SEAT
+
+        if col_nr < self.simulation.plane.seatsLeft:
+            y = self.V_OFFSET_AISLE + self.WIDTH_AISLE + (self.simulation.plane.seatsLeft-1-col_nr) * self.WIDTH_SEAT
         else:
-            y = self.V_OFFSET_AISLE + self.WIDTH_AISLE + (col_nr-self.simulation.plane.seatsRight) * self.WIDTH_SEAT
+            y = self.V_OFFSET_AISLE - (1+col_nr-self.simulation.plane.seatsLeft) * self.WIDTH_SEAT
 
         self.screen.blit(self.seat_occupied, (x,y))
