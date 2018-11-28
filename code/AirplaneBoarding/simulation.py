@@ -4,16 +4,16 @@ from passenger_type import Passenger_Type
 from actor import Actor
 from seat_assignments import Assignments
 
-PASSENGER_SIZE = 0.4
-PASSENGER_PERSONAL_SPACE = 0.2
+PASSENGER_SIZE = 0.5
+PASSENGER_PERSONAL_SPACE = 0.45
 
 UNIT_LENGTH = 0.001  # meter
 UNIT_TIME = 0.1  # seconds
 
 
-MAXIMUM_MOVING_SPEED = 3  # m/s
-MINIMUM_MOVING_SPEED = 0.3  # m/s
-MODE_MOVING_SPEED = 1
+MAXIMUM_MOVING_SPEED = 1.7  # m/s
+MINIMUM_MOVING_SPEED = 0.2  # m/s
+MODE_MOVING_SPEED = 0.8
 
 MAXIMUM_ROW_ENTER_TIME = 10  # m/s
 MINIMUM_ROW_ENTER_TIME = 2.5  # m/s
@@ -101,7 +101,7 @@ class Simulation:
         moving_speed = [Simulation.m_per_s_to_speed_unit(np.random.triangular(MINIMUM_MOVING_SPEED, MODE_MOVING_SPEED, MAXIMUM_MOVING_SPEED)), Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_ROW_ENTER_TIME, MODE_ROW_ENTER_TIME, MAXIMUM_ROW_ENTER_TIME)),
                         Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_EXIT_ROW_TIME, MODE_EXIT_ROW_TIME, MAXIMUM_EXIT_ROW_TIME))]
         storing_time = Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_STORE_TIME, MODE_STORING_TIME, MAXIMUM_STORE_TIME))
-        return Passenger_Type(number_of_bags, moving_speed, storing_time,  Simulation.meter_to_space_unit(PASSENGER_SIZE))
+        return Passenger_Type(number_of_bags, moving_speed, storing_time,  Simulation.meter_to_space_unit(PASSENGER_SIZE), Simulation.meter_to_space_unit(PASSENGER_PERSONAL_SPACE))
 
     def simulate(self):
         done = False

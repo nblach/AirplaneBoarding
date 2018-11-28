@@ -25,6 +25,7 @@ class Actor:
         self.position = -1
         self.luggage = passenger_type.number_of_bags
         self.plane = plane
+        self.personal_boarding_duration = 1
 
         # fields needed for switching
         self.switching = False
@@ -58,6 +59,7 @@ class Actor:
 
     # returns 1 if the actor is not in the plane yet
     def act(self):
+
             position_seat = self.plane.get_start_of_row(self.seat.row_number)
             compartment_current_position = self.plane.get_compartment_at_pos(self.position)
             # if because python does not have proper switch statements
@@ -75,6 +77,8 @@ class Actor:
                 else:
                     self.action = 3
                 return 0
+            else:
+                self.personal_boarding_duration += 1
 
             if self.action == 1:
                 if self.action_1 == 0:
@@ -160,7 +164,7 @@ class Actor:
                     if self.position < position_seat:
                         self.move_forward(position_seat)
                     else:
-                        self.move_backward(position_seat + self.plane.aisle.row_entry_size - self.passenger_type.size)
+                        self.move_backward(position_seat + self.plane.aisle.row_entry_size - self.passenger_type.physical_size)
                     return 0
 
             if self.action == 4:
@@ -377,7 +381,7 @@ class Actor:
 
 
     def can_enter_seat(self, seat_pos):
-        return (self.position >= seat_pos) and ((self.position + self.passenger_type.size-1) <= (seat_pos + self.plane.aisle.row_entry_size-1))
+        return (self.position >= seat_pos) and ((self.position + self.passenger_type.physical_size-1) <= (seat_pos + self.plane.aisle.row_entry_size-1))
 
 
     def set_position(self, position):
