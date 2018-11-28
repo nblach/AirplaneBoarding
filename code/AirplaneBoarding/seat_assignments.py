@@ -212,7 +212,6 @@ class Assignments:
                     np.random.shuffle(half_row)
                     for k in range(0, seats_on_side):
                         seats[index] = Seat(plane.rows-1 - (i+j*row_alternation),half_row[k])
-                        print('assigned seat ', seats[index].row_number,  ' ', seats[index].col_numbner)
                         index += 1
 
 
