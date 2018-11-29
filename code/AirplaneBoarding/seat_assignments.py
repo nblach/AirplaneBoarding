@@ -200,17 +200,24 @@ class Assignments:
     def generate_steffen_assignment(plane):
         seats = np.empty(plane.rows*(plane.seatsRight + plane.seatsLeft), dtype=Seat)
         index = 0
-        for i in range(0, 2):
-            for j in range(0, plane.seatsLeft + plane.seatsRight):
-                if j % 2 == 0:
-                    k = plane.seatsLeft + plane.seatsRight - 1 - int(j/2)
-                else:
-                    k = int(j/2)
-                m = plane.rows - 1 - i
-                while m >= 0:
-                    seats[index] = Seat(m, k)
-                    index += 1
-                    m -= 2
+        a = 0
+        b = plane.seatsRight + plane.seatsLeft - 1
+        while a < plane.seatsLeft or b >= plane.seatsLeft:
+            for i in range(0, 2):
+                if b >= plane.seatsLeft:
+                    m = plane.rows - 1 - i
+                    while m >= 0:
+                        seats[index] = Seat(m, b)
+                        index += 1
+                        m -= 2
+                if a < plane.seatsLeft:
+                    m = plane.rows - 1 - i
+                    while m >= 0:
+                        seats[index] = Seat(m, a)
+                        index += 1
+                        m -= 2
+            b -= 1
+            a += 1
         return seats
 
     @staticmethod
