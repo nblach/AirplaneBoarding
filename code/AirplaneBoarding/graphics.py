@@ -13,14 +13,14 @@ class Animation:
         self.SPACE_VERTICAL = 20
         self.WIDTH_AISLE = 40
         self.WIDTH_SEAT = 30
-        self.WIDTH_WALL = 10
+        self.WIDTH_WALL = 3
         self.WIDTH_PLANE = 2*self.WIDTH_WALL+self.WIDTH_AISLE+ (sim.plane.seatsLeft + sim.plane.seatsRight)*self.WIDTH_SEAT
         self.V_OFFSET_AISLE = self.SPACE_VERTICAL + self.WIDTH_WALL +  self.WIDTH_SEAT*sim.plane.seatsRight
         self.LENGTH_ROW = self.units_to_pixels(self.simulation.plane.length_of_row)
         self.LEG_ROOM = self.units_to_pixels(sim.plane.aisle.row_entry_size / 3)
         self.LENGTH_SEAT = self.LENGTH_ROW - self.LEG_ROOM
-        self.LENGTH_NOSE = 90
-        self.LENGTH_TAIL = 80
+        self.LENGTH_NOSE = 300
+        self.LENGTH_TAIL = 350
         self.H_OFFSET_FIRST_ROW = self.SPACE_HORIZONTAL + self.LENGTH_NOSE
         self.WIDTH_COMPARTMENT = 35
         self.LENGTH_COMPARTMENT = self.units_to_pixels(self.simulation.plane.compartment_length)
@@ -75,7 +75,7 @@ class Animation:
         self.compartment_delete = pygame.transform.scale(self.compartment_delete, (self.LENGTH_COMPARTMENT, self.WIDTH_COMPARTMENT))
 
         # initialize window
-        self.size = (self.H_OFFSET_FIRST_ROW+self.LENGTH_TAIL+self.SPACE_HORIZONTAL*2 + sim.plane.rows * self.LENGTH_ROW, 2*self.SPACE_VERTICAL + self.WIDTH_PLANE + self.WIDTH_COMPARTMENT)
+        self.size = (self.H_OFFSET_FIRST_ROW+self.LENGTH_TAIL+self.SPACE_HORIZONTAL*2 + sim.plane.rows * self.LENGTH_ROW, 2*self.SPACE_VERTICAL + self.WIDTH_PLANE + self.WIDTH_COMPARTMENT + 2)
         self.screen = pygame.display.set_mode(self.size)
         pygame.display.set_caption("Airplane Boarding Model")
         self.screen.fill([255,255,255])
@@ -196,7 +196,7 @@ class Animation:
         self.screen.blit(self.nose, (self.SPACE_HORIZONTAL, self.SPACE_VERTICAL))
         self.screen.blit(self.tail, (self.H_OFFSET_FIRST_ROW + self.simulation.plane.rows * self.LENGTH_ROW, self.SPACE_VERTICAL))
         self.screen.blit(self.wall, (self.H_OFFSET_FIRST_ROW, self.SPACE_VERTICAL))
-        self.screen.blit(self.wall, (self.H_OFFSET_FIRST_ROW + self.simulation.plane.rows * self.LENGTH_ROW, self.SPACE_VERTICAL))
+        self.screen.blit(self.wall, (self.H_OFFSET_FIRST_ROW , self.simulation.plane.seatsLeft * self.WIDTH_SEAT + self.V_OFFSET_AISLE + self.WIDTH_AISLE))
 
         self.display_empty_aisle()
 
@@ -254,7 +254,7 @@ class Animation:
 
 
     def display_compartment(self, capacity, i):
-        y  = self.V_OFFSET_AISLE + self.WIDTH_AISLE + self.simulation.plane.seatsLeft * self.WIDTH_SEAT + self.WIDTH_WALL
+        y  = 2 + self.V_OFFSET_AISLE + self.WIDTH_AISLE + self.simulation.plane.seatsLeft * self.WIDTH_SEAT + self.WIDTH_WALL
         x = self.H_OFFSET_FIRST_ROW + i*self.LENGTH_COMPARTMENT
         self.screen.blit(self.compartment_delete, (x,y))
         if capacity == 0:
