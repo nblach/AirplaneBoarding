@@ -18,7 +18,7 @@ class Animation:
         self.V_OFFSET_AISLE = self.SPACE_VERTICAL + self.WIDTH_WALL +  self.WIDTH_SEAT*sim.plane.seatsRight
         self.LENGTH_ROW = self.units_to_pixels(self.simulation.plane.length_of_row)
         #TODO calculate length seat properly
-        self.LENGTH_SEAT = self.LENGTH_ROW - 10 # should be shorter than row length
+        self.LENGTH_SEAT = self.LENGTH_ROW - self.units_to_pixels(sim.plane.aisle.row_entry_size) # should be shorter than row length
         self.LENGTH_NOSE = 90
         self.LENGTH_TAIL = 80
         self.H_OFFSET_FIRST_ROW = self.SPACE_HORIZONTAL + self.LENGTH_NOSE

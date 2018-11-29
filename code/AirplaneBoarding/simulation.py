@@ -116,7 +116,7 @@ class Simulation:
             prev_actor = -1
             # loop backwards through aisle and store order of actors in list
             acting_order = list()
-            for x in reversed(range(0, self.plane.length)):
+            for x in reversed(range(0, len(self.plane.aisle.occupance))):
                 if self.plane.aisle.occupance[x] != prev_actor and self.plane.aisle.occupance[x] > 0:
                     acting_order.append(self.actors[self.plane.aisle.occupance[x]-1])
                     prev_actor = self.plane.aisle.occupance[x]
@@ -128,7 +128,6 @@ class Simulation:
                 next_actor_in += 1
 
             frame = (np.zeros((self.number_of_actors,4), dtype=int), np.zeros(self.plane.nr_compartments, dtype=int))
-            # TODO change shit what anton wants
             for a in self.actors:
                 frame[0][j, 0] = a.position
                 frame[0][j, 1] = a.action

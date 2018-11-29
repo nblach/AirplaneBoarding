@@ -83,7 +83,7 @@ class Actor:
             if self.action == 1:
                 if self.action_1 == 0:
                     # Can we see our seat?
-                    if  position_seat > (self.passenger_type.field_of_view + self.position):
+                    if position_seat > (self.passenger_type.field_of_view + self.position):
                         # We cannot see our seat, move forward
                         self.move_forward(None)  # limit would be position_seat, but in this case, the limit can
                         # be dropped due to constraints speed<row_length<fov
@@ -204,13 +204,8 @@ class Actor:
         self.plane.seat_occupance[self.seat.row_number][self.seat.col_number] = \
             self.passenger_type.moving_speed[2] + self.passenger_type.moving_speed[1]
 
-    def reset_size(self):
-        if self.passenger_type.size == self.passenger_type.physical_size:
-            self.passenger_type.size += self.passenger_type.personal_space
 
     def move_forward(self, limit):
-        if self.position + self.size >= self.plane.length:
-            self.passenger_type.size = self.passenger_type.physical_size
         # limit is inclusive
         # limit might equal None
         if not limit:
@@ -256,7 +251,6 @@ class Actor:
                 # set new position
                 self.reset_position()
                 self.set_position(furthest_free_pos)
-            self.reset_size()
             return 0
 
         else:
@@ -283,13 +277,11 @@ class Actor:
 
                     self.switch_partner.switch_partner = None
                     self.switch_partner = None
-                self.reset_size()
                 return 0
             else:
                 # move to new position
                 limit = min(limit, self.switch_front_limit)
                 self.position = min(limit, self.position + self.switch_speed(self.switch_partner))
-        self.reset_size()
 
 
     def move_backward(self, limit):
