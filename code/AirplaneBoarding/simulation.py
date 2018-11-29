@@ -33,7 +33,7 @@ class Simulation:
 
     def __init__(self, number_of_actors, plane, seat_assignment_id, luggage_distribution_index, random_seat_deletion):
         #TODO automate seat_assignment using seat_assignment_id
-        self.seat_assignment = Assignments.generate_full_row_block_assignment(plane, 6, 1, 1)
+        self.seat_assignment = Assignments.generate_steffen_assignment(plane)
         if random_seat_deletion:
             adapted_seat_assignment = list(self.seat_assignment)
             for i in range(0, len(self.seat_assignment) - number_of_actors):
@@ -95,13 +95,12 @@ class Simulation:
 
 
 
-    @staticmethod
-    def get_random_passenger(number_of_bags):
+    def get_random_passenger(self, number_of_bags):
         # test data
         moving_speed = [Simulation.m_per_s_to_speed_unit(np.random.triangular(MINIMUM_MOVING_SPEED, MODE_MOVING_SPEED, MAXIMUM_MOVING_SPEED)), Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_ROW_ENTER_TIME, MODE_ROW_ENTER_TIME, MAXIMUM_ROW_ENTER_TIME)),
                         Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_EXIT_ROW_TIME, MODE_EXIT_ROW_TIME, MAXIMUM_EXIT_ROW_TIME))]
         storing_time = Simulation.sec_to_time_unit(np.random.triangular(MINIMUM_STORE_TIME, MODE_STORING_TIME, MAXIMUM_STORE_TIME))
-        return Passenger_Type(number_of_bags, moving_speed, storing_time,  Simulation.meter_to_space_unit(PASSENGER_SIZE), Simulation.meter_to_space_unit(PASSENGER_PERSONAL_SPACE))
+        return Passenger_Type(number_of_bags, moving_speed, storing_time,  Simulation.meter_to_space_unit(PASSENGER_SIZE), Simulation.meter_to_space_unit(PASSENGER_PERSONAL_SPACE), 3 * self.plane.length_of_row)
 
     def simulate(self):
         done = False

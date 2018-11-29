@@ -61,7 +61,7 @@ class Actor:
     def act(self):
 
             position_seat = self.plane.get_start_of_row(self.seat.row_number)
-            compartment_current_position = self.plane.get_compartment_at_pos(self.position)
+            compartment_current_position = self.plane.get_compartment_at_pos(self.position+ self.passenger_type.physical_size-1)
             # if because python does not have proper switch statements
             if self.action == 0:
 
@@ -206,6 +206,7 @@ class Actor:
 
 
     def move_forward(self, limit):
+        #print('moving forward ', limit, ' pos: ', self.position, ' seat pos ', self.plane.get_start_of_row(self.seat.row_number))
         # limit is inclusive
         # limit might equal None
         if not limit:
