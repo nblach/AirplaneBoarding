@@ -17,8 +17,8 @@ class Animation:
         self.WIDTH_PLANE = 2*self.WIDTH_WALL+self.WIDTH_AISLE+ (sim.plane.seatsLeft + sim.plane.seatsRight)*self.WIDTH_SEAT
         self.V_OFFSET_AISLE = self.SPACE_VERTICAL + self.WIDTH_WALL +  self.WIDTH_SEAT*sim.plane.seatsRight
         self.LENGTH_ROW = self.units_to_pixels(self.simulation.plane.length_of_row)
-        #TODO calculate length seat properly
-        self.LENGTH_SEAT = self.LENGTH_ROW - self.units_to_pixels(sim.plane.aisle.row_entry_size) # should be shorter than row length
+        self.LEG_ROOM = self.units_to_pixels(sim.plane.aisle.row_entry_size / 4)
+        self.LENGTH_SEAT = self.LENGTH_ROW - self.LEG_ROOM# should be shorter than row length
         self.LENGTH_NOSE = 90
         self.LENGTH_TAIL = 80
         self.H_OFFSET_FIRST_ROW = self.SPACE_HORIZONTAL + self.LENGTH_NOSE
@@ -157,9 +157,7 @@ class Animation:
 
     def display_frame(self, index):
         #free aisle
-        for i in range(0, self.simulation.plane.rows):
-            x = self.H_OFFSET_FIRST_ROW+i*self.LENGTH_ROW
-            self.screen.blit(self.aisle, (x, self.V_OFFSET_AISLE))
+        self.display_empty_aisle()
 
 
         # display all actors
@@ -168,7 +166,7 @@ class Animation:
             # if actor not in plane, do not display them
             if arr[0] == -1:
                 continue
-            self.display_passenger(arr[0], arr[1], arr[2], self.units_to_pixels(self.simulation.plane.actors[a].passenger_type.size) ,arr[3], a)
+            self.display_passenger(arr[0], arr[1], arr[2], self.units_to_pixels(self.simulation.plane.actors[a].passenger_type.physical_size) ,arr[3], a)
 
 
 
@@ -185,6 +183,13 @@ class Animation:
         pygame.quit()
 
 
+    def display_empty_aisle(self):
+        for i in range(0, self.simulation.plane.rows):
+            x = self.H_OFFSET_FIRST_ROW+i*self.LENGTH_ROW
+            self.screen.blit(self.aisle, (x, self.V_OFFSET_AISLE))
+
+
+
 
     def print_empty_plane(self):
         # display nose, tail and wall
@@ -193,14 +198,15 @@ class Animation:
         self.screen.blit(self.wall, (self.H_OFFSET_FIRST_ROW, self.SPACE_VERTICAL))
         self.screen.blit(self.wall, (self.H_OFFSET_FIRST_ROW + self.simulation.plane.rows * self.LENGTH_ROW, self.SPACE_VERTICAL))
 
-        #display rows and aisle
+        self.display_empty_aisle()
+
+        #display rows
         for i in range(0, self.simulation.plane.rows):
-            x = self.H_OFFSET_FIRST_ROW+i*self.LENGTH_ROW
+            x = self.H_OFFSET_FIRST_ROW+i*self.LENGTH_ROW + self.LEG_ROOM
             y_top = self.SPACE_VERTICAL + self.WIDTH_WALL
 
             for j in range(0, self.simulation.plane.seatsRight):
                 self.screen.blit(self.seat_empty, (x, y_top + j*self.WIDTH_SEAT))
-            self.screen.blit(self.aisle, (x, self.V_OFFSET_AISLE))
             for j in range(0, self.simulation.plane.seatsLeft):
                 self.screen.blit(self.seat_empty, (x, y_top + (j+self.simulation.plane.seatsRight)*self.WIDTH_SEAT + self.WIDTH_AISLE))
 
