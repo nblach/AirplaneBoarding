@@ -8,7 +8,7 @@ class Aisle:
         self.plane = plane
         self.units_per_row = units_per_row
         self.row_entry_size = row_entry_size
-        self.occupance = np.full(plane.length + simulation.PASSENGER_PERSONAL_SPACE, 0, dtype=int)
+        self.occupance = np.full(plane.length + simulation.Simulation.meter_to_space_unit(simulation.PASSENGER_PERSONAL_SPACE), 0, dtype=int)
 
     """
     plane := ???????
