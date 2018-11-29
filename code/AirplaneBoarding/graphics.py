@@ -17,8 +17,8 @@ class Animation:
         self.WIDTH_PLANE = 2*self.WIDTH_WALL+self.WIDTH_AISLE+ (sim.plane.seatsLeft + sim.plane.seatsRight)*self.WIDTH_SEAT
         self.V_OFFSET_AISLE = self.SPACE_VERTICAL + self.WIDTH_WALL +  self.WIDTH_SEAT*sim.plane.seatsRight
         self.LENGTH_ROW = self.units_to_pixels(self.simulation.plane.length_of_row)
-        self.LEG_ROOM = self.units_to_pixels(sim.plane.aisle.row_entry_size / 4)
-        self.LENGTH_SEAT = self.LENGTH_ROW - self.LEG_ROOM# should be shorter than row length
+        self.LEG_ROOM = self.units_to_pixels(sim.plane.aisle.row_entry_size / 3)
+        self.LENGTH_SEAT = self.LENGTH_ROW - self.LEG_ROOM
         self.LENGTH_NOSE = 90
         self.LENGTH_TAIL = 80
         self.H_OFFSET_FIRST_ROW = self.SPACE_HORIZONTAL + self.LENGTH_NOSE
@@ -283,7 +283,7 @@ class Animation:
 
 
     def display_occ_seat(self, id):
-        x = self.H_OFFSET_FIRST_ROW + self.simulation.actors[id].seat.row_number*self.LENGTH_ROW
+        x = self.H_OFFSET_FIRST_ROW + self.simulation.actors[id].seat.row_number*self.LENGTH_ROW + self.LEG_ROOM
 
         col_nr = self.simulation.actors[id].seat.col_number
 
