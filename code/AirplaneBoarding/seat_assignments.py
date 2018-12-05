@@ -8,6 +8,25 @@ from math import ceil
 class Assignments:
 
     @staticmethod
+    def generate_seat_assignment(index, plane, first, second, third):
+        if index == 0:
+            return Assignments.generate_random_assignment(plane)
+        elif index == 1:
+            return Assignments.generate_full_row_block_assignment(plane, first, second, third)
+        elif index == 2:
+            return Assignments.generate_half_row_block_assignment(plane, first, second, third)
+        elif index == 3:
+            return Assignments.generate_by_row_assignment(plane, first)
+        elif index == 4:
+            return Assignments.generate_by_half_row_assignment(plane, first, second)
+        elif index == 5:
+            return Assignments.generate_by_letter_assignment(plane, first, second)
+        elif index == 6:
+            return Assignments.generate_by_seat_assignment(plane, first, second, third)
+        else:
+            return Assignments.generate_steffen_assignment(plane)
+
+    @staticmethod
     def generate_random_assignment(plane):
         seats = np.empty(plane.rows * (plane.seatsRight + plane.seatsLeft), dtype=Seat)
         for i in range(0, plane.rows):

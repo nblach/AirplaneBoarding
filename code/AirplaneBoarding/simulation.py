@@ -34,12 +34,15 @@ MODE_STORING_TIME = 9
 
 class Simulation:
 
-    def __init__(self, number_of_actors, plane, seat_assignment_id, luggage_distribution_index, random_seat_deletion):
+    def __init__(self, number_of_actors, plane, luggage_distribution_index, seat_assignment_id, first_seat_assignment_input, second_seat_assignment_input, third_seat_assignment_input, random_seat_deletion):
 
 
 
         #TODO automate seat_assignment using seat_assignment_id
-        self.seat_assignment = Assignments.generate_random_assignment(plane)
+        self.seat_assignment = Assignments.generate_seat_assignment(seat_assignment_id, plane,
+                                                                    first_seat_assignment_input,
+                                                                    second_seat_assignment_input,
+                                                                    third_seat_assignment_input)
         if random_seat_deletion:
             adapted_seat_assignment = list(self.seat_assignment)
             for i in range(0, len(self.seat_assignment) - number_of_actors):
@@ -48,15 +51,13 @@ class Simulation:
             self.seat_assignment = adapted_seat_assignment
         self.actors = []
 
-
-
         self.plane = plane
         self.number_of_actors = number_of_actors
         # can either be the index for the old version for the ditribution or a percentage, indicating how full the compartements are
         self.luggage_distribution_index = luggage_distribution_index
 
         # fill actors[] with random actors
-        luggage_distribution = self.get_luggage_distribution()
+        luggage_distribution = self.get_luggage_distribution_given_capacity()
         for i in range(1, self.number_of_actors+1):
             actor = Actor(i, self.get_random_passenger(luggage_distribution[i-1]), self.seat_assignment[i-1], 0, plane)
             self.actors.append(actor)
@@ -73,8 +74,20 @@ class Simulation:
     Passenger luggage load is chosen by us, so we can have different set ups. 
     In the paper they had two options normal and high load. 
     """
-    def get_luggage_distirbution_given_capacity(self):
-        total_number_of_pieces = int(self.luggage_distribution_index * self.plane.com
+    def get_luggage_distribution_given_capacity(self):
+        total_number_of_pieces = int(self.luggage_distribution_index * self.plane.nr_compartments * self.plane.compartment_size * 2 * 0.01)
+        luggage_distribution = np.zeros(self.number_of_actors, dtype=int)
+        if total_number_of_pieces > self.number_of_actors*2 or self.luggage_distribution_index > 100 or self.luggage_distribution_index < 0:
+            raise ValueError('ERROR: Either you have not enough passengers to fill the compartments of the plane '
+                             'to 100 percent occupance, or the percentage you have given is not within 0 to 100')
+        for i in range (0, total_number_of_pieces):
+            while True:
+                j = np.random.randint(0, self.number_of_actors)
+                if luggage_distribution[j] < 2:
+                    luggage_distribution[j] += 1
+                    break
+        return luggage_distribution
+
 
     # This method is in early retirement, but might has to come back
     def get_luggage_distribution(self):
@@ -157,7 +170,7 @@ class Simulation:
             i += 1
             if actors_seated == self.number_of_actors:
                 done = True
-               	print('Boarding took: ', i/600, ' minutes')
+                print('Boarding took: ', i/600, ' minutes')
 
         for i in range(0, self.number_of_actors):
             self.actor_boarding_times[i] = round(self.actors[i].personal_boarding_duration * 0.1)
