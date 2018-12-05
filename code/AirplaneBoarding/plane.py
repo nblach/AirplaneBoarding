@@ -6,13 +6,7 @@ import numpy as np
 
 class Plane:
 
-    def __init__(self, id):
-        if id == 0:
-            return self.bombardier_cs_100()
-        elif id == 1:
-            return self.airbus_a_320_200()
-        else:
-            return self.plane_from_paper()
+
 
     def __init__(self, id, seats_left, seats_right, rows, length_of_row, row_entry_size, compartment_size, compartment_length):
 
