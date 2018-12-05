@@ -4,28 +4,30 @@ from passenger_type import Passenger_Type
 from actor import Actor
 from seat_assignments import Assignments
 
-PASSENGER_SIZE = 0.5
-PASSENGER_PERSONAL_SPACE = 0.45
+PASSENGER_SIZE = 0.25 + 0.21
+PASSENGER_PERSONAL_SPACE = PASSENGER_SIZE
 
 UNIT_LENGTH = 0.001  # meter
 UNIT_TIME = 0.1  # seconds
 
+SEAT_PITCH_2002 = 0.813  # m
+passing_one_row_seconds = [1.8, 2.4, 3.0]
+MAXIMUM_MOVING_SPEED = SEAT_PITCH_2002/passing_one_row_seconds[0]  # m/s
+MINIMUM_MOVING_SPEED = SEAT_PITCH_2002/passing_one_row_seconds[2]  # m/s
+MODE_MOVING_SPEED = SEAT_PITCH_2002/passing_one_row_seconds[1]  # m/s
 
-MAXIMUM_MOVING_SPEED = 1.7  # m/s
-MINIMUM_MOVING_SPEED = 0.2  # m/s
-MODE_MOVING_SPEED = 0.8
-
-MAXIMUM_ROW_ENTER_TIME = 10  # m/s
-MINIMUM_ROW_ENTER_TIME = 2.5  # m/s
-MODE_ROW_ENTER_TIME = 4
-
-MAXIMUM_EXIT_ROW_TIME = 15  # m/s
-MINIMUM_EXIT_ROW_TIME = 5  # m/s
+MAXIMUM_EXIT_ROW_TIME = 15  # s
+MINIMUM_EXIT_ROW_TIME = 5  # s
 MODE_EXIT_ROW_TIME = 7.5
 
-MAXIMUM_STORE_TIME = 14.5  # s
-MINIMUM_STORE_TIME = 1.5  # s
-MODE_STORING_TIME = 4
+MAXIMUM_ROW_ENTER_TIME = MAXIMUM_EXIT_ROW_TIME  # s
+MINIMUM_ROW_ENTER_TIME = MINIMUM_EXIT_ROW_TIME  # s
+MODE_ROW_ENTER_TIME = MODE_EXIT_ROW_TIME
+
+
+MAXIMUM_STORE_TIME = 17  # s
+MINIMUM_STORE_TIME = 3  # s
+MODE_STORING_TIME = 9
 
 
 
@@ -56,7 +58,7 @@ class Simulation:
 
     """
     Passenger moving speed data is given in from of a triangular distribution (it was recoded for Short Haul airplanes):
-        passing_one_row_seconds = [1.8, 2.4, 3.0] seconds per row - average row size around 2002 was 0.87m
+        passing_one_row_seconds = [1.8, 2.4, 3.0] seconds per row - average row size around 2002 was 0.813m
         install_in_seat_seconds = [6.0, 9.0, 30.0] seconds
         exit_from_seat_into_aisle = [3.0, 3.6, 4.2] seconds
     Passenger luggage load is chosen by us, so we can have different set ups. 
