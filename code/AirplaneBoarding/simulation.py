@@ -52,6 +52,7 @@ class Simulation:
 
         self.plane = plane
         self.number_of_actors = number_of_actors
+        # can either be the index for the old version for the ditribution or a percentage, indicating how full the compartements are
         self.luggage_distribution_index = luggage_distribution_index
 
         # fill actors[] with random actors
@@ -62,6 +63,7 @@ class Simulation:
         self.plane.actors = self.actors
         # simulation[] will contain all states observed during simulation (in order)
         self.simulation = list()
+        self.actor_boarding_times = np.zeros(self.number_of_actors, dtype=int)
 
     """
     Passenger moving speed data is given in from of a triangular distribution (it was recoded for Short Haul airplanes):
@@ -71,7 +73,10 @@ class Simulation:
     Passenger luggage load is chosen by us, so we can have different set ups. 
     In the paper they had two options normal and high load. 
     """
+    def get_luggage_distirbution_given_capacity(self):
+        total_number_of_pieces = int(self.luggage_distribution_index * self.plane.com
 
+    # This method is in early retirement, but might has to come back
     def get_luggage_distribution(self):
         load_distribution = [[0.6, 0.3, 0.1], [0.2, 0.6, 0.2]]
         total_number_of_pieces = 0
@@ -152,6 +157,8 @@ class Simulation:
             i += 1
             if actors_seated == self.number_of_actors:
                 done = True
+        for i in range(0, self.number_of_actors):
+            self.actor_boarding_times[i] = round(self.actors[i].personal_boarding_duration * 0.1)
 
     @staticmethod
     def m_per_s_to_speed_unit(speed):
