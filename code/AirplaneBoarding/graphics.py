@@ -11,7 +11,7 @@ class Animation:
         self.PIXELS_PER_UNIT = 0.05
         self.SPACE_HORIZONTAL = 20
         self.SPACE_VERTICAL = 20
-        self.WIDTH_AISLE = 40
+        self.WIDTH_AISLE = 30
         self.WIDTH_SEAT = 30
         self.WIDTH_WALL = 3
         self.WIDTH_PLANE = 2*self.WIDTH_WALL+self.WIDTH_AISLE+ (sim.plane.seatsLeft + sim.plane.seatsRight)*self.WIDTH_SEAT

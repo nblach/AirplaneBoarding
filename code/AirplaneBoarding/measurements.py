@@ -6,7 +6,7 @@ import csv
 def comparison_to_paper():
 
     plane = Plane(3, 0, 0, 0, 0, 0, 0, 0)
-    load = 60#TODO
+    load = 100#TODO
     number_of_actors = 138
     luggage_distribution_index = 1 #TODO
     random_seat_deletion = 1
@@ -27,7 +27,7 @@ def comparison_to_paper():
         print(line)
         labels.append(line[0])
         for j in range(0,5):
-            sim = Simulation(number_of_actors, plane, luggage_distribution_index, line[1], line[2], line[3], line[4], random_seat_deletion)
+            sim = Simulation(number_of_actors, plane, load, line[1], line[2], line[3], line[4], random_seat_deletion)
             sim.simulate()
             times_total[i][j] = sim.boarding_time_total
             acc = 0
