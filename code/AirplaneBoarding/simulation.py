@@ -4,8 +4,9 @@ from passenger_type import Passenger_Type
 from actor import Actor
 from seat_assignments import Assignments
 
-PASSENGER_SIZE = 0.25 + 0.21
-PASSENGER_PERSONAL_SPACE = PASSENGER_SIZE
+
+PASSENGER_SIZE = 0.25
+PASSENGER_PERSONAL_SPACE = PASSENGER_SIZE + 0.21
 
 UNIT_LENGTH = 0.001  # meter
 UNIT_TIME = 0.1  # seconds
@@ -34,6 +35,9 @@ MODE_STORING_TIME = 9
 class Simulation:
 
     def __init__(self, number_of_actors, plane, seat_assignment_id, luggage_distribution_index, random_seat_deletion):
+
+
+
         #TODO automate seat_assignment using seat_assignment_id
         self.seat_assignment = Assignments.generate_steffen_assignment(plane)
         if random_seat_deletion:
@@ -43,6 +47,9 @@ class Simulation:
                 del adapted_seat_assignment[index]
             self.seat_assignment = adapted_seat_assignment
         self.actors = []
+
+
+
         self.plane = plane
         self.number_of_actors = number_of_actors
         self.luggage_distribution_index = luggage_distribution_index

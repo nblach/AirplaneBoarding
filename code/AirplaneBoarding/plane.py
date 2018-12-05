@@ -6,8 +6,45 @@ import numpy as np
 
 class Plane:
 
-    def __init__(self, seats_left, seats_right, rows, length_of_row, row_entry_size, compartment_size, compartment_length):
+    def __init__(self, id):
+        if id == 0:
+            return self.bombardier_cs_100()
+        elif id == 1:
+            return self.airbus_a_320_200()
+        else:
+            return self.plane_from_paper()
 
+    def __init__(self, id, seats_left, seats_right, rows, length_of_row, row_entry_size, compartment_size, compartment_length):
+
+        if id == 1:
+            # Bombardier CS100
+            seats_left = 2
+            seats_right = 3
+            rows = 25
+            length_of_row = 0.787
+            row_entry_size = (2/5) * 0.787
+            compartment_size = 3
+            compartment_length = 1.35
+        elif id == 2:
+            # Airbus A320-200
+            seats_left = 3
+            seats_right = 3
+            rows = 30
+            length_of_row = 0.787
+            row_entry_size = (2/5) * 0.787
+            compartment_size = 5
+            compartment_length = 2.2
+        elif id == 3:
+            # Plane from paper
+            seats_left = 3
+            seats_right = 3
+            rows = 23
+            length_of_row = 0.813
+            row_entry_size = (2/5) * 0.813
+            compartment_size = 3
+            compartment_length = 1.35
+
+        #else create custom plane
         row_entry_size = Simulation.meter_to_space_unit(row_entry_size)
         length_of_row = Simulation.meter_to_space_unit(length_of_row)
         compartment_length = Simulation.meter_to_space_unit(compartment_length)
@@ -33,3 +70,7 @@ class Plane:
 
     def get_compartment_at_pos(self, position):
         return self.compartments[int(position/self.compartment_length)]
+
+
+
+
