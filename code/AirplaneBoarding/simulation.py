@@ -39,7 +39,7 @@ class Simulation:
 
 
         #TODO automate seat_assignment using seat_assignment_id
-        self.seat_assignment = Assignments.generate_steffen_assignment(plane)
+        self.seat_assignment = Assignments.generate_random_assignment(plane)
         if random_seat_deletion:
             adapted_seat_assignment = list(self.seat_assignment)
             for i in range(0, len(self.seat_assignment) - number_of_actors):
@@ -78,7 +78,7 @@ class Simulation:
 
     # This method is in early retirement, but might has to come back
     def get_luggage_distribution(self):
-        load_distribution = [[0.6, 0.3, 0.1], [0.2, 0.6, 0.2]]
+        load_distribution = [[0.35, 0.6, 0.5], [0.2, 0.6, 0.2]]
         total_number_of_pieces = 0
         maximum_luggage_capacity = self.plane.nr_compartments * self.plane.compartment_size * 2
         luggage_distribution = np.zeros(self.number_of_actors, dtype=int)
@@ -157,6 +157,8 @@ class Simulation:
             i += 1
             if actors_seated == self.number_of_actors:
                 done = True
+               	print('Boarding took: ', i/600, ' minutes')
+
         for i in range(0, self.number_of_actors):
             self.actor_boarding_times[i] = round(self.actors[i].personal_boarding_duration * 0.1)
 
