@@ -6,8 +6,7 @@ import graphics
 
 def comparison_to_paper():
 
-    plane = Plane(3, 0, 0, 0, 0, 0, 0, 0)
-    load = 100#TODO
+    load = 90
     number_of_actors = 138
     luggage_distribution_index = 1 #TODO
     random_seat_deletion = 1
@@ -30,10 +29,9 @@ def comparison_to_paper():
         print(line)
         labels.append(line[0])
         for j in range(0,5):
+            plane = Plane(3, 0, 0, 0, 0, 0, 0, 0)
             sim = Simulation(number_of_actors, plane, load, int(line[1]), int(line[2]), int(line[3]), int(line[4]), random_seat_deletion)
             sim.simulate()
-            animation = graphics.Animation(sim)
-            animation.animate(4)
             times_total[i][j] = sim.boarding_time_total
             acc = 0
             for x in sim.actors:
