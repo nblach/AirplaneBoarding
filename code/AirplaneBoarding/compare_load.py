@@ -7,15 +7,18 @@ size = (21,5)
 
 
 
-def f(start, number, arr, x):
+def f(start, number, times_random_in, times_steffen_in, x):
 
     temp_times = measurements.compare_by_load(start, number)
-    times = np.frombuffer(arr.get_obj())
-    times = np.reshape(times, size)
+    times_random_local = np.frombuffer(times_random_in.get_obj())
+    times_random_local = np.reshape(times_random_local, size)
+    times_steffen_local = np.frombuffer(times_steffen_in.get_obj())
+    times_steffen_local = np.reshape(times_steffen_local, size)
 
     for i in range(start, start+number):
         for j in range(0, 5):
-            times[i][j] = temp_times[x][i][j]
+            times_random_local[i][j] = temp_times[0][i][j]
+            times_steffen_local[i][j] = temp_times[1][i][j]
 
 if __name__ == '__main__':
 
@@ -24,7 +27,7 @@ if __name__ == '__main__':
     times_random = Array(c.c_double, 21 * 5)
     times_steffen = Array(c.c_double, 21 * 5)
 
-    for i in range(0, 1):
+    for i in range(0, 21):
         processes.append(Process(target=f, args=(i, 1, times_random, 0)))
         processes[i*2].start()
         processes.append(Process(target=f, args=(i, 1, times_steffen, 1)))
