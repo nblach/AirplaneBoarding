@@ -28,10 +28,8 @@ if __name__ == '__main__':
     times_steffen = Array(c.c_double, 21 * 5)
 
     for i in range(0, 21):
-        processes.append(Process(target=f, args=(i, 1, times_random, 0)))
-        processes[i*2].start()
-        processes.append(Process(target=f, args=(i, 1, times_steffen, 1)))
-        processes[i*2+1].start()
+        processes.append(Process(target=f, args=(i, 1, times_random, times_steffen, 0)))
+        processes[i].start()
 
     for p in processes:
         p.join()
