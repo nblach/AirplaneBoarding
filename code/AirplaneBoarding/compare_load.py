@@ -7,7 +7,7 @@ size = (21,5)
 
 
 
-def f(start, number, times_random_in, times_steffen_in, x):
+def f(start, number, times_random_in, times_steffen_in):
 
     temp_times = measurements.compare_by_load(start, number)
     times_random_local = np.frombuffer(times_random_in.get_obj())
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     times_steffen = Array(c.c_double, 21 * 5)
 
     for i in range(0, 21):
-        processes.append(Process(target=f, args=(i, 1, times_random, times_steffen, 0)))
+        processes.append(Process(target=f, args=(i, 1, times_random, times_steffen)))
         processes[i].start()
 
     for p in processes:
