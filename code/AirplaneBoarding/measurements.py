@@ -4,7 +4,7 @@ from plane import Plane
 import csv
 #import graphics
 
-def comparison_to_paper():
+def comparison_to_paper(start, number):
 
     load = 90
     number_of_actors = 138
@@ -12,8 +12,8 @@ def comparison_to_paper():
     random_seat_deletion = 1
 
     nr_of_methods_total = 47
-    nr_of_methods =  1 #47
-    offset = 36
+    nr_of_methods =  number #47
+    offset = start
 
     labels = []
     times_total = np.zeros((nr_of_methods_total, 5), dtype=float)
@@ -38,23 +38,19 @@ def comparison_to_paper():
                acc += x.personal_boarding_duration
             times_individual[i][j] = acc*(1/600)/number_of_actors
 
+        f.close()
+        return [times_total, times_individual]
 
+
+def write_results_methods_test(times_total, times_individual, nr_of_methods):
     with open('output_test_methods3.csv', mode='w') as output_file:
         output_writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         output_writer.writerow(['Method', 'Boarding Time 1','Boarding Time 2', 'Boarding Time 3', 'Boarding Time 4', 'Boarding Time 5',  'Individual Time 1',  'Individual Time 2',  'Individual Time 3',  'Individual Time 4',  'Individual Time 5'])
 
         for i in range(0, nr_of_methods):
-            i = i+offset
             output_writer.writerow([times_total[i][0], times_total[i][1], times_total[i][2], times_total[i][3], times_total[i][4], times_individual[i][0], times_individual[i][1], times_individual[i][2], times_individual[i][3], times_individual[i][4]])
 
 
 
 
 
-
-
-
-
-
-
-    f.close()

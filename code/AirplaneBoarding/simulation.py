@@ -75,7 +75,7 @@ class Simulation:
     """
     def get_luggage_distribution_given_capacity(self):
         total_number_of_pieces = int((self.luggage_distribution_index/100) * self.plane.nr_compartments * self.plane.compartment_size * 2)
-        print(total_number_of_pieces)
+        #print(total_number_of_pieces)
         luggage_distribution = np.zeros(self.number_of_actors, dtype=int)
         if total_number_of_pieces > self.number_of_actors*2 or self.luggage_distribution_index > 100 or self.luggage_distribution_index < 0:
             raise ValueError('ERROR: Either you have not enough passengers to fill the compartments of the plane '
@@ -135,8 +135,8 @@ class Simulation:
         next_actor_in = 0
 
         while not done:
-            if i%100 == 0:
-                print('still going strong ', i)
+            #if i%100 == 0:
+                #print('still going strong ', i)
             j = 0
             actors_seated = 0
             prev_actor = -1
@@ -170,7 +170,7 @@ class Simulation:
             i += 1
             if actors_seated == self.number_of_actors:
                 done = True
-                print('Boarding took: ', i/600, ' minutes')
+                #print('Boarding took: ', i/600, ' minutes')
                 self.boarding_time_total = i/600
 
         for i in range(0, self.number_of_actors):
