@@ -75,7 +75,7 @@ class Simulation:
     In the paper they had two options normal and high load. 
     """
     def get_luggage_distribution_given_capacity(self):
-        total_number_of_pieces = int(self.luggage_distribution_index * self.plane.nr_compartments * self.plane.compartment_size * 2 * 0.01)
+        total_number_of_pieces = int((self.luggage_distribution_index/100) * self.plane.nr_compartments * self.plane.compartment_size * 2)
         luggage_distribution = np.zeros(self.number_of_actors, dtype=int)
         if total_number_of_pieces > self.number_of_actors*2 or self.luggage_distribution_index > 100 or self.luggage_distribution_index < 0:
             raise ValueError('ERROR: Either you have not enough passengers to fill the compartments of the plane '
