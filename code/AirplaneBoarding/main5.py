@@ -23,9 +23,9 @@ class MyThread(threading.Thread):
 
 
 nr_of_methods_total = 47
-nr_of_methods = 8
-offset = 0
-filename = 'output_methods_oldplane_0.txt'
+nr_of_methods = 7
+offset = 40
+filename = 'output_methods_oldplane_5.txt'
 
 result = []
 for i in range(0,nr_of_methods):
