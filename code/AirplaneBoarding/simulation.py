@@ -38,7 +38,6 @@ class Simulation:
 
 
 
-        #TODO automate seat_assignment using seat_assignment_id
         self.seat_assignment = Assignments.generate_seat_assignment(seat_assignment_id, plane,
                                                                     first_seat_assignment_input,
                                                                     second_seat_assignment_input,
@@ -76,6 +75,7 @@ class Simulation:
     """
     def get_luggage_distribution_given_capacity(self):
         total_number_of_pieces = int((self.luggage_distribution_index/100) * self.plane.nr_compartments * self.plane.compartment_size * 2)
+        print(total_number_of_pieces)
         luggage_distribution = np.zeros(self.number_of_actors, dtype=int)
         if total_number_of_pieces > self.number_of_actors*2 or self.luggage_distribution_index > 100 or self.luggage_distribution_index < 0:
             raise ValueError('ERROR: Either you have not enough passengers to fill the compartments of the plane '
@@ -89,7 +89,7 @@ class Simulation:
         return luggage_distribution
 
 
-    # This method is in early retirement, but might has to come back
+    # This method is in early retirement, but might have to come back
     def get_luggage_distribution(self):
         load_distribution = [[0.35, 0.6, 0.5], [0.2, 0.6, 0.2]]
         total_number_of_pieces = 0

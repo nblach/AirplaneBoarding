@@ -2,6 +2,7 @@ import numpy as np
 from simulation import Simulation
 from plane import Plane
 import csv
+import graphics
 
 def comparison_to_paper():
 
@@ -11,12 +12,13 @@ def comparison_to_paper():
     luggage_distribution_index = 1 #TODO
     random_seat_deletion = 1
 
-    nr_of_methods =  3 #13 #48
-    offset = 46
+    nr_of_methods_total = 47
+    nr_of_methods =  1 #47
+    offset = 36
 
     labels = []
-    times_total = np.zeros((48, 5), dtype=float)
-    times_individual = np.zeros((48, 5), dtype=float)
+    times_total = np.zeros((nr_of_methods_total, 5), dtype=float)
+    times_individual = np.zeros((nr_of_methods_total, 5), dtype=float)
 
     f = open("test_methods.txt", "r+")
     lines = f.readlines()
@@ -28,8 +30,10 @@ def comparison_to_paper():
         print(line)
         labels.append(line[0])
         for j in range(0,5):
-            sim = Simulation(number_of_actors, plane, load, line[1], line[2], line[3], line[4], random_seat_deletion)
+            sim = Simulation(number_of_actors, plane, load, int(line[1]), int(line[2]), int(line[3]), int(line[4]), random_seat_deletion)
             sim.simulate()
+            animation = graphics.Animation(sim)
+            animation.animate(4)
             times_total[i][j] = sim.boarding_time_total
             acc = 0
             for x in sim.actors:
