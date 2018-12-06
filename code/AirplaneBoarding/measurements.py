@@ -11,7 +11,8 @@ def comparison_to_paper():
     luggage_distribution_index = 1 #TODO
     random_seat_deletion = 1
 
-    nr_of_methods =  13 #48
+    nr_of_methods =  3 #13 #48
+    offset = 46
 
     labels = []
     times_total = np.zeros((48, 5), dtype=float)
@@ -22,7 +23,7 @@ def comparison_to_paper():
     print(len(lines))
 
     for i in range(0, nr_of_methods):
-        i = i+36
+        i = i+offset
         line = lines[i].split()
         print(line)
         labels.append(line[0])
@@ -36,12 +37,12 @@ def comparison_to_paper():
             times_individual[i][j] = acc*(1/600)/number_of_actors
 
 
-    with open('output_test_methods.csv', mode='w') as output_file:
+    with open('output_test_methods3.csv', mode='w') as output_file:
         output_writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         output_writer.writerow(['Method', 'Boarding Time 1','Boarding Time 2', 'Boarding Time 3', 'Boarding Time 4', 'Boarding Time 5',  'Individual Time 1',  'Individual Time 2',  'Individual Time 3',  'Individual Time 4',  'Individual Time 5'])
 
         for i in range(0, nr_of_methods):
-            i = i+36
+            i = i+offset
             output_writer.writerow([times_total[i][0], times_total[i][1], times_total[i][2], times_total[i][3], times_total[i][4], times_individual[i][0], times_individual[i][1], times_individual[i][2], times_individual[i][3], times_individual[i][4]])
 
 
