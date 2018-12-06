@@ -251,6 +251,8 @@ class Assignments:
                 for j in range(0, ceil((plane.rows - i)/row_alternation)):
                     if alternate_sides:
                         h_temp = (h+j)%2
+                    else:
+                        h_temp = h
                     if h_temp == 0:
                         seats_on_side = plane.seatsLeft
                     else:
