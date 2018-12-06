@@ -32,7 +32,7 @@ result = []
 result = measurements.comparison_to_paper(offset, nr_of_methods)
 
 
-measurements.write_results_methods_test(result[0], result[1], nr_of_methods, offset, filename_1, filename_2)
+measurements.write_results_methods_both(result[0], result[1], nr_of_methods, offset, filename_1, filename_2)
 
 
 
