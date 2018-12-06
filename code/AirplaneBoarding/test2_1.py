@@ -24,14 +24,15 @@ class MyThread(threading.Thread):
 
 nr_of_methods_total = 47
 nr_of_methods = 8
-offset = 0
-filename = 'output_methods_oldplane_0.txt'
+offset = 8
+filename_1 = 'output_methods_bombardier_1.txt'
+filename_2 = 'output_methods_airbus_1.txt'
 
 result = []
 result = measurements.comparison_to_paper(offset, nr_of_methods)
 
 
-measurements.write_results_methods_test(result[0], result[1], nr_of_methods, offset, filename)
+measurements.write_results_methods_test(result[0], result[1], nr_of_methods, offset, filename_1, filename_2)
 
 
 

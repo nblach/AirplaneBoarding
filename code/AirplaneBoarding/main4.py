@@ -28,8 +28,7 @@ offset = 32
 filename = 'output_methods_oldplane_4.txt'
 
 result = []
-for i in range(0,nr_of_methods):
-    result = measurements.comparison_to_paper(offset, nr_of_methods)
+result = measurements.comparison_to_paper(offset, nr_of_methods)
 
 
 measurements.write_results_methods_test(result[0], result[1], nr_of_methods, offset, filename)
