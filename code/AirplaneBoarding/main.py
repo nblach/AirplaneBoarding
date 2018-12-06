@@ -1,8 +1,10 @@
 from simulation import Simulation
 from plane import Plane
-from graphics import Animation
+#from graphics import Animation
+import measurements
 
-sim = Simulation(110, Plane(1, 0, 0, 0, 0, 0, 0, 0), 1, 0,1)
-sim.simulate()
-animation = Animation(sim)
-animation.animate(5)
+
+measurements.comparison_to_paper()
+
+
+

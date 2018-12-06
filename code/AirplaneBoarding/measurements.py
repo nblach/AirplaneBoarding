@@ -2,7 +2,7 @@ import numpy as np
 from simulation import Simulation
 from plane import Plane
 import csv
-import graphics
+#import graphics
 
 def comparison_to_paper():
 
