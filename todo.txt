@@ -1,4 +1,5 @@
 Nils:   seat assignments:
+testing cluster push
 
 Anton
 			1. Implement steffen method
