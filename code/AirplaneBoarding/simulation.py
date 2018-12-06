@@ -171,6 +171,7 @@ class Simulation:
             if actors_seated == self.number_of_actors:
                 done = True
                 print('Boarding took: ', i/600, ' minutes')
+                self.boarding_time_total = i/600
 
         for i in range(0, self.number_of_actors):
             self.actor_boarding_times[i] = round(self.actors[i].personal_boarding_duration * 0.1)
