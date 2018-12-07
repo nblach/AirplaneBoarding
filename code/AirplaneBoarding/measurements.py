@@ -2,7 +2,6 @@ import numpy as np
 from simulation import Simulation
 from plane import Plane
 import csv
-import pandas as pd
 #import graphics
 
 def comparison_to_paper(start, number):
