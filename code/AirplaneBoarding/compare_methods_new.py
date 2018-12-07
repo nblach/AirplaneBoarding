@@ -10,7 +10,7 @@ cap_plane_2 = 180
 nr_of_actors = [[cap_plane_1,cap_plane_2],[int(0.625 * cap_plane_1), int(0.625*cap_plane_2)]]
 loads = [100, 62.5]
 random_seat_deletion = 1
-nr_of_methods_total = 1#47
+nr_of_methods_total = 47
 size = (nr_of_methods_total, 5)
 
 
