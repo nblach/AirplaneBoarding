@@ -105,7 +105,10 @@ def figure4_effect_of_luggage_on_times(labels, boarding_data_random, boarding_da
     ax.errorbar(np.arange(n), data_steffen[0], yerr=data_steffen[1], fmt='bo', markersize=2.5, label='Steffen', ecolor='b')
     ax.set_xticks(np.arange(n))
     ax.set_xticklabels(labels)
-    ax.legend(loc=2)
+    ax.legend(loc=2, fontsize=10, frameon=False)
+    ax.set_ylabel('Boarding times (min)', fontsize=12)
+    ax.set_xlabel('Luggage load as a percentage of total capacity (%)', fontsize=12)
+    plt.savefig("data/figure4/figure4.png", format='png', dpi=600)
     plt.show()
 
 
@@ -149,4 +152,4 @@ def get_figure_4():
     figure4_effect_of_luggage_on_times(labels, random, steffen, 21, 5)
 
 
-get_figure_1()
+get_figure_4()
