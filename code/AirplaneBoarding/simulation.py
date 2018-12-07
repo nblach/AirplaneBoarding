@@ -135,8 +135,8 @@ class Simulation:
         next_actor_in = 0
 
         while not done:
-            #if i%100 == 0:
-                #print('still going strong ', i)
+            if i%1000 == 0:
+                print('still going strong ', i)
             j = 0
             actors_seated = 0
             prev_actor = -1
