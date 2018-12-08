@@ -10,7 +10,7 @@ cap_plane_2 = 180
 nr_of_actors = [[cap_plane_1,cap_plane_2],[int(0.625 * cap_plane_1), int(0.625*cap_plane_2)]]
 loads = [100, 70]
 random_seat_deletion = 1
-nr_of_methods_total = 4
+nr_of_methods_total = 5
 size = (nr_of_methods_total, 5)
 
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
             processes.append(Process(target=simul, args=(times_load_100_passengers_100_plane_2_total, times_load_100_passengers_100_plane_2_individual, i, j, 2, line, 0)))
             processes.append(Process(target=simul, args=(times_load_70_passengers_625_plane_1_total, times_load_70_passengers_625_plane_1_individual, i, j, 1, line, 1)))
             processes.append(Process(target=simul, args=(times_load_70_passengers_625_plane_2_total, times_load_70_passengers_625_plane_2_individual, i, j, 2, line, 1)))
-            for p in range(p_counter, p_counter+1): #4
+            for p in range(p_counter, p_counter+4):
                 processes[p].start()
             p_counter += 1#4
 
