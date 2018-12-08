@@ -24,7 +24,7 @@ class Assignments:
         elif index == 6:
             return Assignments.generate_by_seat_assignment(plane, first, second, third)
         else:
-            return Assignments.generate_steffen_assignment(plane)
+            return Assignments.generate_steffen_assignment(plane, first)
 
     @staticmethod
     def generate_random_assignment(plane):
@@ -216,25 +216,26 @@ class Assignments:
 
 
     @staticmethod
-    def generate_steffen_assignment(plane):
+    def generate_steffen_assignment(plane, alternation):
+        alternation += 1
         seats = np.empty(plane.rows*(plane.seatsRight + plane.seatsLeft), dtype=Seat)
         index = 0
         a = 0
         b = plane.seatsRight + plane.seatsLeft - 1
         while a < plane.seatsLeft or b >= plane.seatsLeft:
-            for i in range(0, 2):
+            for i in range(0, alternation):
                 if b >= plane.seatsLeft:
                     m = plane.rows - 1 - i
                     while m >= 0:
                         seats[index] = Seat(m, b)
                         index += 1
-                        m -= 2
+                        m -= alternation
                 if a < plane.seatsLeft:
                     m = plane.rows - 1 - i
                     while m >= 0:
                         seats[index] = Seat(m, a)
                         index += 1
-                        m -= 2
+                        m -= alternation
             b -= 1
             a += 1
         return seats
