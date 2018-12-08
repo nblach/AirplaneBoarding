@@ -1,5 +1,0 @@
-by_block_4_alt_1 1 4 1 1
-by_block_4_alt_2 1 4 1 2
-by_halfblock_6_alt_1_mix 2 6 3 1
-steffen_alt_2 7 2 0 0
-steffen_alt_3 7 3 0 0
