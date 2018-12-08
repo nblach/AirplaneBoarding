@@ -136,7 +136,7 @@ class Assignments:
                         index += 1
                     i -= (alternation + 1)
 
-        else:
+        elif sequence_index == 2:
             index = 0
             i = len(blocks_left)-1
             j = len(blocks_right)-2
@@ -164,6 +164,61 @@ class Assignments:
                         seats[index] = blocks_left[i][k]
                         index += 1
                     i -= 2
+        else:
+            index = 0
+            i = len(blocks_left)-1
+            j = len(blocks_right)-3
+            while i >= 0 or j >= 0:
+                if i >= 0:
+                    for k in range(0, len(blocks_left[i])):
+                        seats[index] = blocks_left[i][k]
+                        index += 1
+                    i -= 4
+                if j >= 0:
+                    for k in range(0, len(blocks_right[j])):
+                        seats[index] = blocks_right[j][k]
+                        index += 1
+                    j -= 4
+            i = len(blocks_left) - 3
+            j = len(blocks_right) - 1
+            while i >= 0 or j >= 0:
+                if j >= 0:
+                    for k in range(0, len(blocks_right[j])):
+                        seats[index] = blocks_right[j][k]
+                        index += 1
+                    j -= 4
+                if i >= 0:
+                    for k in range(0, len(blocks_left[i])):
+                        seats[index] = blocks_left[i][k]
+                        index += 1
+                    i -= 4
+            i = len(blocks_left)-2
+            j = len(blocks_right)-4
+            while i >= 0 or j >= 0:
+                if i >= 0:
+                    for k in range(0, len(blocks_left[i])):
+                        seats[index] = blocks_left[i][k]
+                        index += 1
+                    i -= 4
+                if j >= 0:
+                    for k in range(0, len(blocks_right[j])):
+                        seats[index] = blocks_right[j][k]
+                        index += 1
+                    j -= 4
+            i = len(blocks_left) - 4
+            j = len(blocks_right) - 2
+            while i >= 0 or j >= 0:
+                if j >= 0:
+                    for k in range(0, len(blocks_right[j])):
+                        seats[index] = blocks_right[j][k]
+                        index += 1
+                    j -= 4
+                if i >= 0:
+                    for k in range(0, len(blocks_left[i])):
+                        seats[index] = blocks_left[i][k]
+                        index += 1
+                    i -= 4
+
         return seats
 
     @staticmethod

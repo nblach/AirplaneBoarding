@@ -22,7 +22,7 @@ by_halfblock_4_des_mix 2 4 2 0
 by_halfblock_6_des 2 6 0 0
 by_halfblock_6_alt_1 2 6 1 1
 by_halfblock_6_alt_2 2 6 1 2
-by_halfblock_6_alt_1_mix 2 6 2 1
+by_halfblock_6_alt_1_mix 2 6 3 1
 by_halfblock_10_des 2 10 0 0
 by_halfblock_10_alt_1 2 10 1 1
 by_halfblock_10_alt_4 2 10 1 4
