@@ -59,7 +59,7 @@ if __name__ == '__main__':
             processes.append(Process(target=simul, args=(times_load_100_passengers_100_plane_2_total, times_load_100_passengers_100_plane_2_individual, i, j, 2, line, 0)))
             processes.append(Process(target=simul, args=(times_load_70_passengers_625_plane_1_total, times_load_70_passengers_625_plane_1_individual, i, j, 1, line, 1)))
             processes.append(Process(target=simul, args=(times_load_70_passengers_625_plane_2_total, times_load_70_passengers_625_plane_2_individual, i, j, 2, line, 1)))
-            for p in range(p_counter, p_counter+1): #4
+            for p in range(p_counter, p_counter+4):
                 processes[p].start()
             p_counter += 1#4
 
