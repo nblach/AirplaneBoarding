@@ -214,4 +214,4 @@ def get_figure_4():
     figure4_effect_of_luggage_on_times(labels, random, steffen, 21, 5)
 
 
-get_figure_2()
+get_figure_1()
