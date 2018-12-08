@@ -165,12 +165,77 @@ $$ 0.6 \cdot 132 \cdot 1+ 0.3 \cdot 132 \cdot 2 + 0.1 \cdot 132 \cdot 3 = 198$$
 Yet, not even a much bigger plane like the Airbus 320-200 (with 180 seats, 30 rows and space for around 110 pieces of hand luggage) provides that much space for hand luggage. We therefore assume that Van Landeghem and Beuselinck defined their compartments to have either infinite, or unrealistically large capacity. In both cases, their model does not take into account the effect of passengers who have to search for free compartments.
 
 
-Furthermore, Van Landeghem and Beuselinck take into account, that, the fuller a compartment is, the longer passengers need to store an item in it. We decided to negelect this small extra time, assuming it will only contribute to the total boarding time as a constant summand, independent of the boarding method/sequence.
+Furthermore, Van Landeghem and Beuselinck take into account, that, the fuller a compartment is, the longer it takes passengers to store an item in it. We decided to negelect this small extra time, assuming it will only contribute to the total boarding time as a constant summand, independent of the boarding method/sequence.
 
+
+Just as in our model, they include that sitting passengers have to get up in order to let someone in, if necessary. However, the constants they used seemed unreasonable to us, so we are using different numbers. We will explain this in the constants section.
+
+
+\subsection{Constants}
+Aiming to reproduce the results of Van Landeghem and Beuselinck, we defined most of our constants based the values they give in \ref{Beu}:
+
+\begin{tabular}{l|l}
+
+	\hline
+	passenger size & 25 cm \\
+	\hline
+	personal space & 46 cm\\
+	\hline
+	field of fiew & $3 \cdot$ seat pitch (lenght of a row)
+\end{tabular}
+	We consider passenger size as the distance from a passengers back to their chest, which is 25 cm for the average american male, according to the NASA man-sytems integration standards \ref{nasa}. Personal space is the distance passengers will always keep from each other. We define it as one passenger size plus a 21 cm average backpack,or a jacket or suitcase.
+	The passengers' field of view value is their distance to the furthest compartment they can see into and determine whether it is full already.
+
+\begin{tabular}{l|l l l}
+
+	&min &mode&max \\
+	\hline
+row enter time & 5 s &7.5 s & 15 s \\
+	\hline
+	row exit time& 5 s &7.5 s & 15 s \\
+	\hline
+\end{tabular}
+A passenger's row exit time is defined as the time it takes them to get up from their seat and move in the aisle. For the row exit time, we use a triangular distribution with the same constants as proposed in \ref{Beus}, as they seem reasonable. We define a passenger's row enter time as the time it takes them to free the aisle when sitting down (Not the time it takes them to actually sit down in their seat!). For the row enter time we use the same distribution as for the row exit time. Even if exiting a row when seated might take longer than just stepping out of the aisle, the row enter time also contains the time it takes passengers to take off their jackets, etc., so it seems reasonable to choose the same constants as for the exit time.
+
+\begin{tabular}{l|l l l}
+
+	&min &mode&max \\
+	\hline
+storing time & 3 s &9.5 s & 17 s \\
+	\hline
+
+	\end{tabular}
+A passenger's storing time is defined as the time it takes them to store one item in an overhead compartment. We assume it is triangularly distributed, just as the constants defined in \ref{Beus}. The values are based on our own observations at Zurich airport.
+
+\begin{tabular}{l|l l l}
+
+	&min &mode&max \\
+	\hline
+moving speed &0.27 m/s&0.34 s& 0.45 m/s   \\
+	\hline
+\end{tabular}
+The moving speed describes the speed at which passengers walk through the aisle. It is triangularly distribiuted with constants based on the values given in \ref{Beus}, where it is defined as the time it takes a passenger to pass one row. When converting these time values into speed values, we assumed, that Van Landeghem and Beuselinck where referring to an airpane with a seat pitch (length of a row) of 0.813 m, which was very common for airplanes used around the year 2002, when their paper was published.
+
+
+\subsection{Boarding Methods}
+A boarding method defines the order in which the passengers enter the plane, depending on their assigned seat. It does not have to specify an exact sequence of passengers, but may instead describe an order in which certain groups of passengers enter the plane. Passengers in the same group may board the plane in any order. 
+
+
+As can be seen from our results, different boarding methods can lead to significantly different boarding times. Thus, when aiming to ensure quick boarding- and turn times, choosing an effective boarding method is crucial. In this paper, we analyze the effectiveness of a variety of different boarding methods mentioned in \ref{Beus}, as well as the "Steffen" method, which was proposed by Steffen \ref{steffen} in 2011 and is supposed to be the best known boarding method as of today.
+
+
+In this section, we describe the Steffen method in detail, but only provide a brief overview over the other methods, which are explained thoroughly in \ref{Beus}. These explanations can be found in the appendix.
 
 
 
 \section{Implementation}
+We implemented our model in pyhton, in a heavily object oriented way. 
+
+
+
+
+
+
 \begin{figure}[h!]
 	\center
 \begin{tabular}{|ll|l|}
