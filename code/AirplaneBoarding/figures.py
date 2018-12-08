@@ -62,14 +62,14 @@ def figure2_two_plane_comparison(labels, boarding_data_full_bombardier, boarding
     data_normal_airbus = get_confidence_interval_and_mean(boarding_data_normal_airbus, n, m)
     data_normal_bombardier = get_confidence_interval_and_mean(boarding_data_normal_bombardier, n, m)
 
-    ax1.errorbar(np.arange(n), data_normal_airbus[0], yerr=data_normal_airbus[1], fmt='go-', markersize=1.5,
-                 linewidth=0.6, label='Airbus A320-200', ecolor='g', capthick=2)
-    ax1.errorbar(np.arange(n), data_normal_bombardier[0], yerr=data_normal_bombardier[1], fmt='bo-',
-                 markersize=1.5, linewidth=0.6, label='Bombardier CS100', ecolor='b', capthick=2)
-    ax2.errorbar(np.arange(n), data_full_airbus[0], yerr=data_full_airbus[1], fmt='go-',
-                 markersize=1.5, linewidth=0.6, label='Airbus A320-200', ecolor='g', capthick=2)
-    ax2.errorbar(np.arange(n), data_full_bombardier[0], yerr=data_full_bombardier[1], fmt='bo-',
-                 markersize=1.5, linewidth=0.6, label='Bombardier CS100', ecolor='b', capthick=2)
+    ax1.errorbar(np.arange(n), data_normal_airbus[0], yerr=data_normal_airbus[1], fmt='o-', color='SkyBlue', markersize=1.5,
+                 linewidth=0.6, label='Airbus A320-200', ecolor='k', capthick=2)
+    ax1.errorbar(np.arange(n), data_normal_bombardier[0], yerr=data_normal_bombardier[1], fmt='o-',color='IndianRed',
+                 markersize=1.5, linewidth=0.6, label='Bombardier CS100', ecolor='k', capthick=2)
+    ax2.errorbar(np.arange(n), data_full_airbus[0], yerr=data_full_airbus[1], fmt='o-',color='SkyBlue',
+                 markersize=1.5, linewidth=0.6, label='Airbus A320-200', ecolor='k', capthick=2)
+    ax2.errorbar(np.arange(n), data_full_bombardier[0], yerr=data_full_bombardier[1], fmt='o-',color='IndianRed',
+                 markersize=1.5, linewidth=0.6, label='Bombardier CS100', ecolor='k', capthick=2)
 
     ax1.set_ylim(bottom=0)
     ax2.set_ylim(bottom=0)
@@ -87,7 +87,7 @@ def figure2_two_plane_comparison(labels, boarding_data_full_bombardier, boarding
     ax2.axvline(x=38.5, color='k')
     ax2.axvline(x=40.5, color='k')
     ax2.axvline(x=45.5, color='k')
-    ax1.set_ylabel('Average boarding time (min) \n 62.4% people load and 70% luggage load', fontsize=7)
+    ax1.set_ylabel('Average boarding time (min) \n 62.5% people load and 70% luggage load', fontsize=7)
     ax1.legend(loc=(0.34, 0), fontsize=6, frameon=False)
     ax2.set_ylabel('Average boarding time (min) \n 100% people load and 100% luggage load', fontsize=7)
     ax2.legend(loc=(0.34, 0), fontsize=6, frameon=False)
@@ -105,24 +105,36 @@ def figure2_two_plane_comparison(labels, boarding_data_full_bombardier, boarding
     plt.show()
 
 
-def figure3_two_plane_individual_times(labels, individual_boarding_data_full_bombardier_fastest_methods, individual_boarding_data_full_airbus_fastest_methods, n, m):
+def figure3_two_plane_individual_times(labels, chosen, individual_boarding_data_full_bombardier, individual_boarding_data_full_airbus, n, m):
     fig, ax = plt.subplots()
     size = 0.35
-    index = np.arange(n)
+    index = np.arange(len(chosen))
 
-    data_individual_bombardier = get_confidence_interval_and_mean(individual_boarding_data_full_bombardier_fastest_methods, n, m)
-    data_individual_airbus = get_confidence_interval_and_mean(individual_boarding_data_full_airbus_fastest_methods, n, m)
+    data_individual_bombardier = get_confidence_interval_and_mean(individual_boarding_data_full_bombardier, n, m)
+    data_individual_airbus = get_confidence_interval_and_mean(individual_boarding_data_full_airbus, n, m)
+    data_individual_bombardier_best = np.zeros((2, len(chosen)), dtype=float)
+    data_individual_airbus_best = np.zeros((2, len(chosen)), dtype=float)
+    chosen_labels = []
+    i = 0
+    for j in range(0, n):
+        if i < len(chosen) and chosen[i] == j:
+            data_individual_bombardier_best[0][i] = data_individual_bombardier[0][j]
+            data_individual_bombardier_best[1][i] = data_individual_bombardier[1][j]
+            data_individual_airbus_best[0][i] = data_individual_airbus[0][j]
+            data_individual_airbus_best[1][i] = data_individual_airbus[1][j]
+            chosen_labels.append(labels[j])
+            i += 1
 
-    ax.bar(index - size/2, data_individual_bombardier[0], size, yerr=data_individual_bombardier[1],
-                   color='SkyBlue', label='Bombardier CS100')
-    ax.bar(index + size/2, data_individual_airbus[0], size, yerr=data_individual_airbus[1],
-                    color='IndianRed', label='Airbus A320-200')
-    ax.set_ylabel('Average individual boarding times in minutes')
-    ax.set_title('Average individual boarding times for the fastest boarding method in each category '
-                 'with the Airbus A320-200 and the Bombardier CS100')
-    ax.set_xticks(index)
-    ax.set_xticklabels(labels)
-    ax.legend()
+    ax.bar(index - size/2, data_individual_bombardier_best[0], size, yerr=data_individual_bombardier_best[1],
+                   color='IndianRed', label='Bombardier CS100')
+    ax.bar(index + size/2, data_individual_airbus_best[0], size, yerr=data_individual_airbus_best[1],
+                    color='SkyBlue', label='Airbus A320-200')
+    ax.set_ylabel('Average individual boarding times (min)')
+    plt.xticks(index, chosen_labels, fontsize=6, rotation='90')
+    ax.legend(loc=0, fontsize=6, frameon=False)
+    plt.subplots_adjust(hspace=1)
+    #plt.gcf().subplots_adjust(bottom=0.3)
+    plt.tight_layout()
     plt.savefig("data/figure3/figure3.png", format='png', dpi=600)
     plt.show()
 
@@ -193,18 +205,17 @@ def get_figure_2():
 
 
 def get_figure_3():
-    #a = np.loadtxt('data/figure3/times_load_70_passengers_625_plane_1_individual.csv', delimiter=',')
-    #b = np.loadtxt('data/figure3/times_load_70_passengers_625_plane_2_individual.csv', delimiter=',')
-    c = np.loadtxt('data/figure3/times_load_100_passengers_100_plane_1_individual.csv', delimiter=',')
-    d = np.loadtxt('data/figure3/times_load_100_passengers_100_plane_2_individual.csv', delimiter=',')
+    a = np.loadtxt('data/figure3/times_load_100_passengers_100_plane_1_individual.csv', delimiter=',')
+    b = np.loadtxt('data/figure3/times_load_100_passengers_100_plane_2_individual.csv', delimiter=',')
     labels_list = []
+    chosen = [0, 1, 22, 31, 36, 40, 43, 46]
     f = open("test_methods.txt", "r+")
     lines = f.readlines()
     for i in range(0, 49):
         line = lines[i].split()
         labels_list.append(line[0])
     f.close()
-    figure3_two_plane_individual_times(labels_list, c, d, 49, 5)
+    figure3_two_plane_individual_times(labels_list, chosen, a, b, 49, 5)
 
 def get_figure_4():
     random = np.loadtxt('data/figure4/loads_random.csv', delimiter=',')

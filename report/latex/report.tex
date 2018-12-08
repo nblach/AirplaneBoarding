@@ -19,7 +19,8 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{epstopdf}
-\usepackage{natbib}
+\usepackage{hyperref}
+%\usepackage{natbib}
 \usepackage{amssymb, amsmath}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 \title{Airplane Boarding}
@@ -122,7 +123,7 @@ Passengers get to the plane via bus or through a jet bridge and enter the plane 
 \\\\
 Once all passengers are seated, boarding is completed.
 
-\subsection{Our model}
+\subsection{Our model}\label{ourmodel}
 
 We want to gain insight on the efficiency of various boarding methods, and the impact of luggage load and passenger count on the time it takes individuals and all passengers to board a plane. Thus, what happens in the plane is crucial, while what is taking place in the airport, jet bridge, and bus barely have significant effects on the boarding time, other than determining the order in which people arrive at the plane door. We therefore decided to only model the events taking place inside the airplane. In order to still take into account the impact of different boarding strategies chosen by the gate agent, we assume the passengers all enter the plane in a certain order given by their seats. We will call such an order (of seats/passengers by seat) a boarding sequence.
 Although we have to keep track of which passengers are already sitting, it is not relvevant what the sitting passengers are doing. Hence, for our model, we focus only on what is happening in the aisle and discard most other irrelevant parts of the plane.
@@ -249,24 +250,30 @@ Furthermore, Van Landeghem and Beuselinck take into account, that, the fuller a 
 \section{Simulation Results and Discussion}
 \begin{figure}
 	\includegraphics[width=\linewidth]{../../code/AirplaneBoarding/data/figure1/figure1.png}
-	\caption{This figure compares the results from our model, using a similar airplane and load specifications, to the ones from the model used in \cite{beus}.}
+	\caption{This figure compares the results from our model, using a similar airplane and load specifications, to the ones from the model used by Van Landeghem and Beuselinck.}
 	\label{figure1}
 \end{figure}
 \subsection{Result Comparison - Our model vs. Van Landeghem's and Beuselinck's Model}
 In order to validate the correctness of our model we compare the different boarding times resulting from employing the same boarding methods as was done in \cite{beus} with a similar airplane and load level. The airplane used in both models are equivalent in the number of rows they have (23) and the number of seats in each row (6), with the only minor exception that the plane they used only had 3 seats in the first and last row. However this difference is very minor, so we decided to neglect it. The passenger load level, so the percentage of occupied seats in the aircraft, are in both cases identical at $100\%$. Furthermore the luggage load level in the simulation from Van Landeghem and Beuselinck was set to normal, which we had to translate into the percentage of occupied overhead compartment space, as our model handles luggage differently to theirs. We believe that when the plane is completely booked out, it is reasonable to assume that $90\%$ of available overhead compartment space is occupied with a normal load level.
 
-In total for each of the 46 boarding methods (excluding method "by\_block\_B-E" because it differentiates with business class in addition to economy class, which, for given reasons, we don't do) we performed 5 trials, in order to have a small sample to calculate the mean time taken for each boarding method within a $95\%$ confidence interval.
-The results for the confidence intervals of the total boarding times and differences to Van Landeghem's and Beuselinck's results (their minus our) are displayed in Figure \ref{figure1}. For numerical values, please check table \textit{Insert reference here} in the Appendix.
+In total for each of the 46 boarding methods used in \cite{beus}(excluding method "by\_block\_B-E" because it differentiates with business class in addition to economy class, which, for given reasons, we don't do) we performed 5 trials, in order to have a small sample to calculate the mean time taken for each one within a $95\%$ confidence interval.
+The results for the confidence intervals of the total boarding times and differences to Van Landeghem's and Beuselinck's results (their minus our) are displayed in Figure \ref{figure1}, which is divided into two subplots. The plot at the top shows for each method the average boarding time in minutes with a 95\% confidence interval (error bars) and the plot at the bottom the differences in results (Van Landeghem's and Beuselinck's minus Our). The vertical black lines divide the different boarding methods into their respective classes. The blue data is from the "base model" from \cite{beus} and the green from our model. For numerical values, please check table \textit{Insert reference here} in the Appendix. 
 Analysing the results lead to following conclusions:
 
 
-The first conclusion that can be drawn is that the average boarding times for our model are generally lower with only a few exceptions. This phenomenon is most likely caused by the different ways the two models handle luggage. In our model the time it takes to store luggage inside a specific compartment does not increase with the amount of luggage that is already inside, which is the case for the other model. Furthermore, not everyone necessarily has any luggage with them because the number of actors (138) is much larger than the total amount of hand-luggage (75) distributed between them (no one more than 2 pieces), which means there are plenty which can directly move to their seat. In the case of the other model, every actor has between 1 and 3 pieces of luggage, so in total almost at least twice the amount of carry-on luggage and there is no one without any. These two aspects further support the results. On the other hand, compartments can be full, not allowing any more actors to store any of his carry-on inside of it, which means those actors have to find other free spots, which takes time and can cause interferences.  To what extend each of these aspects impacts the result can not be said as we have not enough information about the model used in \cite{beus}. 
+The first conclusion that can be drawn is that the average boarding times for our model are generally lower with only a few exceptions. This phenomenon is most likely caused by the different ways the two models handle luggage. In our model the time it takes to store luggage inside a specific compartment does not increase with the amount of luggage that is already inside, which is the case for the other model. Furthermore, not everyone necessarily has any luggage with them because the number of actors (138) is much larger than the total amount of hand-luggage (75) distributed between them (no one more than 2 pieces), which means there are plenty which can directly move to their seat. In the case of the other model, every actor has between 1 and 3 pieces of luggage, so in total almost at least twice the amount of carry-on luggage and there is no one without any. These two aspects further support the observed results. On the other hand, compartments can be full, not allowing any more actors to store any of his carry-on inside of it, which means those actors have to find other free spots, which takes time and can cause interferences.  As mentioned earlier, it is not entirely clear whether the other model implements this possibility. To what extend each of these aspects impacts the result can not be said as we have not enough information about the model used in \cite{beus}. 
 	
 The two exceptions to this observations occur in the class "by\_seat", but only with the two that do not alternate between rows. The reason for that is most likely that the actors in our model first always try to store their luggage in the overhead compartment above their seat and if possible start storing at the beginning of it, not allowing the actor behind to access the same compartment. So if actors that are right behind each other in the boarding sequence have seats in the same or adjacent rows, they might obstruct one another when they both have hand-luggage. This is would also explain why the exception is only seen in the two methods within class "by\_seat" that do not alternate between rows, so adjacent actors in the boarding sequence have adjacent rows. This attribute of the actors only negatively impacted the difference in time in one class because in all the others we look at larger groups, which are random within, and not at individual seats and arrange those. Because the exception to the phenomenon, that the times of our model are generally lower, only occurs in those two methods and is caused by something reasonable, the validity of our model is not impacted. 
 
-Now, in order to be able to conclude that our model is at least as valid as the one used by Van Landeghem's and Beuselinck's, we need to evaluate the impact that the found phenomenon has. 
+Now, in order to be able to conclude that our model is at least as valid as the one used by Van Landeghem's and Beuselinck's, we need to evaluate the impact that the found phenomenon has and whether its cause is justifiable. 
+The general trend of the data is retained by our model because within each class, especially the larger ones, the difference in boarding times is fairly constant, which again can be seen in the bottom diagram of Figure \ref{figure1}. Furthermore, the overall relationships between boarding methods are generally preserved. So, for example, whenever the relationship between the boarding times of two adjacent methods in the "base model"(in Figure \ref{figure1}), is positive/negative (the blue line has gradient greater/smaller zero), then the relationship between the methods in our model are also positive/negative (the green line also has a gradient greater/smaller zero). For those reasons and the ones justifying the assumptions we made in section \ref{ourmodel}, we believe that there is enough reason to safely assume that our model realistically simulates reality using a certain level of abstraction.  
 
-First of all, the general trend of the data is retained by our model because within each class, especially the larger ones, the difference in boarding times is fairly constant, which again can be seen in the bottom diagram of Figure \ref{figure1}. 
+\subsection{Comparison of different boarding methods - Bombardier CS100 \& Airbus A320-200}
+\begin{figure}
+	\includegraphics[width=\linewidth]{../../code/AirplaneBoarding/data/figure2/figure2.png}
+	\caption{This figure displays the results calculated our model for the time it takes to board the Bombardier CS100 and the Airbus A320-200 using different boarding methods under a low/high load configuration}
+	\label{figure2}
+\end{figure}
 
 
 \section{Summary and Outlook}
