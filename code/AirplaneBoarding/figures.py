@@ -11,39 +11,32 @@ def figure1_paper_model_vs_our_model(labels, boarding_data, n, m):
                 27.41]
     np.asarray(old_data)
     data = get_confidence_interval_and_mean(boarding_data, n, m)
-    differences = np.zeros(n-1, dtype=float)
-    for i in range(0, n-1):
+    differences = np.zeros(n, dtype=float)
+    for i in range(0, n):
         differences[i] = old_data[i] - data[0][i]
     plt.figure(dpi=120, figsize=(16,9))
-    print(differences)
     fig, axs = plt.subplots(nrows=2, ncols=1, sharex=True)
     ax1 = axs[0]
     ax2 = axs[1]
     ax1.errorbar(np.arange(n), data[0], yerr=data[1], fmt='go-', markersize=1.5, linewidth=0.6, label='our model', ecolor='k')
-    ax1.plot(np.arange(n-1), old_data, 'bo-', markersize=1.5, linewidth=0.6,label='base model')
+    ax1.plot(np.arange(n), old_data, 'bo-', markersize=1.5, linewidth=0.6,label='base model')
     ax1.set_ylabel('Boarding times (min)', fontsize=7)
-    ax2.bar(np.arange(n-1), differences)
+    ax2.bar(np.arange(n), differences)
     ax2.set_ylabel('Difference in boarding times (min)', fontsize=7)
     ax1.set_ylim(bottom=0)
-    ax1.axvline(x=-0.5, color='k')
     ax1.axvline(x=0.5, color='k')
-    ax1.axvline(x=13.5,color='k')
+    ax1.axvline(x=13.5, color='k')
     ax1.axvline(x=27.5,color='k')
     ax1.axvline(x=33.5,color='k')
     ax1.axvline(x=38.5,color='k')
     ax1.axvline(x=40.5,color='k')
-    ax1.axvline(x=45.5,color='k')
-    ax1.axvline(x=46.5,color='k')
-    ax2.axvline(x=-0.5, color='k')
     ax2.axvline(x=0.5, color='k')
     ax2.axvline(x=13.5,color='k')
     ax2.axvline(x=27.5,color='k')
     ax2.axvline(x=33.5,color='k')
     ax2.axvline(x=38.5,color='k')
     ax2.axvline(x=40.5,color='k')
-    ax2.axvline(x=45.5,color='k')
-    ax2.axvline(x=46.5,color='k')
-    ax1.legend(loc=0, fontsize=6, frameon=False)
+    ax1.legend(loc=(0.34, 0), fontsize=6, frameon=False)
     fig.align_labels()
     plt.xticks(np.arange(n), labels, fontsize=5, rotation='90')
     plt.sca(ax2)
@@ -78,20 +71,37 @@ def figure2_two_plane_comparison(labels, boarding_data_full_bombardier, boarding
     ax2.errorbar(np.arange(n), data_full_bombardier[0], yerr=data_full_bombardier[1], fmt='bo-',
                  markersize=1.5, linewidth=0.6, label='Bombardier CS100', ecolor='b', capthick=2)
 
-    ax1.set_ylim(ymin=0)
+    ax1.set_ylim(bottom=0)
+    ax2.set_ylim(bottom=0)
+    ax1.axvline(x=0.5, color='k')
+    ax1.axvline(x=13.5, color='k')
+    ax1.axvline(x=27.5, color='k')
+    ax1.axvline(x=33.5, color='k')
+    ax1.axvline(x=38.5, color='k')
+    ax1.axvline(x=40.5, color='k')
+    ax1.axvline(x=45.5, color='k')
+    ax2.axvline(x=0.5, color='k')
+    ax2.axvline(x=13.5, color='k')
+    ax2.axvline(x=27.5, color='k')
+    ax2.axvline(x=33.5, color='k')
+    ax2.axvline(x=38.5, color='k')
+    ax2.axvline(x=40.5, color='k')
+    ax2.axvline(x=45.5, color='k')
     ax1.set_ylabel('Average boarding time (min) \n 62.4% people load and 70% luggage load', fontsize=7)
-    ax1.legend(loc=1, fontsize=6, frameon=False)
+    ax1.legend(loc=(0.34, 0), fontsize=6, frameon=False)
     ax2.set_ylabel('Average boarding time (min) \n 100% people load and 100% luggage load', fontsize=7)
-    ax2.legend(loc=1,fontsize=6, frameon=False)
+    ax2.legend(loc=(0.34, 0), fontsize=6, frameon=False)
     fig.align_labels()
     plt.xticks(np.arange(n), labels, fontsize=5, rotation='90')
     plt.sca(ax2)
     plt.tick_params(axis='x', which='both', bottom=False, top=True, labelbottom=False, labeltop=True)
+    plt.yticks(np.arange(0, 60, 5), fontsize=7)
     plt.sca(ax1)
     plt.xticks(np.arange(n), labels, fontsize=5, rotation='90')
+    plt.yticks(np.arange(0, 30, 5), fontsize=7)
     plt.subplots_adjust(hspace=1)
 
-    plt.savefig("data/figure2/figure2.png")
+    plt.savefig("data/figure2/figure2.png", format='png', dpi=600)
     plt.show()
 
 
@@ -113,6 +123,7 @@ def figure3_two_plane_individual_times(labels, individual_boarding_data_full_bom
     ax.set_xticks(index)
     ax.set_xticklabels(labels)
     ax.legend()
+    plt.savefig("data/figure3/figure3.png", format='png', dpi=600)
     plt.show()
 
 
@@ -151,20 +162,49 @@ def get_confidence_interval_and_mean(boarding_data, n, m):
 
 def get_figure_1():
     a = np.loadtxt('data/figure1/total_data_old_plane.txt', delimiter=',')
-    times_total = np.zeros((47, 5), dtype=float)
-    times_individual = np.zeros((47, 5), dtype=float)
+    times_total = np.zeros((46, 5), dtype=float)
+    times_individual = np.zeros((46, 5), dtype=float)
     labels_list = []
     f = open("test_methods.txt", "r+")
     lines = f.readlines()
-    for i in range(0, 47):
+    for i in range(0, 46):
         for j in range(0, 5):
             times_total[i][j] = a[i][j]
             times_individual[i][j] = a[i][j+5]
         line = lines[i].split()
         labels_list.append(line[0])
     f.close()
-    figure1_paper_model_vs_our_model(labels_list, times_total, 47, 5)
+    figure1_paper_model_vs_our_model(labels_list, times_total, 46, 5)
 
+
+def get_figure_2():
+    a = np.loadtxt('data/figure2/times_load_70_passengers_625_plane_1_total.csv', delimiter=',')
+    b = np.loadtxt('data/figure2/times_load_70_passengers_625_plane_2_total.csv', delimiter=',')
+    c = np.loadtxt('data/figure2/times_load_100_passengers_100_plane_1_total.csv', delimiter=',')
+    d = np.loadtxt('data/figure2/times_load_100_passengers_100_plane_2_total.csv', delimiter=',')
+    labels_list = []
+    f = open("test_methods.txt", "r+")
+    lines = f.readlines()
+    for i in range(0, 49):
+        line = lines[i].split()
+        labels_list.append(line[0])
+    f.close()
+    figure2_two_plane_comparison(labels_list, c, a, d, b, 49, 5)
+
+
+def get_figure_3():
+    #a = np.loadtxt('data/figure3/times_load_70_passengers_625_plane_1_individual.csv', delimiter=',')
+    #b = np.loadtxt('data/figure3/times_load_70_passengers_625_plane_2_individual.csv', delimiter=',')
+    c = np.loadtxt('data/figure3/times_load_100_passengers_100_plane_1_individual.csv', delimiter=',')
+    d = np.loadtxt('data/figure3/times_load_100_passengers_100_plane_2_individual.csv', delimiter=',')
+    labels_list = []
+    f = open("test_methods.txt", "r+")
+    lines = f.readlines()
+    for i in range(0, 49):
+        line = lines[i].split()
+        labels_list.append(line[0])
+    f.close()
+    figure3_two_plane_individual_times(labels_list, c, d, 49, 5)
 
 def get_figure_4():
     random = np.loadtxt('data/figure4/loads_random.csv', delimiter=',')
@@ -174,4 +214,4 @@ def get_figure_4():
     figure4_effect_of_luggage_on_times(labels, random, steffen, 21, 5)
 
 
-get_figure_1()
+get_figure_2()

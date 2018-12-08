@@ -45,3 +45,5 @@ by_seat_alt_1_row_alt_letter 6 0 1 1
 by_seat_alt_5_row_alt_letter 6 0 1 5
 by_seat_alt_8_row_alt_letter 6 0 1 8
 Steffen 7 1 0 0
+steffen_alt_2 7 2 0 0
+steffen_alt_3 7 3 0 0
