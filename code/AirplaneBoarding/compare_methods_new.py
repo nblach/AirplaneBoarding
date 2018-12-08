@@ -10,7 +10,7 @@ cap_plane_2 = 180
 nr_of_actors = [[cap_plane_1,cap_plane_2],[int(0.625 * cap_plane_1), int(0.625*cap_plane_2)]]
 loads = [100, 70]
 random_seat_deletion = 1
-nr_of_methods_total = 47
+nr_of_methods_total = 4
 size = (nr_of_methods_total, 5)
 
 
@@ -39,16 +39,16 @@ if __name__ == '__main__':
 
 
     times_load_100_passengers_100_plane_1_total = Array(c.c_double, size[0]*size[1])
-    #times_load_70_passengers_625_plane_1_total= Array(c.c_double, size[0]*size[1])
-    #times_load_100_passengers_100_plane_2_total= Array(c.c_double, size[0]*size[1])
-    #times_load_70_passengers_625_plane_2_total= Array(c.c_double, size[0]*size[1])
+    times_load_70_passengers_625_plane_1_total= Array(c.c_double, size[0]*size[1])
+    times_load_100_passengers_100_plane_2_total= Array(c.c_double, size[0]*size[1])
+    times_load_70_passengers_625_plane_2_total= Array(c.c_double, size[0]*size[1])
     times_load_100_passengers_100_plane_1_individual = Array(c.c_double, size[0]*size[1])
-    #times_load_70_passengers_625_plane_1_individual= Array(c.c_double, size[0]*size[1])
-    #times_load_100_passengers_100_plane_2_individual= Array(c.c_double, size[0]*size[1])
-    #times_load_70_passengers_625_plane_2_individual= Array(c.c_double, size[0]*size[1])
+    times_load_70_passengers_625_plane_1_individual= Array(c.c_double, size[0]*size[1])
+    times_load_100_passengers_100_plane_2_individual= Array(c.c_double, size[0]*size[1])
+    times_load_70_passengers_625_plane_2_individual= Array(c.c_double, size[0]*size[1])
 
 
-    f = open("test_methods.txt", "r+")
+    f = open("error_correction.txt", "r+")
     lines = f.readlines()
 
     for i in range(0, size[0]):
@@ -56,9 +56,9 @@ if __name__ == '__main__':
         for j in range(0,size[1]):
 
             processes.append(Process(target=simul, args=(times_load_100_passengers_100_plane_1_total, times_load_100_passengers_100_plane_1_individual, i, j, 1, line, 0)))
-            #processes.append(Process(target=simul, args=(times_load_100_passengers_100_plane_2_total, times_load_100_passengers_100_plane_2_individual, i, j, 2, line, 0)))
-            #processes.append(Process(target=simul, args=(times_load_70_passengers_625_plane_1_total, times_load_70_passengers_625_plane_1_individual, i, j, 1, line, 1)))
-            #processes.append(Process(target=simul, args=(times_load_70_passengers_625_plane_2_total, times_load_70_passengers_625_plane_2_individual, i, j, 2, line, 1)))
+            processes.append(Process(target=simul, args=(times_load_100_passengers_100_plane_2_total, times_load_100_passengers_100_plane_2_individual, i, j, 2, line, 0)))
+            processes.append(Process(target=simul, args=(times_load_70_passengers_625_plane_1_total, times_load_70_passengers_625_plane_1_individual, i, j, 1, line, 1)))
+            processes.append(Process(target=simul, args=(times_load_70_passengers_625_plane_2_total, times_load_70_passengers_625_plane_2_individual, i, j, 2, line, 1)))
             for p in range(p_counter, p_counter+1): #4
                 processes[p].start()
             p_counter += 1#4
@@ -72,20 +72,20 @@ if __name__ == '__main__':
 
 
     times_load_100_passengers_100_plane_1_total = np.reshape(np.frombuffer((times_load_100_passengers_100_plane_1_total.get_obj())), size)
-    #times_load_70_passengers_625_plane_1_total = np.reshape(np.frombuffer((times_load_70_passengers_625_plane_1_total.get_obj())), size)
-    #times_load_100_passengers_100_plane_2_total = np.reshape(np.frombuffer((times_load_100_passengers_100_plane_2_total.get_obj())), size)
-    #times_load_70_passengers_625_plane_2_total = np.reshape(np.frombuffer((times_load_70_passengers_625_plane_2_total.get_obj())), size)
+    times_load_70_passengers_625_plane_1_total = np.reshape(np.frombuffer((times_load_70_passengers_625_plane_1_total.get_obj())), size)
+    times_load_100_passengers_100_plane_2_total = np.reshape(np.frombuffer((times_load_100_passengers_100_plane_2_total.get_obj())), size)
+    times_load_70_passengers_625_plane_2_total = np.reshape(np.frombuffer((times_load_70_passengers_625_plane_2_total.get_obj())), size)
     times_load_100_passengers_100_plane_1_individual = np.reshape(np.frombuffer((times_load_100_passengers_100_plane_1_individual.get_obj())), size)
-    #times_load_70_passengers_625_plane_1_individual = np.reshape(np.frombuffer((times_load_70_passengers_625_plane_1_individual.get_obj())), size)
-    #times_load_100_passengers_100_plane_2_individual = np.reshape(np.frombuffer((times_load_100_passengers_100_plane_2_individual.get_obj())), size)
-    #times_load_70_passengers_625_plane_2_individual = np.reshape(np.frombuffer((times_load_70_passengers_625_plane_2_individual.get_obj())), size)
+    times_load_70_passengers_625_plane_1_individual = np.reshape(np.frombuffer((times_load_70_passengers_625_plane_1_individual.get_obj())), size)
+    times_load_100_passengers_100_plane_2_individual = np.reshape(np.frombuffer((times_load_100_passengers_100_plane_2_individual.get_obj())), size)
+    times_load_70_passengers_625_plane_2_individual = np.reshape(np.frombuffer((times_load_70_passengers_625_plane_2_individual.get_obj())), size)
 
 
     np.savetxt('times_load_100_passengers_100_plane_1_total.csv', times_load_100_passengers_100_plane_1_total, delimiter=',')
-    #np.savetxt('times_load_70_passengers_625_plane_1_total.csv',times_load_70_passengers_625_plane_1_total , delimiter=',')
-    #np.savetxt('times_load_100_passengers_100_plane_2_total.csv', times_load_100_passengers_100_plane_2_total, delimiter=',')
-    #np.savetxt('times_load_70_passengers_625_plane_2_total.csv', times_load_70_passengers_625_plane_2_total, delimiter=',')
+    np.savetxt('times_load_70_passengers_625_plane_1_total.csv',times_load_70_passengers_625_plane_1_total , delimiter=',')
+    np.savetxt('times_load_100_passengers_100_plane_2_total.csv', times_load_100_passengers_100_plane_2_total, delimiter=',')
+    np.savetxt('times_load_70_passengers_625_plane_2_total.csv', times_load_70_passengers_625_plane_2_total, delimiter=',')
     np.savetxt('times_load_100_passengers_100_plane_1_individual.csv', times_load_100_passengers_100_plane_1_individual, delimiter=',')
-    #np.savetxt('times_load_70_passengers_625_plane_1_individual.csv', times_load_70_passengers_625_plane_1_individual, delimiter=',')
-    #np.savetxt('times_load_100_passengers_100_plane_2_individual.csv', times_load_100_passengers_100_plane_2_individual, delimiter=',')
-    #np.savetxt('times_load_70_passengers_625_plane_2_individual.csv', times_load_70_passengers_625_plane_2_individual, delimiter=',')
+    np.savetxt('times_load_70_passengers_625_plane_1_individual.csv', times_load_70_passengers_625_plane_1_individual, delimiter=',')
+    np.savetxt('times_load_100_passengers_100_plane_2_individual.csv', times_load_100_passengers_100_plane_2_individual, delimiter=',')
+    np.savetxt('times_load_70_passengers_625_plane_2_individual.csv', times_load_70_passengers_625_plane_2_individual, delimiter=',')
