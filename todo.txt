@@ -1,9 +1,0 @@
-abstrat
-introduction and motivation
-change indiv contribution wording
-make table consistant 
-move figures around
-different loads comparison
-summary and outlook
-references updaten
-appendix: code and data tables
