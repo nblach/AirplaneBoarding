@@ -1,22 +1,9 @@
-Nils:   seat assignments:
-testing cluster push
-
-Anton
-			1. Implement steffen method
-			3. improve graphics a little bit
-			4. Improve graphics in terms of personal space and maybe row identification (start, end)
-			5. test graphics for various settings
-
-model: 
- 			2. new constraints?
-			3. check out of bounce of aisle and compartments
-			4. check reducing personal size 
-
-test:			1. Test 2 airplanes
-			2. fix times (find data)
-			3. plan what to tets/plot
-
-paper + research:	1. find evidence for the average depth of a human
-			2. evidence for the speed conversion/ speed from paper
-			3. write that we measure the time to only free the aisle adn that the paper is not clear about this
-			4. Maybe look for the amount of time it takes to store luggage 
+abstrat
+introduction and motivation
+change indiv contribution wording
+make table consistant 
+move figures around
+different loads comparison
+summary and outlook
+references updaten
+appendix: code and data tables
