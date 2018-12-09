@@ -38,7 +38,7 @@ if __name__ == '__main__':
     data_light_test_individual = Array(c.c_double, size[0] * size[1])
 
 
-    f = open("light_test_in.txt", "r+")  #change@!!!!!!!!!!!!!
+    f = open("light_test_in.txt", "r+")
     lines = f.readlines()
 
     for i in range(0, size[0]):
@@ -63,5 +63,10 @@ if __name__ == '__main__':
     data_light_test_individual = np.reshape(np.frombuffer((data_light_test_individual.get_obj())), size)
 
 
-    np.savetxt('data_light_test_total.csv', data_light_test_total, delimiter=',')
-    np.savetxt('data_light_test_indicidual.csv', data_light_test_individual, delimiter=',')
+    #np.savetxt('data_light_test_total.csv', data_light_test_total, delimiter=',')
+    #np.savetxt('data_light_test_indicidual.csv', data_light_test_individual, delimiter=',')
+
+    print('Total boarding time with random seat assignment : ', data_light_test_total[0][0])
+    print('Average individual boarding time with random seat assignment:', data_light_test_individual[0][0])
+    print('Boarding time with the Steffen method: ', data_light_test_total[1][0])
+    print('Average individual boarding time with the Steffen method:', data_light_test_individual[1][0])
