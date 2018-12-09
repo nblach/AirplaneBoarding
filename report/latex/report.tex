@@ -174,6 +174,7 @@ Just as in our model, they include that sitting passengers have to get up in ord
 \subsection{Constants}
 Aiming to reproduce the results of Van Landeghem and Beuselinck, we defined most of our constants based the values they give in \cite{beus}:
 
+\begin{figure}[h!]
 \begin{tabular}{l|l}
 
 	\hline
@@ -184,9 +185,13 @@ Aiming to reproduce the results of Van Landeghem and Beuselinck, we defined most
 	field of fiew & $3 \cdot$ seat pitch (lenght of a row)\\
 	\hline
 \end{tabular}
+
+\end{figure}
+
 	We consider passenger size as the distance from a passengers back to their chest, which is 25 cm for the average american male, according to the NASA man-sytems integration standards \cite{nasa}. Personal space is the distance passengers will always keep from each other. We define it as one passenger size plus a 21 cm average backpack,or a jacket or suitcase.
 	The passengers' field of view value is their distance to the furthest compartment they can see into and determine whether it is full already.
 
+\begin{figure}[h!]
 \begin{tabular}{l|l l l}
 
 	&min &mode&max \\
@@ -196,8 +201,11 @@ row enter time & 5 s &7.5 s & 15 s \\
 	row exit time& 5 s &7.5 s & 15 s \\
 	\hline
 \end{tabular}
+\end{figure}
+
 A passenger's row exit time is defined as the time it takes them to get up from their seat and move in the aisle. For the row exit time, we use a triangular distribution with the same constants as proposed in \cite{beus}, as they seem reasonable. We define a passenger's row enter time as the time it takes them to free the aisle when sitting down (Not the time it takes them to actually sit down in their seat!). For the row enter time we use the same distribution as for the row exit time. Even if exiting a row when seated might take longer than just stepping out of the aisle, the row enter time also contains the time it takes passengers to take off their jackets, etc., so it seems reasonable to choose the same constants as for the exit time.
 
+\begin{figure}[h!]
 \begin{tabular}{l|l l l}
 
 	&min &mode&max \\
@@ -206,8 +214,11 @@ storing time & 3 s &9.5 s & 17 s \\
 	\hline
 
 	\end{tabular}
+\end{figure}
+
 A passenger's storing time is defined as the time it takes them to store one item in an overhead compartment. We assume it is triangularly distributed, just as the constants defined in \cite{beus}. The values are based on our own observations at Zurich airport.
 
+\begin{figure}[h!]
 \begin{tabular}{l|l l l}
 
 	&min &mode&max \\
@@ -215,6 +226,7 @@ A passenger's storing time is defined as the time it takes them to store one ite
 moving speed &0.27 m/s&0.34 s& 0.45 m/s   \\
 	\hline
 \end{tabular}
+\end{figure}
 The moving speed describes the speed at which passengers walk through the aisle. It is triangularly distribiuted with constants based on the values given in \cite{beus}, where it is defined as the time it takes a passenger to pass one row. When converting these time values into speed values, we assumed, that Van Landeghem and Beuselinck where referring to an airpane with a seat pitch (length of a row) of 0.813 m, which was very common for airplanes used around the year 2002, when their paper was published. Still, in our opinion, the speeds seem a bit slow.
 
 
@@ -420,8 +432,30 @@ The general trend of the data is retained by our model because within each class
  \subsubsection{Overview}
  In this chapter we compare the results from simulating the 46 boarding methods from \cite{beus} as well as 3 variants of the Steffen method \cite{steffen} on two very modern airplanes, which are currently in the Swiss fleet. For each configuration we again run 5 independent tests and collected the data, which is displayed in Figure \ref{figure2} and stored in table \textit{insert table reference here} (see Appendix). 
  
- \textit{Introduce the two airplanes here}
  
+ \paragraph{Airbus A320-200}
+ We chose the Airbus A320-200, as it is a commonly used big short-haul plane. Additionally, it has a classical symmetric seat arrangement, so the results we get on the Airbus A320-200 are most likely applicable to many similarly organized planes. 
+
+
+ \paragraph{Bombardier CS-100}
+ The Bombardier CS-100 also is a short-haul plane, but a bit smaller than the Airbus. It is particularly interesting, because its seat are arranged asymetrically, with two seats per row on the left of the aisle, but three per row on the right.  
+
+ \begin{tabular}{l|c c }
+
+	 \hline
+	&Airbus A320-200 &Bombardier CS-100 \\
+	\hline
+\# rows & 30&25   \\
+\hline
+\# seats right of aisle & 3 & 3 \\
+	\hline
+	\# seats left of aisle & 3 & 2\\
+	\hline
+	\# bags per compartment & 5 & 3\\
+	\hline
+	\\
+\end{tabular}
+
  The most noticeable results are that first of all the Steffen method, which was found in 2008 and has been declared as the potentially fastest boarding method, turns out to perform the best across all test (around 16 minutes for a fully loaded Airbus A320-200) with only a two methods from the "by\_seat" class coming close (edging out "Steffen" under not completely full load conditions). Across all 4 configurations, Steffen was around 42\% faster than the most commonly used method, especially on short haul flights, "Random". Nevertheless "Random" performed surprisingly well compared to all other methods and is always around the average time across them (this includes methods like Steffen as well). Furthermore, "Random" performed around 4\% faster than the fastest method from class "by\_block", who's methods are very common on long haul flights because of larger airplanes with potentially multiple aisles.
  
  
