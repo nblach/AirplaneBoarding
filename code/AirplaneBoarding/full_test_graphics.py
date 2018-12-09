@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from matplotlib.ticker import PercentFormatter
 import numpy as np
 import math
 
@@ -46,8 +45,8 @@ def figure1_paper_model_vs_our_model(labels, boarding_data, n, m):
     plt.xticks(np.arange(n), labels, fontsize=5, rotation='90')
     plt.yticks(np.arange(0, 60,5), fontsize=7)
     plt.subplots_adjust(hspace=1)
-    np.savetxt('data/figure1/figure1_data.csv', np.ndarray.transpose(data), delimiter=',')
-    plt.savefig("data/figure1/figure1.png", format='png', dpi=600)
+    np.savetxt('figure1_data.csv', np.ndarray.transpose(data), delimiter=',')
+    plt.savefig("figure1.png", format='png', dpi=600)
     plt.show()
 
 
@@ -101,10 +100,10 @@ def figure2_two_plane_comparison(labels, boarding_data_full_bombardier, boarding
     plt.yticks(np.arange(0, 30, 5), fontsize=7)
     plt.subplots_adjust(hspace=1)
     np.save
-    np.savetxt('data/figure2/figure2_data_full_bombardier.csv', np.ndarray.transpose(data_full_bombardier), delimiter=',')
-    np.savetxt('data/figure2/figure2_data_normal_bombardier.csv', np.ndarray.transpose(data_normal_bombardier), delimiter=',')
-    np.savetxt('data/figure2/figure2_data_full_airbus.csv', np.ndarray.transpose(data_full_airbus), delimiter=',')
-    np.savetxt('data/figure2/figure2_data_normal_airbus.csv', np.ndarray.transpose(data_normal_airbus), delimiter=',')
+    np.savetxt('figure2_data_full_bombardier.csv', np.ndarray.transpose(data_full_bombardier), delimiter=',')
+    np.savetxt('figure2_data_normal_bombardier.csv', np.ndarray.transpose(data_normal_bombardier), delimiter=',')
+    np.savetxt('figure2_data_full_airbus.csv', np.ndarray.transpose(data_full_airbus), delimiter=',')
+    np.savetxt('figure2_data_normal_airbus.csv', np.ndarray.transpose(data_normal_airbus), delimiter=',')
 
     plt.savefig("data/figure2/figure2.png", format='png', dpi=600)
     plt.show()
@@ -140,10 +139,10 @@ def figure3_two_plane_individual_times(labels, chosen, individual_boarding_data_
     plt.subplots_adjust(hspace=1)
     #plt.gcf().subplots_adjust(bottom=0.3)
     plt.tight_layout()
-    np.savetxt('data/figure3/figure3_individual_data_full_bombardier_best.csv', np.ndarray.transpose(data_individual_bombardier_best), delimiter=',')
-    np.savetxt('data/figure3/figure3_individual_data_full_airbus_best.csv', np.ndarray.transpose(data_individual_airbus_best), delimiter=',')
+    np.savetxt('figure3_individual_data_full_bombardier_best.csv', np.ndarray.transpose(data_individual_bombardier_best), delimiter=',')
+    np.savetxt('figure3_individual_data_full_airbus_best.csv', np.ndarray.transpose(data_individual_airbus_best), delimiter=',')
 
-    plt.savefig("data/figure3/figure3.png", format='png', dpi=600)
+    plt.savefig("figure3.png", format='png', dpi=600)
     plt.show()
 
 
@@ -158,9 +157,9 @@ def figure4_effect_of_luggage_on_times(labels, boarding_data_random, boarding_da
     ax.legend(loc=2, fontsize=10, frameon=False)
     ax.set_ylabel('Boarding times (min)', fontsize=12)
     ax.set_xlabel('Luggage load as a percentage of total capacity (%)', fontsize=12)
-    np.savetxt('data/figure4/figure4_random_data.csv', np.ndarray.transpose(data_random), delimiter=',')
-    np.savetxt('data/figure4/figure4_steffen_data.csv', np.ndarray.transpose(data_steffen), delimiter=',')
-    plt.savefig("data/figure4/figure4.png", format='png', dpi=600)
+    np.savetxt('figure4_random_data.csv', np.ndarray.transpose(data_random), delimiter=',')
+    np.savetxt('figure4_steffen_data.csv', np.ndarray.transpose(data_steffen), delimiter=',')
+    plt.savefig("figure4.png", format='png', dpi=600)
     plt.show()
 
 
@@ -183,7 +182,7 @@ def get_confidence_interval_and_mean(boarding_data, n, m):
 
 
 def get_figure_1():
-    a = np.loadtxt('data/figure1/total_data_old_plane.txt', delimiter=',')
+    a = np.loadtxt('times_load_90_passengers_100_plane_3_total.csv', delimiter=',')
     times_total = np.zeros((46, 5), dtype=float)
     times_individual = np.zeros((46, 5), dtype=float)
     labels_list = []
@@ -200,10 +199,10 @@ def get_figure_1():
 
 
 def get_figure_2():
-    a = np.loadtxt('data/figure2/times_load_70_passengers_625_plane_1_total.csv', delimiter=',')
-    b = np.loadtxt('data/figure2/times_load_70_passengers_625_plane_2_total.csv', delimiter=',')
-    c = np.loadtxt('data/figure2/times_load_100_passengers_100_plane_1_total.csv', delimiter=',')
-    d = np.loadtxt('data/figure2/times_load_100_passengers_100_plane_2_total.csv', delimiter=',')
+    a = np.loadtxt('times_load_70_passengers_625_plane_1_total.csv', delimiter=',')
+    b = np.loadtxt('times_load_70_passengers_625_plane_2_total.csv', delimiter=',')
+    c = np.loadtxt('times_load_100_passengers_100_plane_1_total.csv', delimiter=',')
+    d = np.loadtxt('times_load_100_passengers_100_plane_2_total.csv', delimiter=',')
     labels_list = []
     f = open("test_methods.txt", "r+")
     lines = f.readlines()
@@ -215,8 +214,8 @@ def get_figure_2():
 
 
 def get_figure_3():
-    a = np.loadtxt('data/figure3/times_load_100_passengers_100_plane_1_individual.csv', delimiter=',')
-    b = np.loadtxt('data/figure3/times_load_100_passengers_100_plane_2_individual.csv', delimiter=',')
+    a = np.loadtxt('times_load_100_passengers_100_plane_1_individual.csv', delimiter=',')
+    b = np.loadtxt('times_load_100_passengers_100_plane_2_individual.csv', delimiter=',')
     labels_list = []
     chosen = [0, 1, 22, 31, 36, 40, 43, 46]
     f = open("test_methods.txt", "r+")
@@ -228,9 +227,13 @@ def get_figure_3():
     figure3_two_plane_individual_times(labels_list, chosen, a, b, 49, 5)
 
 def get_figure_4():
-    random = np.loadtxt('data/figure4/loads_random.csv', delimiter=',')
-    steffen = np.loadtxt('data/figure4/loads_steffen.csv', delimiter=',')
+    random = np.loadtxt('loads_random.csv', delimiter=',')
+    steffen = np.loadtxt('loads_steffen.csv', delimiter=',')
     labels = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
 
     figure4_effect_of_luggage_on_times(labels, random, steffen, 21, 5)
 
+get_figure_1()
+get_figure_2()
+get_figure_3()
+get_figure_4()
