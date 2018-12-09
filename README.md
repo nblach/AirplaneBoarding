@@ -1,5 +1,4 @@
-# Modeling and Simulation of Social Systems Fall 2018 – Research Plan (Template)
-(text between brackets to be removed)
+# Modeling and Simulation of Social Systems Fall 2018 – Research Plan
 
 > * Group Name:  PlaneBoarding
 > * Group participants names: Nils Blach, Anton Schäfer 
@@ -13,37 +12,51 @@
 
 ## The Model
 
-(Define dependent and independent variables you want to study. Say how you want to measure them.) (Why is your model a good abstraction of the problem you want to study?) (Are you capturing all the relevant aspects of the problem?)
+The model is agent-based an fcouses on passengers' behavious in the aisle. In each discrete time step of 0.1 s, all actors in the aisle can act. The actors behaviour can be described with a finite state machine. Actors start in state 0, where they are outside the plane, then enter the plane and search for space to store their luggage. After storing their luggage they move to their seat and sit down. As soon as all passengers are seated, boarding is completed and the simulation ends.
+
+We also included an animation of the simulation. To use it, run a simultation, and generate an Animation a = Animate(sim) if sim is a simulation object. Then, call a.animate() press the space bar to start the animation, and watch the passengers board the plane.
 
 
 ## Fundamental Questions
 
-(At the end of the project you want to find the answer to these questions)
-(Formulate a few, clear questions. Articulate them in sub-questions, from the more general to the more specific. )
+How does our model compare to the one from Van Landeghem and Beuselinck?
+How do the Steffen method and other boarding methods compare to each other, when applied for different planes?
+How does luggage load influence boarding time?
 
 
 ## Expected Results
 
-(What are the answers to the above questions that you expect to find before starting your research?)
+We expect our model to yield similar results as the one given by Van Landeghem and Beuselinck. The Steffen method is supposed to be the most effective boarding method, so we expect it to perform best. We expect that the boarding time drastically increases with increasing luggage load.
 
 
 ## References 
 
-(Add the bibliographic references you intend to use)
-(Explain possible extension to the above models)
-(Code / Projects Reports of the previous year)
+
+Van Landeghem, H, and A Beuselinck. "Reducing Passenger Boarding Time in Airplanes: A Simulation Based Approach." European Journal of Operational Research, vol. 142, no. 2, 2002, pp. 294–308.
+
+Steffen, Jason H. ''Optimal boarding method for airline passengers." Journal of Air Transport Management 14.3 (2008): 146-150.
+
+Data Passenger Size from:  NASA. “Man-Systems Integration Standards.” Man-Systems Integration Standards, vol. 1, July 1995, p. 30.
+	
+Barrett, Sean D. ''How do the demands for airport services differ between full-service carriers and low-cost carriers?." Journal of air transport management 10.1 (2004): 33-39.
+
+Images in Animation:
+
+Seat: www.conceptdraw.com/solution-park/building-seating-plans   (accessed 29.11.2018)
+
+Plane nose and tail: https://www.google.ch/url?sa=i&source=images&cd=&ved=2ahUKEwiqrpCC0fneAhVRDOwKHRvzDH0QjRx6BAgBEAU&url=http%3A%2F%2Fcvfreeletters.brandforesight.co%2Felegant-frontier-airlines-planes-seating-chart%2Felegant-frontier-airlines-planes-seating-chart-15-elegant-united-seating-chart-masterlistforeignluxury&psig=AOvVaw0mpEvRKrlOSIJLULGzb9s5&ust=1543581837081380  (accessed 29.11.2018)
+
 
 
 ## Research Methods
 
-(Cellular Automata, Agent-Based Model, Continuous Modeling...) (If you are not sure here: 1. Consult your colleagues, 2. ask the teachers, 3. remember that you can change it afterwards)
+We use an agent-based model.
 
 
-## Other
-
-(mention datasets you are going to use)
 
 # Reproducibility
 
-(step by step instructions to reproduce your results. *Keep in mind that people reading this should accomplish to reproduce your work within 10 minutes. It needs to be self-contained and easy to use*. e.g. git clone URL_PROY; cd URL_PROY; python3 main.py --light_test (#--light test runs in less than 5minutes with up to date hardware)) 
+Before reproducing our work, make sure you have pyhton3, numpy, and matplotlib installed. 
+To run the light test, just run the python script light_test.py. It will simulate boarding of an Airbus A320-200 with 100 % load and 180 passengers, using the random seat assignment and the Steffen method. It will print the boarding times to the console. To run the full test, first run the python script full_test.py to generate the data.
+
 
