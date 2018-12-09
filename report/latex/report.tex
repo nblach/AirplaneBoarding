@@ -131,42 +131,42 @@ Finally, we investigate the relationship between luggage amount and boarding tim
 
 \subsection{Overview}
 
-Our model realistically simulates the airplane boarding process. It aims to provide reasonable information about how long it takes until all people are seated and how long it takes until a specific person is seated, depending on different boarding methods, luggage loads, and passenger count.  In order to achieve this, it focuses on actions taking place in the aisle, such as passengers moving, passengers storing items, and passengers moving into their seat.
+Our model realistically simulates the airplane boarding process. It aims to provide reasonable information about the time required, for the seating of all passengers and individual passengers, depending on different boarding methods, luggage loads, and passenger count.  In order to achieve this, it focuses on actions taking place in the aisle, such as passengers moving, passengers storing items, and passengers moving into their seat.
 
 
 \subsection{The Boarding Process}
-\paragraph{At the gate}
-Before boarding, passengers usually wait at the gate. When boarding is announced, they start to line up either in random order, or by group, depending on the airline or flight. Commonly used grouping schemes are either by blocks of seats, or by letter (A,B,...,F). The boarding agent announces which group is next to board the plane, so the passengers will enter the plane in the order of their assigned groups. Still, the order in which passengers from the same block enter the plane is random. 
+\paragraph{At the gate.}
+Before boarding, passengers usually wait at the gate. When boarding is announced, they start to line up either in random order or by group, depending on the airline or flight. Commonly used grouping schemes are either by blocks of seats, or by letter (A,B,...,F). The boarding agent announces which group is next to board the plane and the passengers enter the plane in the order of their assigned groups. Note that the order in which passengers from the same block enter the plane is random. 
 
-\paragraph{Entering the plane}
-Passengers get to the plane via bus or through a jet bridge and enter the plane through either the front door or back door (or some middle door, if the airplane is big), or through both doors. Once inside the plane, passengers usually first try to find their seat.  Before sitting down, however, they may need to store their hand luggage. 
-\paragraph{Hand luggage} The three main types of hand luggage passengers carry are purses, backpacks and suitcases. Purses and some backpacks are usually stored under the seat in front, while suitcases and other backpacks need to be put in the overead compartments. When searching for an overhead compartment to store their items, passengers generally first check, if there space in a compartment right above their seat. When they see that it is full already, they usually store their luggage in the next free compartment they see. However, passengers usually avoid walking back into the direction they came from, as this would mean going against the flow of passengers in the narrow aisle.
+\paragraph{Entering the plane.}
+Passengers get to the plane via bus or through a jet bridge and enter the plane through either the front door, back door (or some middle door, if the airplane is big), or through both doors. Once inside the plane, passengers usually first try to find their seat.  Before sitting down, however, they may need to store their hand luggage. 
+\paragraph{Hand luggage.} The three main types of hand luggage passengers carry are purses, backpacks and suitcases. Purses and small luggage is usually stored under the seat in front, while suitcases and large backpacks need to be put in the overhead compartments. When searching for an overhead compartment to store their items, passengers generally first check if there space in a compartment right above their seat. If it is full, they usually store their luggage in the next free compartment they see. However, passengers usually avoid walking back into the direction they came from, as this would mean going against the flow of passengers in the narrow aisle.
 
-\paragraph{Entering seat} After storing all their big hand luggage, passengers walk to their row in order to sit down. If noone sits inbetween them and their seat, they can sit down. Otherwise, the sitting passengers first have to get out of the row, in order to let in the arriving passenger.
+\paragraph{Entering seat.} After storing all their large luggage, passengers walk to their row to sit down. If noone is sitting inbetween them and their seat, they can sit down. Otherwise, the sitting passengers first have to get out of the row and let in the arriving passenger.
 \\\\
 Once all passengers are seated, boarding is completed.
 
 \subsection{Our model}\label{ourmodel}
 
-We want to gain insight on the efficiency of various boarding methods, and the impact of luggage load and passenger count on the time it takes individuals and all passengers to board a plane. Thus, what happens in the plane is crucial, while what is taking place in the airport, jet bridge, and bus barely have significant effects on the boarding time, other than determining the order in which people arrive at the plane door. We therefore decided to only model the events taking place inside the airplane. In order to still take into account the impact of different boarding strategies chosen by the gate agent, we assume the passengers all enter the plane in a certain order given by their seats. We will call such an order (of seats/passengers by seat) a boarding sequence.
-Although we have to keep track of which passengers are already sitting, it is not relvevant what the sitting passengers are doing. Hence, for our model, we focus only on what is happening in the aisle and discard most other irrelevant parts of the plane.
+We want to gain insight on the efficiency of various boarding methods, and the impact of luggage load and passenger count on the time it takes for individuals and all passengers to board a plane. Thus, what happens in the plane is crucial, while what is taking place in the airport, jet bridge, and bus does not have significant effects on the boarding time, other than determining the order in which people arrive at the plane door. Therefore, we decide to only model the events taking place inside the airplane. To account for the impact of different boarding strategies chosen by the gate agent, we assume the passengers all enter the plane in a certain order given by their seats. We will call such an order (of seats/passengers by seat) a boarding sequence.
+Although we have to keep track of which passengers are already sitting, it is not relevant what the sitting passengers are doing. Hence, for our model, we focus only on what is happening in the aisle.
 
-We only consider airplanes with one door at the front, as all other airplanes with $n \geq 2$ doors can be divided in $n$ sections with one door. Then, boarding can simultaneously be modeled in each section individually, yielding a similar result, if one assumes, that in reality, passengers entering the plane in one section will never go to a different section.
-When choosing reasonable sections and assuming passengers behave rational, this can indeed be guaranteed. Similarly, we only consider airplanes with one aisle, as all other planes can again be divided into sections with one aisle each. Additionally, the plane used for modelling is configureable. Thus, our model applies to almost all airplanes (when dividing them in sections if necessary).
+We only consider airplanes with one door at the front, as all other airplanes with $n \geq 2$ doors can be divided in $n$ sections with one door. Then, boarding can simultaneously be modeled in each section individually, yielding a similar result, under the assumption, that, in reality, passengers entering the plane in one section will never enter a different section.
+When choosing reasonable sections and assuming passengers behave rational, this is realistic. Similarly, we only consider airplanes with one aisle, as all other planes can again be divided into sections with one aisle each. The plane we model is configurable. Thus, our model applies to almost all airplanes.
 
-We use an agent based model, where the actors are passengers. For simplicity, we divide the continuous time interval in discrete timesteps. The actors move around in the aisle, which is a one dimensional line divided in discrete space units. Two actors can never be at the same position in the aisle, unless they are moving in opposite directions and have to pass each other. Then, they can switch positions. We model the boarding process of an actor as follows:
+We use an agent based model, where the actors are passengers. For simplicity, we divide the continuous time interval in discrete time steps. The actors move around in the aisle, which is a one dimensional line divided in discrete space units. Two actors can never be at the same position in the aisle, unless they are moving in opposite directions and have to pass each other. Then, they can switch positions. We model the boarding process of an actor as follows:
 
-\paragraph{Entering the plane}
-An actor enters the plane as soon as all actors that he is behind of in the boarding sequence  have entered the plane and if there is enough free space in the aisle for a new actor to enter. The actor then appears at the very start of the aisle.
+\paragraph{Entering the plane.}
+Actors enter the plane as soon as all actors that come before them in the boarding sequence have entered the plane and if there is enough free space in the aisle for a new actor to enter. The actor then appears at the very start of the aisle.
 
 
-\paragraph{Hand luggage}
+\paragraph{Hand luggage.}
 For each actor, we only consider the pieces of luggage they need to store in an overhead compartment. We discard their other luggage, as it will be stored underneath the front seat, and thus has a negligible impact on boarding time. Also, instead of taking into account every single overhead compartment, for any pair of opposite compartments, our model uses one single compartment that holds twice as many items, and covers the same space of the aisle. This simplification is realistic, as from each position in the aisle, passengers can reach the compartments on both sides. Because of this abstraction, in the remainder of this paper, when referring to a "compartment" while speaking about our model, we mean one single big compartment corresponding to two opposite actual compartments.
 
 	As soon as an actors can see their seat, they determine if they can store all their luggage in the comparment above their seat. If they can, they will store their luggage there, otherwise, they will store as much of their luggage as possible in the next free compartments they see. However, at first, they only move forward in order not to go against the flow. Only when they arrive at the very end of the plane and can still not store their luggage, they search for a free compartment towards the front of the plane.
 
 
-\paragraph{Entering seat}
+\paragraph{Entering seat.}
 After storing all their luggage, the actors go to their seat in order to sit down. If other sitting passengers are obstructing the way to their seat, these passengers need to move out of their seat first in order to let in the arriving actor. The arriving actor blocks the aisle during this whole time.
 \\\\
 Boarding is completed as soon as every actor entered their seat.
@@ -181,7 +181,7 @@ Boarding is completed as soon as every actor entered their seat.
 Van Landeghem and Beuselinck produced their results "using simulation in Arena" \cite{beus}. They modeled the boarding process similar to us, also focussing on passengers in the aisle and luggage. However, they do not explain their model precisely. Instead they state the factors they took into account:
 
 
-Passengers storing luggage are a major cause for congestion in the aisle. Thus, they consider luggage, assigning each passenger a number of luggage pieces. Still, it is not clear how accurately they model luggage an compartments. In particular, we do not know if the compartments in Van Landeghem's and Beuselinck's model are defined to have a limited capacity. On one hand, they mention that, as the overhead bins fill up, "passengers will have to move to other rows to find storage space"\cite{beus}. On the other hand, they simulate a boarding process with a full plane (with 132 seats and 23 rows) and a luggage load where sixty percent of passengers carry one piece of hand luggage, 30 percent of passengers carry two pieces, and ten percent carry three. When using compartments with a realistic finite size, this should not be possibe, as the total amount of luggage stored in the plane would then be:
+Passengers storing luggage are a major cause for congestion in the aisle. Thus, they consider luggage, assigning each passenger a number of luggage pieces. Still, it is not clear how accurately they model luggage an compartments. In particular, we do not know if the compartments in Van Landeghem's and Beuselinck's model are defined to have a limited capacity. On one hand, they mention that, as the overhead bins fill up, "passengers will have to move to other rows to find storage space"\cite{beus}. On the other hand, they simulate a boarding process with a full plane (with 132 seats and 23 rows) and a luggage load where 60\% of passengers carry one piece of hand luggage, 30 \% of passengers carry two pieces, and 10\% carry three. When using compartments with a realistic finite size, this should not be possible, as the total amount of luggage stored in the plane would then be:
 $$ 0.6 \cdot 132 \cdot 1+ 0.3 \cdot 132 \cdot 2 + 0.1 \cdot 132 \cdot 3 = 198$$
 Yet, not even a much bigger plane like the Airbus 320-200 (with 180 seats, 30 rows and space for around 110 pieces of hand luggage) provides that much space for hand luggage. We therefore assume that Van Landeghem and Beuselinck defined their compartments to have either infinite, or unrealistically large capacity. In both cases, their model does not take into account the effect of passengers who have to search for free compartments.
 
@@ -189,15 +189,15 @@ Yet, not even a much bigger plane like the Airbus 320-200 (with 180 seats, 30 ro
 Furthermore, Van Landeghem and Beuselinck take into account, that, the fuller a compartment is, the longer it takes passengers to store an item in it. We decided to negelect this small extra time, assuming it will only contribute to the total boarding time as a constant summand, independent of the boarding method/sequence.
 
 
-Just as in our model, they include that sitting passengers have to get up in order to let someone in, if necessary. However, the constants they used seemed unreasonable to us, so we are using different numbers. We will explain this in the constants section.
+Just as in our model, they model sitting passengers having to get up in order to let someone in, if necessary. However, their model's  time values seemed unreasonable to us, so we are using different numbers. We further explain this in the section on constants.
 
 
 \subsection{Constants}
 Aiming to reproduce the results of Van Landeghem and Beuselinck, we defined most of our constants based the values they give in \cite{beus}:
 
 \begin{figure}[h!]
+	\center
 \begin{tabular}{l|l}
-
 	\hline
 	passenger size & 25 cm \\
 	\hline
@@ -206,13 +206,12 @@ Aiming to reproduce the results of Van Landeghem and Beuselinck, we defined most
 	field of fiew & $3 \cdot$ seat pitch (lenght of a row)\\
 	\hline
 \end{tabular}
-
 \end{figure}
-
-	We consider passenger size as the distance from a passengers back to their chest, which is 25 cm for the average american male, according to the NASA man-sytems integration standards \cite{nasa}. Personal space is the distance passengers will always keep from each other. We define it as one passenger size plus a 21 cm average backpack,or a jacket or suitcase.
+We consider passenger size as the distance from a passengers back to their chest, which is 25 cm for the average american male, according to the NASA man-sytems integration standards \cite{nasa}. Personal space is the distance passengers will always keep from each other. We define it as one passenger size plus a 21 cm average backpack,or a jacket or suitcase.
 	The passengers' field of view value is their distance to the furthest compartment they can see into and determine whether it is full already.
 
 \begin{figure}[h!]
+	\center
 \begin{tabular}{l|l l l}
 
 	&min &mode&max \\
@@ -223,10 +222,10 @@ row enter time & 5 s &7.5 s & 15 s \\
 	\hline
 \end{tabular}
 \end{figure}
-
-A passenger's row exit time is defined as the time it takes them to get up from their seat and move in the aisle. For the row exit time, we use a triangular distribution with the same constants as proposed in \cite{beus}, as they seem reasonable. We define a passenger's row enter time as the time it takes them to free the aisle when sitting down (Not the time it takes them to actually sit down in their seat!). For the row enter time we use the same distribution as for the row exit time. Even if exiting a row when seated might take longer than just stepping out of the aisle, the row enter time also contains the time it takes passengers to take off their jackets, etc., so it seems reasonable to choose the same constants as for the exit time.
+A passenger's row exit time is defined as the time it takes them to get up from their seat and move in the aisle. For the row exit time, we use a triangular distribution with the same constants as proposed in \cite{beus}. We define a passenger's row enter time as the time it takes them to free the aisle when sitting down \footnote{Not the time it takes them to actually sit down in their seat!} For the row enter time we use the same distribution as for the row exit time. Even if exiting a row when seated might take longer than just stepping out of the aisle, the row enter time also contains the time it takes passengers to take off their jackets, etc., so we choose the same constants as for the exit time. \footnote{Van Landeghem and Beuselinck use much higher numbers, that are not applicable to our defintion of the row enter time.}
 
 \begin{figure}[h!]
+	\center
 \begin{tabular}{l|l l l}
 
 	&min &mode&max \\
@@ -236,10 +235,10 @@ storing time & 3 s &9.5 s & 17 s \\
 
 	\end{tabular}
 \end{figure}
-
 A passenger's storing time is defined as the time it takes them to store one item in an overhead compartment. We assume it is triangularly distributed, just as the constants defined in \cite{beus}. The values are based on our own observations at Zurich airport.
 
 \begin{figure}[h!]
+	\center
 \begin{tabular}{l|l l l}
 
 	&min &mode&max \\
@@ -248,7 +247,7 @@ moving speed &0.27 m/s&0.34 s& 0.45 m/s   \\
 	\hline
 \end{tabular}
 \end{figure}
-The moving speed describes the speed at which passengers walk through the aisle. It is triangularly distribiuted with constants based on the values given in \cite{beus}, where it is defined as the time it takes a passenger to pass one row. When converting these time values into speed values, we assumed, that Van Landeghem and Beuselinck where referring to an airpane with a seat pitch (length of a row) of 0.813 m, which was very common for airplanes used around the year 2002, when their paper was published. Still, in our opinion, the speeds seem a bit slow.
+The moving speed describes the speed at which passengers walk through the aisle. It is triangularly distributed with constants based on the values given in \cite{beus}, where it is defined as the time it takes a passenger to pass one row. When converting these time values into speed values, we assumed, that Van Landeghem and Beuselinck were referring to an airplane with a seat pitch (length of a row) of 0.813 m, which was very common for airplanes used around the year 2002, when their paper was published. Still, in our opinion, the speeds seem a bit slow.
 
 
 \subsection{Boarding Methods}
@@ -270,24 +269,24 @@ All boarding methods generally order the seats from back to front, for obvious r
 
 \subsubsection{Description of Boarding Methods}
 
-\paragraph{Random} Does not specify any order. Passengers may board in any sequence.
-\paragraph{by\_block} Groups the seats into equally sized blocks where each block contains all seats of one or more rows. "by\_block\_$n$\_$\dots$" 
+\paragraph{Random.} Does not specify any order. Passengers may board in any sequence.
+\paragraph{by\_block.} Groups the seats into equally sized blocks where each block contains all seats of one or more rows. "by\_block\_$n$\_$\dots$" 
 divides the plane into $n$ blocks.
-\paragraph{by\_halfblock} Groups the seats into blocks, where each block contains all seats of one or more rows on only a single side of the aisle. Not that the blocks are not equally sized, if the airplane has more seats on one side of the aisle than on the other. "by\_halfblock\_$n$\_$\dots$" divides the plane into $2\cdot n$ blocks.
+\paragraph{by\_halfblock.} Groups the seats into blocks, where each block contains all seats of one or more rows on only a single side of the aisle. Not that the blocks are not equally sized, if the airplane has more seats on one side of the aisle than on the other. "by\_halfblock\_$n$\_$\dots$" divides the plane into $2\cdot n$ blocks.
 
-\paragraph{by\_row} Groups together all seats of one row. For obvious reasons, all "by\_row" methods order the rows from back to front in some way (with/without alternation).
+\paragraph{by\_row.} Groups together all seats of one row. For obvious reasons, all "by\_row" methods order the rows from back to front in some way (with/without alternation).
 
-\paragraph{by\_halfrow} Groups together all seats of one row that are on the same side of the aisle. Otherwise it is similar to "by\_row".
+\paragraph{by\_halfrow.} Groups together all seats of one row that are on the same side of the aisle. Otherwise it is similar to "by\_row".
 
-\paragraph{by\_letter} Groups together all seats with the same letter i.e. all seats in the same column.
+\paragraph{by\_letter.} Groups together all seats with the same letter i.e. all seats in the same column.
 
-\paragraph{by\_seat} Defines an order on all seats. The order in which passengers board the airplane is totally defined and in no sense random. For obvious reasons, asll "by\_seat" methods order the seats from back to front in some way.
+\paragraph{by\_seat.} Defines an order on all seats. The order in which passengers board the airplane is totally defined and not random. For obvious reasons, all "by\_seat" methods order the seats from back to front in some way.
 
-\paragraph{Steffen}
+\paragraph{Steffen.}
 The Steffen method also specifies a total order on all all seats. It makes passengers board from back to front, from window to aisle, with an alternation of 1. So at first, every second seat in a column at the window (usually F) is boarded, then every second seat in the other window column (usually A). Secondly, the remaining seats from the two window columns are filled. The same process then continues with the columns second closest to the window, and so on. Figure \ref{fig:steffen} shows how the Steffen method would be applied in a plane with 7 rows and 4 seats per row.
 
 
-We also measure the perfomance of sightly modified Steffen methods with increased alternation. "steffen\_alt\_$n$" refers to a modified Steffen method with an alternation of $n$.
+We also measure the performance of sightly modified Steffen methods with increased alternation. "steffen\_alt\_$n$" refers to a modified Steffen method with an alternation of $n$.
 
 \begin{figure}
 	\center
@@ -300,10 +299,10 @@ We also measure the perfomance of sightly modified Steffen methods with increase
 
 \section{Implementation}
 
-We implemented our model in python, in a heavily object oriented way. We use 0.01 m as the basic space unit, and 0.1 s as the basic time unit. The plane is implemented, such that all it's relevant parameters (such as number of rows, row size, seat pitch and length and size of a compartment) can be adjusted. The aisle is represented by an array, where each entry is an integer, indicating, which actor currently covers the corresponding millimeter, or if it is free. In every time step, we make every actor, that is currently in the aisle, act. When acting, actors can update their own state or the occupation of a compartment, the aisle, or their seat. Once  all actors are seated, the simulation ends, as boarding is completed.
+We implemented our model in Python. We use 0.01 m as the fundamental space unit, and 0.1 s as the fundamental time unit. The plane is implemented such that all its relevant parameters (such as number of rows, row size, seat pitch and length and size of a compartment) can be adjusted. The aisle is represented by an array, where each entry is an integer, indicating, which actor currently covers the corresponding millimeter, or if it is free. In every time step, we make every actor, that is currently in the aisle, act. When acting, actors can update their own state or the occupation of a compartment, the aisle, or their seat. Once  all actors are seated, the simulation ends, as boarding is completed.
 
 \subsection{The Different Boarding Methods}
-We generate the boarding methods as permutations of a list of all seats in the plane. Then, each actor gets assigned one of the seats and the actors enter the plane in the order of the permutated list of seats. Random seats are deleted from the list, if the plane is not fully loaded.
+We generate the boarding methods as permutations of a list of all seats in the plane. Then, each actor gets assigned one of the seats and the actors enter the plane in the order of the permuted list of seats. Random seats are deleted from the list, if the plane is not fully loaded.
 
 \subsection{Acting and Actor States}
 \begin{figure}[h!]
@@ -330,7 +329,7 @@ We generate the boarding methods as permutations of a list of all seats in the p
 \hline
 
 \end{tabular}
-\caption{States an actor can be in}
+\caption{Actor states}
 \label{tab:states}
 \end{figure}
 
@@ -338,7 +337,7 @@ We generate the boarding methods as permutations of a list of all seats in the p
 
 %	\includegraphics[width=\linewidth]{images/fsm.png}
 %	\label{fig:fsm}
-	\caption{Finite state machine describing the states an actor can be in.}
+	\caption{The actor finite state machine}
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3.5cm,
         scale = 0.8,transform shape]
 
@@ -384,26 +383,26 @@ We generate the boarding methods as permutations of a list of all seats in the p
 
 Actors behave like finite state machines. They can be in 10 different states, and transition from state to state based on certain conditions. These states can be seen in figure \ref{tab:states}. Figure \ref{fig:fsm} shows the actor as a FSM and gives an overview over how actors behave.
 
-\paragraph{Entering plane (0)} All actors start in state 0, waiting on their turn to enter the plane. Once it is their turn to enter the plane, and there is enough free space in the aisle, they mark the aisle space they cover as occupied and thereby enter the plane. Then, they either update their state to state 1 or state 3, depending if they carry any handluggage or not. From now on, their method act will be called in every timestep until they are seated.
+\paragraph{(0) Entering plane.} All actors start in state 0, waiting on their turn to enter the plane. Once it is their turn to enter the plane, and there is enough free space in the aisle, they mark the aisle space they cover as occupied and thereby enter the plane. Then, they either update their state to state 1 or state 3, depending if they carry any hand luggage or not. From now on, their method act will be called in every time step until they are seated.
 
-\paragraph{Finding space (1)}
-There are three substates of state 1. When transitioning into state 1, actors land in the substate 0 (1/0), where they are looking for free compartment space by their seat. As soon as the distance of their position to their seat is less than their field of view, they either transition to state 1/1, if it cannot hold all their luggage or stay in state 1/0, walking towards their seat. When there is still space by their seat once they arrive, they store their items, transitioning to state 2/0.
+\paragraph{(1) Finding space.}
+There are three sub states of state 1. When transitioning into state 1, actors land in the sub state 0 (1/0), where they are looking for free compartment space by their seat. As soon as the distance of their position to their seat is less than their field of view, they either transition to state 1/1, if it cannot hold all their luggage or stay in state 1/0, walking towards their seat. When there is still space by their seat once they arrive, they store their items, transitioning to state 2/0.
 
 When in state 1/1 actors are searching for any free space further back the aisle. They advance until they either find a free compartment and start to store, transitioning to state 2/1, or reach the very end of the plane and transition to state 1/2.
 
 In state 1/2 actors are walking towards the front of the plane, searching for a free compartment. As soon as they find free space, they transition into state 2/2 in order to store their items.
 
-\paragraph{Storing luggage (2)}
-When starting to store luggage, actors immediately mark the space their luggage takes up in the respective compartment as occupied. They then stay in this state for a number of timesteps, corresponding to their storing time multiplied with the number of pieces they are storing. After finshing storing as much items as they could, they transition to state 3, in order to sit down, if they successfully stored all their hand luggage. Otherwise, the compartment could not hold all their luggage, so they transition back to state 1 (from 2/$i$ into 1/$i$ for $i \in \{0,1,2\})$ to find another free compartment.
+\paragraph{(2) Storing luggage.}
+When starting to store luggage, actors immediately mark the space their luggage takes up in the respective compartment as occupied. They then stay in this state for a number of time steps, corresponding to their storing time multiplied with the number of pieces they are storing. After finshing storing as much items as they could, they transition to state 3, in order to sit down, if they successfully stored all their hand luggage. Otherwise, the compartment could not hold all their luggage, so they transition back to state 1 (from 2/$i$ into 1/$i$ for $i \in \{0,1,2\})$ to find another free compartment.
 
-\paragraph{Going to seat (3)}
+\paragraph{(3) Going to seat.}
 When going to their seat, passengers just advance into the direction of their seat until they are at the right position to enter their row. Then, they transition to state (4).
 
 
-\paragraph{Moving into seat (4)}
+\paragraph{(4) Moving into seat.}
 Before being seated, actors stay in state 4 for a number of timesteps, corresponding to their row enter time plus the row exit times of all passengers already sitting between them and their seat. Only after remaining in state 4 for this amount of time, blocking the aisle, they can transition into state 5.
 
-\paragraph{Seated (5)}
+\paragraph{(5) Seated.}
 Once an actor is seated, his state will never change again. Even when moving out of the seat, in order to let in another passenger, seated actor's states are not updated. Still, seated actors can have an influence on other passengers, as can be seen in the description of state 4.
 
 
