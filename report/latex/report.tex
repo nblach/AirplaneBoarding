@@ -442,7 +442,7 @@ The general trend of the data is retained by our model because within each class
 \subsection{Comparison of different boarding methods - Bombardier CS100 \& Airbus A320-200}
 \begin{figure}
 	\includegraphics[width=\linewidth]{../../code/AirplaneBoarding/data/figure2/figure2.png}
-	\caption{This figure displays the results calculated our model for the time it takes to board the Bombardier CS100 and the Airbus A320-200 using different boarding methods under a low/high load configuration}
+	\caption{This figure displays the results calculated using our model for the time it takes to board the Bombardier CS100 and the Airbus A320-200 using different boarding methods under a low/high load configuration}
 	\label{figure2}
 \end{figure}
 
@@ -550,6 +550,18 @@ The general trend of the data is retained by our model because within each class
 	
 
 \section{Summary and Outlook}
+The comparison between our model and Van Landehems' and Beuselinck's model \cite{beus} showed that the results from our implementation do not differ a lot from theirs and retain the overall trends of the boarding times, as well as relationships between the different boarding methods. This provides good reason to believe that our model accurately depicts reality, as \cite{beus} is generally seen as the foundation for airplane boarding simulations and models. 
+
+Simulating 49 different boarding methods on the two airplanes Airbus A320-200 and Bombardier CS100 revealed some key insights to what the causes of varying boarding times with different boarding methods might be. We found out that the main reason of increased boarding times are congestions in the aisle caused by passengers either storing their luggage or taking their seat because they result in inefficient use of the available space. The boarding methods try to address this issue using different techniques, such as alternation or window to aisle boarding. We found out that one of the major contributing factors in avoiding congestions is the level of alternation that each method employed, as it helps in the attempt to create the perfect balance between the number of passengers that can take their seat or store their luggage concurrently, while not leaving to much free space inside the aisle. However, it can also negative affect boarding time, if not set correctly. This shows that airlines need to carfully evaluate
+
+\subsection{Limitations}
+
+Beuselinck nochmal eingehen (first research question) nur kurz 
+den vergleich der boarding methoden und den key insights (alternation, features of best methods, fazit fuer die praxis und die emfehlungen fuer die praxis in jeder section)
+alle research questions durch gehen und hindsight zusammenfassen und was das bringt fuer die praxis was das bringt
+critical view and limitations: not increased time with storing, model is just a limited view of reality, model zeight nicht ganz genau was ablaueft und das die daten nicht absolut richtig sein muessen. Gut fuer wichtige faktoren zu sehen und nicht actual times just only the relationships weil wir relativ stark abstrahieren. Viele soziale aspekte wie grupeen kann diese model nicht nachvollziehen. 
+outlook, improvement and extentions: practical tests with real people. Verschiedene eigenschaften fuer personen. 
+Future stuff: use computer science to find the best method. Weitere flugzeugtypen und wichtig wir btrachten nur short haul flights und nciht long range. 
 
 \section{References}
 \begin{thebibliography}{9}
