@@ -66,7 +66,7 @@ if __name__ == '__main__':
     #np.savetxt('data_light_test_total.csv', data_light_test_total, delimiter=',')
     #np.savetxt('data_light_test_indicidual.csv', data_light_test_individual, delimiter=',')
 
-    print('Total boarding time with random seat assignment : ', data_light_test_total[0][0])
-    print('Average individual boarding time with random seat assignment:', data_light_test_individual[0][0])
-    print('Boarding time with the Steffen method: ', data_light_test_total[1][0])
-    print('Average individual boarding time with the Steffen method:', data_light_test_individual[1][0])
+    print('Total boarding time with random seat assignment : ', data_light_test_total[0][0], ' min')
+    print('Average individual boarding time with random seat assignment:', data_light_test_individual[0][0], ' min')
+    print('Boarding time with the Steffen method: ', data_light_test_total[1][0], ' min')
+    print('Average individual boarding time with the Steffen method:', data_light_test_individual[1][0], ' min')
