@@ -31,9 +31,14 @@ We expect our model to yield similar results as the one given by Van Landeghem a
 
 ## References 
 
-(Add the bibliographic references you intend to use)
-(Explain possible extension to the above models)
-(Code / Projects Reports of the previous year)
+
+Van Landeghem, H, and A Beuselinck. "Reducing Passenger Boarding Time in Airplanes: A Simulation Based Approach." European Journal of Operational Research, vol. 142, no. 2, 2002, pp. 294–308.
+
+Steffen, Jason H. ''Optimal boarding method for airline passengers." Journal of Air Transport Management 14.3 (2008): 146-150.
+
+Data Passenger Size from:  NASA. “Man-Systems Integration Standards.” Man-Systems Integration Standards, vol. 1, July 1995, p. 30.
+	
+Barrett, Sean D. ''How do the demands for airport services differ between full-service carriers and low-cost carriers?." Journal of air transport management 10.1 (2004): 33-39.
 
 
 ## Research Methods
