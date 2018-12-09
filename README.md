@@ -53,9 +53,6 @@ plane nose and tail: https://www.google.ch/url?sa=i&source=images&cd=&ved=2ahUKE
 We use an agent-based model.
 
 
-## Other
-
-We do not use any datasets. The data
 
 # Reproducibility
 
