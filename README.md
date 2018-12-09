@@ -12,7 +12,9 @@
 
 ## The Model
 
-The model is agent-based an fcouses on passengers' behavious in the aisle. In each discrete time step of 0.1 s, all actors in the aisle can act. The actors behaviour can be described with a finite state machine.
+The model is agent-based an fcouses on passengers' behavious in the aisle. In each discrete time step of 0.1 s, all actors in the aisle can act. The actors behaviour can be described with a finite state machine. Actors start in state 0, where they are outside the plane, then enter the plane and search for space to store their luggage. After storing their luggage they move to their seat and sit down. As soon as all passengers are seated, boarding is completed and the simulation ends.
+
+We also included an animation of the simulation. To use it, run a simultation, and generate an Animation a = Animate(sim) if sim is a simulation object. Then, call a.animate() press the space bar to start the animation, and watch the passengers board the plane.
 
 
 ## Fundamental Questions
