@@ -57,6 +57,6 @@ We use an agent-based model.
 # Reproducibility
 
 Before reproducing our work, make sure you have pyhton3, numpy, and matplotlib installed. 
-To run the light test, just run the python script light_test.py. It will simulate boarding of an Airbus A320-200 with 100 % load and 180 passengers, using the random seat assignment and the Steffen method. It will print the boarding times to the console. To run the full test, first run the python script full_test.py to generate the data.
+To run the light test, just run the python script light_test.py. It will simulate boarding of an Airbus A320-200 with 100 % load and 180 passengers, using the random seat assignment and the Steffen method. It will print the boarding times to the console. To run the full test, first run the python script full_test.py to generate the data. After it produced all the CSV files, just run the pyhton script full_test_graphics.py to produce all graphs used in the paper.
 
 
