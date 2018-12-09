@@ -18,13 +18,14 @@
 
 ## Fundamental Questions
 
-(At the end of the project you want to find the answer to these questions)
-(Formulate a few, clear questions. Articulate them in sub-questions, from the more general to the more specific. )
+How does our model compare to the one from Van Landeghem and Beuselinck?
+How do the Steffen method and other boarding methods compare to each other, when applied for different planes?
+How does luggage load influence boarding time?
 
 
 ## Expected Results
 
-(What are the answers to the above questions that you expect to find before starting your research?)
+
 
 
 ## References 
@@ -36,15 +37,16 @@
 
 ## Research Methods
 
-(Cellular Automata, Agent-Based Model, Continuous Modeling...) (If you are not sure here: 1. Consult your colleagues, 2. ask the teachers, 3. remember that you can change it afterwards)
+We use an agent-based model.
 
 
 ## Other
 
-(mention datasets you are going to use)
+We do not use any datasets. The data
 
 # Reproducibility
 
 Before reproducing our work, make sure you have pyhton3, numpy, and matplotlib installed. 
 To run the light test, just run the python script light_test.py. It will simulate boarding of an Airbus A320-200 with 100 % load and 180 passengers, using the random seat assignment and the Steffen method. It will print the boarding times to the console
+
 
