@@ -486,13 +486,30 @@ The general trend of the data is retained by our model because within each class
  The two methods that were tested from this class clearly represent the results that we expected because the method "by\_letter\_wintocorr" fills the seat-columns from left to right, so each actor that has a window seat on the right site will have to wait for two other actors (in our two planes there are 3 seats on the right side) that are already seated in his row to get up and let him in. This is not the case for the second method "by\_letter\_alt", as it boards the seat-columns from both window seats towards the aisle, which explains why it is significantly faster.
  
  \paragraph{by\_seat}
- The trend for this class depends on the load condition. For the full load, we again experience the alternation effect, with an initial slight decrease in boarding time and then an increase, and already explained in section \ref{model_comp} why they take longer than the first row alternating sequence. Under 62.5\% people and 70\% luggage load we only observe an increase in the boarding time and not the regular pattern. The most likely reason for this is that because we assign a specific order according to seats and the plane is not completely full, not a lot of row congestions happen naturally anymore. Furthermore, under full load alternating already only slightly improved the boarding time, which would explain why it does not have any further positive impact under limit load. 
+ The trend for this class depends on the load condition. For the full load, we again experience the alternation effect, with an initial slight decrease in boarding time and then an increase, and already explained in section \ref{model_comp} why they take longer than the first row alternating sequence. Under 62.5\% people and 70\% luggage load we only observe an increase in the boarding time and not the regular pattern. The most likely reason for this is that because we assign a specific order according to seats and the plane is not completely full, not a lot of row congestions happen naturally anymore. Furthermore, under full load alternating already only slightly improved the boarding time, which would explain why it does not have any further positive impact under reduced load. 
  
  \paragraph{Steffen}
- Now, as mentioned in the overview, the original Steffen generally performed the best across all tests. Further increasing the alternation did not improve the boarding times, probably because the effect of alternation was already maxed out. Under full load it performed the best across all 49 methods, but under limit load the first two methods of the "by\_seat" class just edged it out, most likely because of the same argument as given in "by\_seat", for why alternation did not improve the result any more, as Steffen uses some alternation. 
+ Now, as mentioned in the overview, the original Steffen generally performed the best across all tests. The way Steffen's method achieves this is that it tries to keep the aisle as full as possible, by using a small alternation just big enough to avoid congestions caused through storing or sitting down, in addition to boarding from the windows towards the aisle. Further increasing the alternation did not improve the boarding times, probably because the effect of alternation was already maxed out. Under full load it performed the best across all 49 methods, but under reduced load the first two methods of the "by\_seat" class just edged it out, most likely because of the same argument as given in "by\_seat", for why alternation did not improve the result any more, as Steffen uses some alternation. 
+ 
+ 
  
  \subsubsection{Effect of plane type and load configuration}
+ \paragraph{Effect of load configuration}
+ We have seen in the analysis of the "by\_seat" class in the previous section that the load configuration has an influence on the extend, to which the alternation effect has an impact on boarding methods. So for a reduced load level, as the one used for the data to the first subplot of Figure \ref{figure2}, the alternation effect is only partly influential on very coordinated boarding methods, an increased alternation might only have a negative effect. Under full load we saw that generally all boarding methods took longer than under reduced load. Furthermore, "Steffen" was the best method as predicted, which is why we assume that the higher the load configuration the more important the choice of boarding method becomes.
  
+ \paragraph{Effect of plane type}
+ The plane type impacts the boarding time depending on its size, so generally the larger the more seats a plane has, the longer any boarding method will take. Additionally, it was interesting to see that when the plane is asymmetric like the Bombarider CS100 it does not significantly affect the relationships between different boarding methods.
+ 
+ \subsection{Individual Boarding Times - Bombardier CS100 \& Airbus A320-200}
+	\begin{figure}
+		\includegraphics[width=\linewidth]{../../code/AirplaneBoarding/data/figure3/figure3.png}
+		\caption{This figure displays the results calculated our model for the time average time it takes each passenger to board the Bombardier CS100 and the Airbus A320-200 using different boarding methods under full load (passenger and luggage)}
+		\label{figure3}
+	\end{figure}
+	For many airlines the total boarding time is very import, especially for low-budget airlines like Ryanair, however many of the more expensive airlines, like Swiss and Lufthansa, really put a big emphasis on costumer experiences. This is why we also collected the data for the average individual boarding times, for the fastest boarding methods from each class. These can be seen in Figure \ref{figure3}. It is apparent that the faster the boarding method, the lower the average individual boarding time. However despite the Bombardier CS100 having a lot fewer seats than the Airbus A320-200 and a lower boarding time for all its methods under full load, it is recognizable that the faster the method, the closer the individual boarding times for the two planes get. This results in almost exactly the same individual boarding time for the fastest method "Steffen". The increasing efficiency across the boarding methods might yield this result because due to the decreasing number of congestions, the actors are almost able to walk directly towards their seat in the fastest methods.
+	
+	In terms of numbers, the fastest method "Steffen" has an individual boarding time of almost only 1 minute for both planes, whereas the fastest block boarding method has an individual boarding time of around 2.58 minutes for the Airbus and around 2.29 minutes for the Bombardier. So more than two times slower than "Steffen". From those results, we would believe that there is a strong correlation between total and average individual boarding times, which is true, as the $R^2$ value is greater than 90\%.
+
 
 \section{Summary and Outlook}
 
@@ -508,11 +525,7 @@ The general trend of the data is retained by our model because within each class
 	Data Passenger Size from:  NASA. “Man-Systems Integration Standards.” Man-Systems Integration Standards, vol. 1, July 1995, p. 30.
 	
 	\bibitem{steffen}
-<<<<<<< HEAD
 	Steffen, Jason H. "Optimal boarding method for airline passengers." Journal of Air Transport Management 14.3 (2008): 146-150.
-=======
-	Steffen, Jason H., and Jon Hotchkiss. “Experimental Test of Airplane Boarding Methods.” Journal of Air Transport Management, vol. 18, no. 1, 2012, pp. 64–67., doi:10.1016/j.jairtraman. .10.003.
->>>>>>> 753bd2b4a9491e5d89c1948f3a038438eb763a02
 \end{thebibliography}
 
 
