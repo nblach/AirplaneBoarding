@@ -270,6 +270,7 @@ We also measure the perfomance of sightly modified Steffen methods with increase
 We implemented our model in python, in a heavily object oriented way. We use 0.01 m as the basic space unit, and 0.1 s as the basic time unit. The plane is implemented, such that all it's relevant parameters (such as number of rows, row size, seat pitch and length and size of a compartment) can be adjusted. The aisle is represented by an array, where each entry is an integer, indicating, which actor currently covers the corresponding millimeter, or if it is free. In every time step, we make every actor, that is currently in the aisle, act. When acting, actors can update their own state or the occupation of a compartment, the aisle, or their seat. Once  all actors are seated, the simulation ends, as boarding is completed.
 
 \subsection{The Different Boarding Methods}
+We generate the boarding methods as permutations of a list of all seats in the plane. Then, each actor gets assigned one of the seats and the actors enter the plane in the order of the permutated list of seats. Random seats are deleted from the list, if the plane is not fully loaded.
 
 \subsection{Acting and Actor States}
 \begin{figure}[h!]
@@ -374,13 +375,14 @@ Once an actor is seated, his state will never change again. Even when moving out
 
 
 \subsubsection{Moving and Switching}
+When moving forward or backward, in one timestep, actors can move as far as their moving speed allows them. However, when the aisle is occupied by another actor, they cannot move further. Instead, they determine, if the actor blocking the aisle wants to move into the opposite direction of their goal. If this is the case, in order to advance, the two passengers can switch positions. When two passengers switch positions, the space they occupy in the aisle cannot be entered by any other actor. Yet, in this space, the two can move freely, possibly overlapping positions. However, the two can only move at half their normal speed, as they need to pass each other in the narrow aisle. After they finished switching postions, or after one of them sat down, the switching process can be ended. Then, both actors are at different positions again, and other actors may now enter the previously blocked space.
 
 
 
 
 
 \subsection{Graphics and Calculation}
-
+Our model also provides animations for the boarding process, which can be displayed after the whole simulation has been calculated. These can be useful, when one wants to gain more insight on what happens under the hood of the simulations/model, or if one tries to understand how, or why, a specific boarding method yields certain results.
 
  
 
