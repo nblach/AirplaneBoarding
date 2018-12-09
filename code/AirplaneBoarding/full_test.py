@@ -1,0 +1,7 @@
+import compare_methods_new
+import compare_methods_paper
+import compare_load
+
+compare_methods_new
+compare_methods_paper
+compare_load
