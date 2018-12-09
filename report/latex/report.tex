@@ -503,13 +503,33 @@ The general trend of the data is retained by our model because within each class
  \subsection{Individual Boarding Times - Bombardier CS100 \& Airbus A320-200}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{../../code/AirplaneBoarding/data/figure3/figure3.png}
-		\caption{This figure displays the results calculated our model for the time average time it takes each passenger to board the Bombardier CS100 and the Airbus A320-200 using different boarding methods under full load (passenger and luggage)}
+		\caption{This figure displays the results calculated by our model for the average time it takes each passenger to board the Bombardier CS100 and the Airbus A320-200 using different boarding methods under full load (passenger and luggage)}
 		\label{figure3}
 	\end{figure}
 	For many airlines the total boarding time is very import, especially for low-budget airlines like Ryanair, however many of the more expensive airlines, like Swiss and Lufthansa, really put a big emphasis on costumer experiences. This is why we also collected the data for the average individual boarding times, for the fastest boarding methods from each class. These can be seen in Figure \ref{figure3}. It is apparent that the faster the boarding method, the lower the average individual boarding time. However despite the Bombardier CS100 having a lot fewer seats than the Airbus A320-200 and a lower boarding time for all its methods under full load, it is recognizable that the faster the method, the closer the individual boarding times for the two planes get. This results in almost exactly the same individual boarding time for the fastest method "Steffen". The increasing efficiency across the boarding methods might yield this result because due to the decreasing number of congestions, the actors are almost able to walk directly towards their seat in the fastest methods.
 	
 	In terms of numbers, the fastest method "Steffen" has an individual boarding time of almost only 1 minute for both planes, whereas the fastest block boarding method has an individual boarding time of around 2.58 minutes for the Airbus and around 2.29 minutes for the Bombardier. So more than two times slower than "Steffen". From those results, we would believe that there is a strong correlation between total and average individual boarding times, which is true, as the $R^2$ value is greater than 90\%.
 
+\subsection{Impact of carry-on luggage on boarding time for a fully occupied Airbus A320-200}
+	\begin{figure}
+		\includegraphics[width=\linewidth]{../../code/AirplaneBoarding/data/figure4/figure4.png}
+		\caption{This figure displays the various boarding times with a 95\% confidence interval calculated for the Airbus A320-200 under full passenger load and 21 different luggage load levels using the "Random" and "Steffen" method}
+		\label{figure4}
+	\end{figure}
+	\subsubsection{Motivation and relevance}
+	We simulated the most commonly used ("Random") and the best boarding method ("Steffen") for different luggage loads, keeping the plane specifications constant (Airbus A320-200) and the passenger load at 100\%, to see what impact carry-on luggage has on the overall boarding time and whether it varies between the two methods. We expect it to be very relevant because it is one major source for row congestions, especially in methods that don't differentiate a lot between different seats (only divide into a small number of sections). This is relevant for many airlines because, for example, there is the option to lower prices for checked-in luggage in order to reduce the amount of carry-on luggage people bring on board, if reducing the boarding time by a significant amount turns out to be more profitable.
+	
+	\subsubsection{Results and Observations}
+	The results from our model can be found in Figure \ref{figure4}. Firstly, they clearly show that our expectation of an upward trend was realistic because "Steffen" under 100\% luggage load took more than twice as long compared to "Steffen" under 0\% luggage load. For "Random" the same comparison amounts to a factor of around 1.3, so luggage seems to have a greater effect on the faster method. Secondly, what also appears is the fact that for "Steffen", the 95\% confidence area is very small at the beginning but gradually increases with the luggage load (from $\pm 0.218$ minutes up to $\pm 2.26$ minutes). For "Random" this observation can not be made because the confidence area is always around plus or minus 1 minute ($\pm 10$ seconds) across all measured luggage loads. Lastly, there is a small up and down motion when comparing the different boarding times within each method, while the general upward trend is preserved. This is more noticeable for "Random" than for "Steffen". 
+	
+	\subsubsection{Observation analysis}
+		The first observation that luggage has a greater effect on "Steffen" than on "Random" can be reduced to the fact that due to the design of Steffen there are generally almost no row congestions caused through people sitting down, which means that the only main source are luggage stores. This is not the case for random boarding because there is no general order specified that would reduce congestions caused through passengers sitting down. 
+		
+		This also explains the second observation regarding the error bars. Because "Random" already has no order what so ever specified, an increased luggage load, which is randomly distributed among the actors (described in section \ref{ourmodel}), will most likely not effect introduce any further irregularity. However for "Steffen", this is a totally different story because there is no indefiniteness within the boarding method, so the more luggage is randomly assigned the more random congestions can possibly occur, which would result in a wider range of measured times.
+		
+		To conclude, the observed oscillation in the "Random" method is most likely just a result of the method itself, rather than the luggage, which is why it is not really present in the data of the "Steffen" method.
+	
+	
 
 \section{Summary and Outlook}
 
