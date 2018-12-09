@@ -40,6 +40,13 @@ Data Passenger Size from:  NASA. “Man-Systems Integration Standards.” Man-Sy
 	
 Barrett, Sean D. ''How do the demands for airport services differ between full-service carriers and low-cost carriers?." Journal of air transport management 10.1 (2004): 33-39.
 
+Images in Animation:
+
+seat: //www.conceptdraw.com/solution-park/building-seating-plans   (accessed 29.11.2018)
+
+plane nose and tail: https://www.google.ch/url?sa=i&source=images&cd=&ved=2ahUKEwiqrpCC0fneAhVRDOwKHRvzDH0QjRx6BAgBEAU&url=http%3A%2F%2Fcvfreeletters.brandforesight.co%2Felegant-frontier-airlines-planes-seating-chart%2Felegant-frontier-airlines-planes-seating-chart-15-elegant-united-seating-chart-masterlistforeignluxury&psig=AOvVaw0mpEvRKrlOSIJLULGzb9s5&ust=1543581837081380  (accessed 29.11.2018)
+
+
 
 ## Research Methods
 
