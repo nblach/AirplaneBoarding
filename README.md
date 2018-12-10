@@ -6,9 +6,11 @@
 > * Programming language: Python
 
 ## General Introduction
-(States your motivation clearly: why is it important / interesting to solve this problem?)
-(Add real-world examples, if any)
-(Put the problem into a historical context, from what does it originate? Are there already some proposed solutions?)
+Reducing airplane turn around time is of interest to all airlines, as it leads to more
+effiencent use of airport and airline resources, yielding great economical benefits.
+Still the major portion of turn around time, the boarding process, is oftentimes
+unnecessarily inefficient. Using our model, we aim to identify causes
+of inefficiencies and strategies to overcome them.
 
 ## The Model
 
